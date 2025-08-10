@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{judul}}</title>
+</head>
+<body>
+    <h1>{{judul}}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Alamat</th>
+                <th>Hanphone</th>
+                <th>Sex</th>
+            </tr>
+        </thead>
+        {% for list in object_list %}
+        <tbody>
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{list.nama}}</td>
+                <td>{{list.alamat}}</td>
+                <td>{{list.handphone}}</td>
+                <td>{{list.sex}}</td>
+                
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+
+{% if is_paginated %}
+    {% if page_obj.has_previous %}
+        <a href="{% url 'about:listview' page_obj.previous_page_number %}" title="">&laquo;</a>
+    {% else %}
+        <span>&laquo;</span>
+    {% endif %}
+    {% for i in paginator.page_range %}
+        <a href="{% url 'about:listview' i %}">{{i}}</a>
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <a href="{% url 'about:listview' page_obj.next_page_number %}" title="">&raquo;</a>
+    {% else %}
+        <span>&raquo;</span>
+    {% endif %}
+{% endif %}
+
+<h1>{{page_obj}}</h1>
+</body>
+</html>

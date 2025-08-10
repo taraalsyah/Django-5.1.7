@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    {% block app_css %}
+    {% include "snippets/styles.html" %}
+    {% endblock app_css %}
+    
+    <title>{{judul}}</title>
+</head>
+<body>
+    {% include "snippets/navbar.html" %}
+    <div class="container">
+        <div class="header">
+          {% block header %}
+
+          {% endblock header %}
+        </div>
+        <div class="content">
+        {% block content %}
+          <p>This is a simple example of a container layout. It is centered on the page, has a fixed maximum width, and includes padding and shadows for a clean and modern look.</p>
+          <p>You can customize the styles further to suit your needs.</p>
+        {% endblock content %}
+
+        
+        </div>
+        <div class="footer">
+          <p>&copy; 2025 Your Company. All rights reserved.</p>
+        </div>
+      </div>
+
+{% include "snippets/scripts.html" %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  type="text/css" href="{% static appcssabout %}">
+    
+    <title>{{judul}}</title>
+</head>
+<body>
+    <h1>Selamat datang di halaman {{judul}}</h1>
+    <h2>{{heading}}</h2>
+    <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/blog/">Blog</a></li>
+    </ul>
+
+    <ul>
+        {%for link,name in nav%}
+            <li>{{name}}</li>
+        {%endfor%}
+    </ul>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <button type="submit">Kirim</button>
+    </form>
+</body>
+</html>

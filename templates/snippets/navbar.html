@@ -1,0 +1,17 @@
+{% load static %}
+
+
+<nav class="navbar">
+    <div class="brand">
+      <a href="#">Brand</a>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'about:index' %}">About</a>
+      <a href="{% url 'blog:index' %}">Blog</a>
+      <a href="{% url 'blog:create' %}">Create</a>
+      <a href="#contact">Contact</a>
+      <a href="{% url 'logout' %}">Log Out</a>
+    </div>
+</nav>

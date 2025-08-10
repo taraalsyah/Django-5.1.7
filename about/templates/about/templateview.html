@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static appcss %}">
+    <title>About</title>
+</head>
+<body>
+    <h1>Hai selamat datang di halaman template view {{heading}}</h1>
+    <h1>number {{params}}</h1>
+    <nav>
+    <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about/">ABOUT</a></li>
+        <ul>
+            <li><a href="/blog/">BLOG</a></li>
+            <li><a href="/blog/recent/">RECENT</a></li>
+        </ul>
+    </ul>
+    </nav>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button type="submit">POST</button>
+    </form>
+</body>
+</html>

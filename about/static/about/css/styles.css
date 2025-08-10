@@ -1,0 +1,12 @@
+h1 {
+    color: rgb(16, 17, 16);
+}
+table {
+    width: 50%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    text-align: left; /* Semua sel rata kiri */
+    padding: 8px;
+}

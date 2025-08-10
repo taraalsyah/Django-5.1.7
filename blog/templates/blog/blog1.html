@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static appcss %}">
+    <title>{{judul}}</title>
+</head>
+<body>
+    <img id="banner" src="{% static banner %}" alt="">
+    <h1>Hai selamat datang di halaman {{judul}}</h1>
+    <nav>
+    <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about/">ABOUT</a></li>
+        <ul>
+            <li><a href="/blog/">BLOG</a></li>
+            <li><a href="/blog/recent/">RECENT</a></li>
+        </ul>
+    </ul>
+    </nav>
+    <ul>
+        {%for link,name in nav%}
+            <li>{{name}}</li>
+        {%endfor%}
+    </ul>
+</body>
+</html>

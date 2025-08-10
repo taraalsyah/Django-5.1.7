@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block app_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this item?");
+    }
+</script>
+{% endblock app_css %}
+{% block header %}
+    <h1>{{heading}}</h1>
+{% endblock header %}
+{% block content %}
+    <p>Ini dashboard BLOG contoh overloading 3 blog</p>
+    <h3 style="text-align: center;">Contoh Tabel HTML</h3>
+    
+<body>
+    <form method="post" action="">
+        {% csrf_token %}
+        {% for error in post_form.title.errors %}
+            <span class="error">{{ error }}</span>
+        {% endfor %}
+        <table>
+            {% for field in post_form %}
+                <tr>
+                    <th>{{ field.label_tag }}</th>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    <button type="submit">Save</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+{% endblock content %}
