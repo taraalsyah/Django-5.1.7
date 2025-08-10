@@ -4,11 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"  type="text/css" href="{% static appcssabout %}">
+    <!--  <link rel="stylesheet"  type="text/css" href="{% static appcssabout %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'about/css/styles.css' %}">
     
     <title>{{judul}}</title>
 </head>
+
 <body>
+
+    <nav class="navbar">
+  <div class="navbar__brand">
+    <a href="#" class="navbar__logo">MyBrand</a>
+    <button class="navbar__toggle" aria-label="Toggle menu">
+      <span class="navbar__toggle-bar"></span>
+      <span class="navbar__toggle-bar"></span>
+      <span class="navbar__toggle-bar"></span>
+    </button>
+  </div>
+  <ul class="navbar__menu">
+    <li><a href="#" class="navbar__link">Home</a></li>
+    <li><a href="#" class="navbar__link">About</a></li>
+    <li><a href="#" class="navbar__link">Services</a></li>
+    <li><a href="#" class="navbar__link">Contact</a></li>
+  </ul>
+</nav>
+
     <h1>Selamat datang di halaman {{judul}}</h1>
     <h2>{{heading}}</h2>
     <ul>

@@ -3,6 +3,7 @@
 
 
 {% block app_css %}
+{{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
 <script>
     function confirmDelete() {
@@ -17,33 +18,36 @@
     <p>Ini dashboard BLOG contoh overloading</p>
     <h3 style="text-align: center;">Contoh Form Django HTML</h3>
 
-    <form action="" method="POST" style="text-align: center;" onsubmit="return confirmDelete();">
-        {% csrf_token %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Body</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                <tr>
-                    <td>
-                        <input type="text" name="title" value="{{ post_form.title }}" required>
-                    </td>
-                    <td>
-                        <input type="text" step="0.01" name="body" value="{{ post_form.body }}">
-                    </td>
-                    <td>
-                        <input type="text" step="0.01" name="category" value="{{ post_form.category }}">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="submit">Kirim</button>
-        
-        <button><a href="{% url 'blog:index' %}">Cancel</a></button>
-    </form>
+    <form action="" method="POST" class="post-edit-form" onsubmit="return confirmDelete();">
+    {% csrf_token %}
+    <table class="post-edit-form__table">
+        <thead>
+            <tr>
+                <th class="post-edit-form__th">Title</th>
+                <th class="post-edit-form__th">Body</th>
+                <th class="post-edit-form__th">Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="post-edit-form__td">
+                    <input type="text" name="title" value="{{ post_form.title }}" required class="post-edit-form__input">
+                </td>
+                <td class="post-edit-form__td">
+                    <input type="text" name="body" value="{{ post_form.body }}" class="post-edit-form__input">
+                </td>
+                <td class="post-edit-form__td">
+                    <input type="text" name="category" value="{{ post_form.category }}" class="post-edit-form__input">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="post-edit-form__btn-group">
+        <button type="submit" class="post-edit-form__btn post-edit-form__btn-submit">Kirim</button>
+        <button type="button" class="post-edit-form__btn post-edit-form__btn-cancel">
+            <a href="{% url 'blog:index' %}">Cancel</a>
+        </button>
+    </div>
+</form>
+
 {% endblock content %}

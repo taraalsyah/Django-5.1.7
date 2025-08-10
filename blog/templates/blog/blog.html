@@ -3,6 +3,7 @@
 
 
 {% block app_css %}
+{{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
 <script>
     function confirmDelete() {
@@ -10,76 +11,80 @@
     }
 </script>
 {% endblock app_css %}
+
+
 {% block header %}
     <h1>{{heading}}</h1>
 {% endblock header %}
+
+
 {% block content %}
-    <p>Ini dashboard BLOG contoh overloading 3 blog</p>
+    <p class="dashboard-blog">Ini dashboard BLOG contoh overloading 3 blog</p>
     <h3 style="text-align: center;">Contoh Tabel HTML</h3>
     <a href="{% url 'blog:download_posts_csv' %}">Download Data Posts (CSV)</a>
 
-<form method="GET">
-    <input type="text" name="search" placeholder="Cari judul..." value="{{ search_query }}">
-    <select name="category">
-        <option value="">Semua Kategori</option>
-        <option value="Jurnal" {% if category_filter == "Jurnal" %}selected{% endif %}>Jurnal</option>
-        <option value="Berita" {% if category_filter == "Berita" %}selected{% endif %}>Berita</option>
-        <option value="Blog" {% if category_filter == "Blog" %}selected{% endif %}>Blog</option>
-    </select>
-    <button type="submit">Cari</button>
-</form>
+    <form method="GET" class="search-form">
+        <input type="text" name="search" placeholder="Cari judul..." value="{{ search_query }}" class="search-input">
+        <select name="category" class="search-select">
+            <option value="">Semua Kategori</option>
+            <option value="Jurnal" {% if category_filter == "Jurnal" %}selected{% endif %}>Jurnal</option>
+            <option value="Berita" {% if category_filter == "Berita" %}selected{% endif %}>Berita</option>
+            <option value="Blog" {% if category_filter == "Blog" %}selected{% endif %}>Blog</option>
+        </select>
+        <button type="submit" class="search-button">Cari</button>
+    </form>
 
-    <table>
-        <thead> 
-            <tr>
-                <th>No</th>
-                <th>Judul</th>
-                <th>Body</th>
-                <th>Slug</th>
-                <th>Category</th>
-                <th>Delete</th>
-                <th>Update</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for post in page_obj %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td><a href="/blog/{{post.slug}}/">{{post.title}}</a></td>
-                <td>{{post.body|truncatechars:lengthchars}}</td>
-                <td>{{post.slug}}</td>
-                <td>{{post.category}}</td>
-                <td><a href="">
-                    <form action="{% url 'blog:delete' post.id %}" method="POST" style="text-align: center;" onsubmit="return confirmDelete();">
-                        {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
-                    </a>
-                </td>
-                <td><a href="">
-                    <form action="{% url 'blog:update' post.id %}" method="GET" style="text-align: center;">
-                        {% csrf_token %}
-                        <button type="submit">Update</button>
-                    </form>
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <table class="post-table">
+    <thead> 
+        <tr>
+            <th>No</th>
+            <th>Judul</th>
+            <th>Body</th>
+            <th>Slug</th>
+            <th>Category</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in page_obj %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></td>
+            <td>{{ post.body|truncatechars:lengthchars }}</td>
+            <td>{{ post.slug }}</td>
+            <td>{{ post.category }}</td>
+            <td>
+                <form action="{% url 'blog:delete' post.id %}" method="POST" class="form-delete" onsubmit="return confirmDelete();">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-delete">Delete</button>
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'blog:update' post.id %}" method="GET" class="form-update">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-update">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
    
     <!-- Pagination -->
-<div class="pagination">
+<div class="custom-pagination">
     {% if page_obj.has_previous %}
-        <a href="?search={{ search_query }}&category={{ category_filter }}&page=1">&laquo; First</a>
-        <a href="?search={{ search_query }}&category={{ category_filter }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        <a href="?search={{ search_query }}&category={{ category_filter }}&page=1" class="pagination-link">&laquo; First</a>
+        <a href="?search={{ search_query }}&category={{ category_filter }}&page={{ page_obj.previous_page_number }}" class="pagination-link">Previous</a>
     {% endif %}
 
-    <span>Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}</span>
+    <span class="pagination-info">Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}</span>
 
     {% if page_obj.has_next %}
-        <a href="?search={{ search_query }}&category={{ category_filter }}&page={{ page_obj.next_page_number }}">Next</a>
-        <a href="?search={{ search_query }}&category={{ category_filter }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        <a href="?search={{ search_query }}&category={{ category_filter }}&page={{ page_obj.next_page_number }}" class="pagination-link">Next</a>
+        <a href="?search={{ search_query }}&category={{ category_filter }}&page={{ page_obj.paginator.num_pages }}" class="pagination-link">Last &raquo;</a>
     {% endif %}
 </div>
+
 {% endblock content %}

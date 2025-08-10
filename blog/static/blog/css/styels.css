@@ -1,3 +1,30 @@
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+th, td {
+  border: 1px solid #080707;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+h1  {
+    color: rgb(174, 109, 44);
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -13,14 +40,14 @@ body {
     padding: 0.5rem 1rem;
   }
 
-.navbar .menu a {
-    color: rgb(249, 247, 243);
+.navbar a {
+    color: rgb(7, 7, 7);
     text-decoration: none;
     padding: 0.5rem 1rem;
   }
 
 .navbar a:hover {
-    background-color: #dfc6c6;
+    background-color: #575757;
     border-radius: 5px;
   }
 
@@ -38,19 +65,18 @@ body {
     cursor: pointer;
     color: white;
   }
-
-  a {
-    text-decoration: none;
+  
+a {
+  text-decoration: none;
 }
-
 /* Responsive Design */
 @media (max-width: 768px) {
 .navbar .menu {
       display: none;
       flex-direction: column;
-      background-color: #bf6d29;
+      background-color: #333;
       position: absolute;
-      top: 6%;
+      top: 100%;
       left: 0;
       width: 100%;
     }

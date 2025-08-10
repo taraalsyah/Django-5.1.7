@@ -1,127 +1,341 @@
-table {
-  width: 80%;
-  border-collapse: collapse;
-  margin: 40px auto;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-}
-th, td {
-  border: 1px solid #080707;
-  padding: 8px;
+.dashboard-blog {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2a9d8f;       /* hijau toska */
+  background-color: #e0f7f5;
+  padding: 10px 15px;
+  border-left: 4px solid #264653;
+  border-radius: 5px;
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
+  box-shadow: 0 2px 6px rgba(38, 70, 83, 0.2);
 }
-th {
-  background-color: #f4f4f4;
-  font-weight: bold;
+
+
+/* Form Search */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 600px;
+  margin: 20px auto;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-tr:nth-child(even) {
+
+.search-input,
+.search-select {
+  flex: 1 1 180px;
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus,
+.search-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.search-button {
+  padding: 11px 24px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Form and Tables Index nya Blog */
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px;
+}
+
+.post-table thead tr {
+  background-color: #007bff;
+  color: white;
+  text-align: left;
+}
+
+.post-table th, 
+.post-table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.post-table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
-tr:hover {
-  background-color: #f1f1f1;
+
+.post-table tbody tr:hover {
+  background-color: #e3f2fd;
 }
 
-h1  {
-    color: rgb(174, 109, 44);
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: bisque;
-    min-height: 100vh;
-  }
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #bf6d29;
-    padding: 0.5rem 1rem;
-  }
-
-.navbar a {
-    color: rgb(7, 7, 7);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-  }
-
-.navbar a:hover {
-    background-color: #575757;
-    border-radius: 5px;
-  }
-
-.navbar .menu {
-    display: flex;
-  }
-
-.navbar .menu a {
-    margin: 0 0.5rem;
-  }
-
-.navbar .menu-toggle {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: white;
-  }
-  
-a {
+.post-table a {
+  color: #007bff;
   text-decoration: none;
 }
-/* Responsive Design */
-@media (max-width: 768px) {
-.navbar .menu {
-      display: none;
-      flex-direction: column;
-      background-color: #333;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-    }
 
-.navbar .menu a {
-      text-align: center;
-      margin: 0;
-    }
+.post-table a:hover {
+  text-decoration: underline;
+}
 
-.navbar .menu.show {
-      display: flex;
-    }
+/* Style untuk form tombol */
+.form-delete,
+.form-update {
+  margin: 0;
+  text-align: center;
+}
 
-.navbar .menu-toggle {
-      display: block;
-    }
-  }
+.btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
 
-.container {
-    width: 95%;
-    margin: 0 auto;
-    padding: 1rem;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
+/* Warna tombol Delete */
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
 
-.header {
-    text-align: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #ddd;
-  }
+.btn-delete:hover {
+  background-color: #a71d2a;
+}
 
-.content {
-    padding: 1rem 0;
-    line-height: 1.6;
-  }
+/* Warna tombol Update */
+.btn-update {
+  background-color: #28a745;
+  color: white;
+}
 
-.footer {
-    text-align: center;
-    padding: 1rem 0;
-    border-top: 1px solid #ddd;
-    color: #777;
-  }
+.btn-update:hover {
+  background-color: #1b6d2a;
+}
+
+
+
+/* Form Create */
+.post-form {
+  max-width: 500px;
+  margin: 30px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fafafa;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.post-form__error {
+  display: block;
+  color: #dc3545;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.post-form__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+.post-form__row {
+  vertical-align: middle;
+}
+
+.post-form__label {
+  text-align: left;
+  padding-right: 15px;
+  font-weight: 600;
+  color: #333;
+  width: 30%;
+  white-space: nowrap;
+}
+
+.post-form__field input,
+.post-form__field select,
+.post-form__field textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.post-form__field input:focus,
+.post-form__field select:focus,
+.post-form__field textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.post-form__submit-cell {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.post-form__submit-btn {
+  background-color: #007bff;
+  color: white;
+  font-weight: 700;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.post-form__submit-btn:hover {
+  background-color: #0056b3;
+}
+
+
+
+
+/* Form Update */
+.post-edit-form {
+  max-width: 700px;
+  margin: 30px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  background: #fafafa;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+}
+
+.post-edit-form__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.post-edit-form__th, 
+.post-edit-form__td {
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.post-edit-form__th {
+  background-color: #007bff;
+  color: white;
+}
+
+.post-edit-form__input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.post-edit-form__input:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.post-edit-form__btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.post-edit-form__btn {
+  padding: 10px 28px;
+  font-weight: 600;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.post-edit-form__btn-submit {
+  background-color: #007bff;
+  color: white;
+}
+
+.post-edit-form__btn-submit:hover {
+  background-color: #0056b3;
+}
+
+.post-edit-form__btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.post-edit-form__btn-cancel:hover {
+  background-color: #4e555b;
+}
+
+.post-edit-form__btn-cancel a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 0 8px;
+}
+
+.post-edit-form__btn-cancel a:hover {
+  text-decoration: underline;
+}
+
+
+
+/*Pagination*/
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+
+.pagination-link {
+  padding: 8px 14px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.pagination-link:hover {
+  background-color: #0056b3;
+}
+
+.pagination-info {
+  font-weight: 600;
+  color: #333;
+  user-select: none;
+}

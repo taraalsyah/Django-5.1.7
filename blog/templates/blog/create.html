@@ -3,6 +3,7 @@
 
 
 {% block app_css %}
+{{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
 <script>
     function confirmDelete() {
@@ -18,25 +19,25 @@
     <h3 style="text-align: center;">Contoh Tabel HTML</h3>
     
 <body>
-    <form method="post" action="">
-        {% csrf_token %}
-        {% for error in post_form.title.errors %}
-            <span class="error">{{ error }}</span>
-        {% endfor %}
-        <table>
-            {% for field in post_form %}
-                <tr>
-                    <th>{{ field.label_tag }}</th>
-                    <td>{{ field }}</td>
-                </tr>
-            {% endfor %}
-
-            <tr>
-                <td colspan="2" style="text-align:center;">
-                    <button type="submit">Save</button>
-                </td>
+    <form method="post" action="" class="post-form">
+    {% csrf_token %}
+    {% for error in post_form.title.errors %}
+        <span class="post-form__error">{{ error }}</span>
+    {% endfor %}
+    <table class="post-form__table">
+        {% for field in post_form %}
+            <tr class="post-form__row">
+                <th class="post-form__label">{{ field.label_tag }}</th>
+                <td class="post-form__field">{{ field }}</td>
             </tr>
-        </table>
-    </form>
+        {% endfor %}
+        <tr>
+            <td colspan="2" class="post-form__submit-cell">
+                <button type="submit" class="post-form__submit-btn">Save</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
 </body>
 {% endblock content %}
