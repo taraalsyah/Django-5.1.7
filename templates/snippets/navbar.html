@@ -7,11 +7,11 @@
     </div>
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
     <div class="menu">
-      <a href="{% url 'index' %}">Home</a>
-      <a href="{% url 'about:index' %}">About</a>
-      <a href="{% url 'blog:index' %}">Blog</a>
-      <a href="{% url 'blog:create' %}">Create</a>
-      <a href="#contact">Contact</a>
-      <a href="{% url 'logout' %}">Log Out</a>
+      <a class="navbar-brand" href="{% url 'index' %}">Home</a>
+      <a class="navbar-brand" href="{% url 'about:index' %}">About</a>
+      <a class="navbar-brand" href="{% url 'blog:index' %}">Blog</a>
+      <a class="navbar-brand" href="{% url 'blog:create' %}">Create</a>
+      <a class="navbar-brand" href="#contact">Contact</a>
+      <a class="navbar-brand" href="{% url 'logout' %}">Log Out</a>
     </div>
 </nav>
