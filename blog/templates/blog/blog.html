@@ -22,10 +22,7 @@
 {% block content %}
     <p class="dashboard-blog">Ini dashboard BLOG contoh overloading 3 blog</p>
     <h3 style="text-align: center;">Contoh Tabel HTML</h3>
-    <a href="{% url 'blog:download_posts_csv' %}">Download Data Posts (CSV)</a>
     <a href="{% url 'blog:download_posts_csv' %}?search={{ request.GET.search }}&category={{ request.GET.category }}">Download CSV</a>
-
-
     <form method="GET" class="search-form">
         <input type="text" name="search" placeholder="Cari judul..." value="{{ search_query }}" class="search-input">
         <select name="category" class="search-select">

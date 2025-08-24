@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     background-color: bisque;
     min-height: 100vh;
   }
@@ -12,9 +12,17 @@ body {
     background-color: #bf6d29;
     padding: 0.5rem 1rem;
     position: fixed;
+    font-size: 14px;
     top: 0;
     width: 100%;
+    border-radius: 5px;
   }
+
+.navbar .brand a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(246, 235, 235);
+}
 
 .navbar .menu a {
     color: rgb(249, 247, 243);
@@ -37,7 +45,7 @@ body {
 
 .navbar .menu-toggle {
     display: none;
-    font-size: 1.5rem;
+    font-size: 16px;
     cursor: pointer;
     color: white;
   }
@@ -76,6 +84,7 @@ body {
     width: 95%;
     margin: 0 auto;
     padding: 1rem;
+    margin-top: 60px; /* Adjust for fixed navbar height */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 8px;
