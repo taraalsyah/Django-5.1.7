@@ -78,16 +78,18 @@ def send_test_email():
 
     send_mail(subject, message, sender, recipient, fail_silently=False)
 
-    
 
-@login_required
 @never_cache
 def index(request):
+    username = request.user.username
+    print('ini index',username)
     judul="Halo index"
-    subjudul="Welcome to my website"
-    output=judul+subjudul
+    subjudul=f"Welcome to my website, {username}"
+    print(subjudul)
+    print("User di index:", request.user, request.user.is_authenticated)
     context = {
         'judul':'MyWebsites',
+        'username': username,
     }
     return render(request,'index.html',context)
 
@@ -97,19 +99,20 @@ def custom_login(request):
          
         username = request.POST.get("username")
         password = request.POST.get("password")
+        next_url = request.POST.get("next") or reverse("index")
+        user = authenticate(request, username=username, password=password)
+
         print(username)
         print(password)
-        user = authenticate(request, username=username, password=password)
         print(user)
+        print("POST data:", request.POST)
+
         if user is not None:
             login(request, user)
-
-            # Redirect to 'next' if exists, else index
-            next_url = request.GET.get('next', 'index')
-            return redirect(next_url)
+            return redirect(next_url)  # redirect ke halaman tujuan
         else:
             messages.error(request, "Invalid username or password.")
-
+        
     return render(request, "login.html")
 
 
