@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from .models import Post
@@ -14,7 +15,7 @@ def index(request):
     posts = Post.objects.all().order_by('-id') # urutkan dari terbaru
     # Ambil query search dan filter
     search_query = request.GET.get('search', '')
-    print(search_query)
+    
     category_filter = request.GET.get('category', '')
 
     # Filter berdasarkan search
@@ -125,6 +126,19 @@ def update(request,update_id):
 
 
 def download_posts_csv(request):
+    category = request.GET.get("category")
+    search = request.GET.get("search")
+    print('ini category',category)
+    print('ini search',search)
+    
+    queryset = Post.objects.all()
+    
+    if search:
+        queryset = queryset.filter(title__icontains=search)
+
+    if category:
+        queryset = queryset.filter(category__iexact=category)
+
     # Response dengan header CSV
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="posts.csv"'
@@ -134,7 +148,8 @@ def download_posts_csv(request):
     writer.writerow(['title', 'body', 'category'])
 
     # Ambil data dari MySQL
-    for post in Post.objects.all():
+    for post in queryset:
         writer.writerow([post.title, post.body, post.category])
+        
 
     return response

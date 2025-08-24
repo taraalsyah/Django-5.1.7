@@ -1,4 +1,4 @@
-"""
+'''
 URL configuration for mywebsite project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -13,7 +13,7 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+'''
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
@@ -23,9 +23,11 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/',include(('blog.urls','blog'),namespace="blog")),
-    path('about/',include(('about.urls','about'),namespace="about")),
+    path('register/', views.register, name='register'),
+    path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
-    path('index/',views.index,name="index"),
+    path('index/',views.index,name='index'),
+    path('blog/',include(('blog.urls','blog'),namespace='blog')),
+    path('about/',include(('about.urls','about'),namespace='about')),
     path('logout/', views.logout_view, name='logout'),
 ]

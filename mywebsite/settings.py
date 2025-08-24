@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+import ssl, certifi
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,16 +45,32 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # Security headers & HTTPS handling
     'django.middleware.security.SecurityMiddleware',
+
+    # Session management (wajib sebelum AuthenticationMiddleware)
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # Common stuff (ETag, Content-Length, canonical redirects)
     'django.middleware.common.CommonMiddleware',
+
+    # CSRF protection (harus sebelum AuthenticationMiddleware)
     'django.middleware.csrf.CsrfViewMiddleware',
+
+    # User authentication (wajib sebelum middleware custom yang butuh request.user)
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'mywebsite.middleware.AutoLogoutMiddleware',
+
+    # Middleware custom kamu
     'mywebsite.middleware.LoginRequiredMiddleware',
+    'mywebsite.middleware.AutoLogoutMiddleware',
+
+    # Messages framework
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    # Prevent clickjacking
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'mywebsite.urls'
 
@@ -136,10 +154,10 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect here after successful login if no ?next= param
-LOGIN_REDIRECT_URL = 'index'  
+LOGIN_REDIRECT_URL = 'index'
 
 # Redirect to login page if user not authenticated
-LOGIN_URL = 'login'
+LOGIN_URL = 'register'
 
 LOGOUT_REDIRECT_URL = 'login' # after logout, go here
 
@@ -148,3 +166,15 @@ LOGOUT_REDIRECT_URL = 'login' # after logout, go here
 SESSION_COOKIE_AGE = 30 * 60  # 30 minutes in seconds
 SESSION_SAVE_EVERY_REQUEST = True  # Reset timer on each request
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Optional: end session when browser closes
+
+
+#email config
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'taraalsyah45@gmail.com'
+EMAIL_HOST_PASSWORD = 'jgyjrejoysspxhqx'  # Gunakan App Password jika 2FA aktif
+
+EMAIL_SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
