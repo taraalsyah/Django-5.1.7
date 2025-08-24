@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-
+<!--
 <nav class="navbar">
     <div class="brand">
       <a href="{% url 'index' %}">My Website</a>
@@ -21,6 +21,55 @@
       <a class="navbar-brand" href="{% url 'logout' %}">Log Out</a>
     </div>
 </nav>
+-->
+
+<nav class="navbar">
+  <div class="brand">
+    <a href="{% url 'index' %}">My Website</a>
+  </div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <div class="menu">
+    <a class="navbar-brand" href="{% url 'index' %}">Home</a>
+    <a class="navbar-brand" href="{% url 'about:index' %}">About</a>
+    <a class="navbar-brand" href="{% url 'blog:index' %}">Blog</a>
+    <a class="navbar-brand" href="{% url 'blog:create' %}">Create</a>
+    <a class="navbar-brand" href="#contact">Contact</a>
+
+    {% if user.is_authenticated %}
+    <!-- Dropdown Profile -->
+    <div class="dropdown">
+      <button class="dropbtn">
+        {{ user.username }} ⌄
+      </button>
+      <div class="dropdown-content">
+        <a href="{% url 'password_change' %}">Change Password</a>
+        <form method="post" action="{% url 'logout' %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit">
+            Logout
+          </button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+      <a class="navbar-brand" href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+</nav>
+
+<!-- CSS for Dropdown -->
+<style>
+  
+</style>
+
+<!-- Script for mobile toggle -->
+<script>
+function toggleMenu() {
+  document.querySelector(".menu").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>

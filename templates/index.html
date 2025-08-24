@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block header %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
     <h1>Ini Halaman Utama My Websites</h1>
 {% endblock header %}
 

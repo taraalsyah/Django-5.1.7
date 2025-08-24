@@ -54,6 +54,48 @@ body {
     text-decoration: none;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .dropbtn {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 16px;
+    color: rgb(249, 249, 244); /* sesuaikan dengan tema navbar */
+  }
+  .dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: none;
+    min-width: 160px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropdown .dropdown-content a,
+  .dropdown .dropdown-content button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-decoration: none;
+    color: #030303;
+    background: none;
+    border: none;
+    text-align: left;
+  }
+  .dropdown .dropdown-content a:hover,
+  .dropdown .dropdown-content button:hover {
+    background-color: #e68266;
+    border-radius: 7px;
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
 /* Responsive Design */
 @media (max-width: 768px) {
 .navbar .menu {

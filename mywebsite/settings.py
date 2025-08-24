@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'about',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -178,3 +180,6 @@ EMAIL_HOST_USER = 'taraalsyah45@gmail.com'
 EMAIL_HOST_PASSWORD = 'jgyjrejoysspxhqx'  # Gunakan App Password jika 2FA aktif
 
 EMAIL_SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

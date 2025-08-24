@@ -11,8 +11,9 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+from django.urls import reverse,reverse_lazy
 from django.conf import settings
+from django.contrib.auth.views import PasswordChangeView
 
 
 
@@ -126,3 +127,10 @@ def logout_view(request):
     return response
 
 
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'change_password.html'   # halaman template
+    success_url = reverse_lazy('index')          # redirect ke profile setelah sukses
+
+    def form_valid(self, form):
+        messages.success(self.request, "Password berhasil diperbarui")
+        return super().form_valid(form)

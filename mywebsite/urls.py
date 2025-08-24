@@ -18,16 +18,19 @@ from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
 from . import views
+from .views import CustomPasswordChangeView
+from django.contrib.auth import views as auth_views
 
 
 
 urlpatterns = [
+    path('index/',views.index,name='index'),
     path('admin/', admin.site.urls),
     path('register/', views.register, name='register'),
     path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
-    path('index/',views.index,name='index'),
     path('blog/',include(('blog.urls','blog'),namespace='blog')),
     path('about/',include(('about.urls','about'),namespace='about')),
     path('logout/', views.logout_view, name='logout'),
+    path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
 ]
