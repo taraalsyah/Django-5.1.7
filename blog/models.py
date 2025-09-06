@@ -44,7 +44,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(editable=False)
     updated_at = models.DateTimeField()
 
-    def save(self,** kwargs):
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         """
         Custom save to set created_at and updated_at based on country's timezone
@@ -63,7 +63,7 @@ class Post(models.Model):
 
         # Always update updated_at
         self.updated_at = now_in_country_tz
-        super(Post,self).save()
+        super().save(*args, **kwargs)
     def __str__(self):
         return "{}. {}".format(self.id , self.title)
 

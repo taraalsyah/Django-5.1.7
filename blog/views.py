@@ -108,6 +108,8 @@ def create(request):
             post.country = location_form.cleaned_data['country']
             post.city = location_form.cleaned_data['city']
             post.save()
+            print(post.save,'save')
+            messages.success(request, "Post created successfully!")
             #return HttpResponseRedirect("/blog/")
             return redirect('blog:index')
         else:

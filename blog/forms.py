@@ -14,7 +14,6 @@ class PostForm(forms.ModelForm):
         ]
 
 
-
 class LocationForm(forms.Form):
     country = forms.ModelChoiceField(
         queryset=Country.objects.all(),
