@@ -8,5 +8,6 @@ urlpatterns = [
     #re_path(r'^(?P<sluginput>[\w-]+)/$',views.slugpost),
     path('download/posts/', views.download_posts_csv, name='download_posts_csv'),
     path('create/',views.create,name="create"),
+    path('ajax/load-cities/', views.create, name='ajax_load_cities'),
     path('',views.index,name="index"),
 ]

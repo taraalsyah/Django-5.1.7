@@ -1,9 +1,12 @@
 from unicodedata import category
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
-from .models import Post
+from django.http import HttpResponse,HttpResponseRedirect, JsonResponse
+from .models import Post,City,Country
+from django.urls import re_path,path
+from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
-from .forms import PostForm
+from .forms import LocationForm, PostForm
 from django.contrib import messages
 import csv
 from django.core.paginator import Paginator
@@ -86,18 +89,35 @@ def slugpost(request,sluginput):
     return render(request,'blog/blog.html',context)
 
 def create(request):
+    country_id = request.GET.get('country_id')  # ✅ Always defined
+    # Handle AJAX for dynamic city loading
+    print('ini x-request=',request.headers.get('x-requested-with'))
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        country_id = request.GET.get('country_id')
+    if country_id:
+        cities = City.objects.filter(country_id=country_id).order_by('name')
+        return JsonResponse(list(cities.values('id', 'name')), safe=False)
+
     post_form = PostForm(request.POST or None)
+    location_form = LocationForm(request.POST or None)
     print(post_form,'create')
+
     if request.method == 'POST':
-        if post_form.is_valid():
-            post_form.save()
-            return HttpResponseRedirect("/blog/")
+        if post_form.is_valid() and location_form.is_valid():
+            post = post_form.save(commit=False)
+            post.country = location_form.cleaned_data['country']
+            post.city = location_form.cleaned_data['city']
+            post.save()
+            #return HttpResponseRedirect("/blog/")
+            return redirect('blog:index')
         else:
-            print(post_form.errors)
+            print("Post form errors:", post_form.errors)
+            print("Location form errors:", location_form.errors)
 
     context={
         'judul':'Create',
         'post_form':post_form,
+        'location_form':location_form,
     }
     return render(request,'blog/create.html',context)
 

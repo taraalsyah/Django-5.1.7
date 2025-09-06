@@ -42,6 +42,10 @@
             <th>Body</th>
             <th>Slug</th>
             <th>Category</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>City</th>
+            <th>Country</th>
             <th>Delete</th>
             <th>Update</th>
         </tr>
@@ -54,6 +58,10 @@
             <td>{{ post.body|truncatechars:lengthchars }}</td>
             <td>{{ post.slug }}</td>
             <td>{{ post.category }}</td>
+            <td>{{ post.created_at }}</td>
+            <td>{{ post.updated_at }}</td>
+            <td>{{ post.city}}</td>
+            <td>{{ post.country }}</td>
             <td>
                 <form action="{% url 'blog:delete' post.id %}" method="POST" class="form-delete" onsubmit="return confirmDelete();">
                     {% csrf_token %}

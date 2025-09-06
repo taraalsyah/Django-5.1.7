@@ -5,10 +5,35 @@
 {% block app_css %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function confirmDelete() {
         return confirm("Are you sure you want to delete this item?");
-    }
+    };
+
+  $(document).ready(function () {
+    $("#id_country").change(function () {
+      var countryId = $(this).val();
+      if (countryId) {
+        $.ajax({
+          url: "{% url 'blog:ajax_load_cities' %}", // ✅ namespace + view name
+          data: {'country_id': countryId},
+          method: 'GET',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          success: function (data) {
+            $("#id_city").empty().append('<option value="">---------</option>');
+            $.each(data, function (index, city) {
+              $("#id_city").append('<option value="' + city.id + '">' + city.name + '</option>');
+            });
+          }
+        });
+      } else {
+        $("#id_city").empty().append('<option value="">---------</option>');
+      }
+    });
+  });
 </script>
 {% endblock app_css %}
 {% block header %}
@@ -20,12 +45,24 @@
     
 <body>
     <form method="post" action="" class="post-form">
-    {% csrf_token %}
-    {% for error in post_form.title.errors %}
+        {% csrf_token %}
+        {% for error in post_form.title.errors %}
         <span class="post-form__error">{{ error }}</span>
-    {% endfor %}
-    <table class="post-form__table">
+        {% endfor %}
+        <table class="post-form__table">
         {% for field in post_form %}
+            <tr class="post-form__row">
+                <th class="post-form__label">{{ field.label_tag }}</th>
+                <td class="post-form__field">{{ field }}</td>
+            </tr>
+        {% endfor %}
+        {% for error in location_form.country.errors %}
+        <span class="post-form__error">{{ error }}</span>
+        {% endfor %}
+        {% for error in location_form.city.errors %}
+        <span class="post-form__error">{{ error }}</span>
+        {% endfor %}
+        {% for field in location_form %}
             <tr class="post-form__row">
                 <th class="post-form__label">{{ field.label_tag }}</th>
                 <td class="post-form__field">{{ field }}</td>
@@ -36,8 +73,11 @@
                 <button type="submit" class="post-form__submit-btn">Save</button>
             </td>
         </tr>
-    </table>
-</form>
+        </table>
+    </form>
 
 </body>
+
+
+
 {% endblock content %}

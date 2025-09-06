@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Post
+from .models import Post,Country,City,Tara
 
 
 
@@ -13,6 +13,28 @@ class PostForm(forms.ModelForm):
             'category',
         ]
 
+
+
+class LocationForm(forms.Form):
+    country = forms.ModelChoiceField(
+        queryset=Country.objects.all(),
+        label="Country"
+    )
+    city = forms.ModelChoiceField(
+        queryset=City.objects.none(),
+        label="City"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # If country already selected (e.g., after form submit)
+        if 'country' in self.data:
+            try:
+                country_id = int(self.data.get('country'))
+                self.fields['city'].queryset = City.objects.filter(country_id=country_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
 
 
 #class PostForm(forms.Form):
