@@ -1,3 +1,6 @@
+{% load socialaccount %}
+{% providers_media_js %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,13 +75,15 @@
             <label>Password</label>
             <input type="password" name="password" required>
         </p>
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <input type="hidden" name="next" value="{{ redirect_field_value|default:'' }}">
         <button type="submit">
             Login
         </button>
     </form>
     <br>
     <a class="navbar-brand" href="{% url 'register' %}">Register</a>
+    
+    <a href="http://localhost:8000/accounts/google/login/">Login Google</a>
 </div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load socialaccount %}
 
 {% block header %}
+    
     {% if messages %}
         {% for message in messages %}
             <div class="error">{{ message }}</div>
@@ -13,4 +15,8 @@
 {% block content %}
     <p>Ini dashboard utama my website contoh overloading root</p>
     <p>Selamat datang, {{ username }}</p>
+    <a href="{% provider_login_url 'google' process='connect' %}" class="btn btn-google">
+    Hubungkan ke Google
+    </a>
+
 {% endblock content %}

@@ -124,25 +124,35 @@ def create(request):
     return render(request,'blog/create.html',context)
 
 def update(request,update_id):
+    
     product = get_object_or_404(Post, id=update_id)
+    location_form = LocationForm(request.POST or None)
     print(product)
     if request.method == "POST":
-        title = request.POST.get("title")
-        body = request.POST.get("body")
-        category = request.POST.get("category")
-        print(title)
-        # Update fields
-        product.title = title
-        product.body = body
-        product.category = category
-        product.save()  # Save changes
+        if product and location_form.is_valid():
+            title = request.POST.get("title")
+            body = request.POST.get("body")
+            category = request.POST.get("category")
+
+            print(title)
+            # Update fields
+            product.title = title
+            product.body = body
+            product.category = category
+            product.country = location_form.cleaned_data['country']
+            product.city = location_form.cleaned_data['city']
+            product.save()  # Save changes
+        else:
+            print("Post form errors:", product.errors)
+            print("Location form errors:", location_form.errors)
 
         messages.success(request, "Product updated successfully!")
-        return redirect('/blog/')  # Redirect after upda
+        return redirect('/blog/')  # Redirect after update
     context={
         'judul':'Update',
         'post_form':product,
-        'heading':'Halaman Update'
+        'heading':'Halaman Update',
+        'location_form':location_form,
     }
     return render(request,'blog/update.html',context)
 
@@ -175,3 +185,8 @@ def download_posts_csv(request):
         
 
     return response
+
+def load_cities(request):
+    country_id = request.GET.get('country_id')
+    cities = City.objects.filter(country_id=country_id).order_by('name')
+    return JsonResponse(list(cities.values('id', 'name')), safe=False)

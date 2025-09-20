@@ -25,8 +25,11 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('index/',views.index,name='index'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('register/', views.register, name='register'),
+    path('accounts/', include('allauth.urls')),
+    #path('go-to-google-login/', views.google_redirect, name='google_redirect'),
+    #path('login/google/', views.google_login_redirect, name='google_login_redirect'),
     path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
     path('blog/',include(('blog.urls','blog'),namespace='blog')),

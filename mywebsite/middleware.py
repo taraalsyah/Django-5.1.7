@@ -16,6 +16,18 @@ class LoginRequiredMiddleware:
         "register",
         "admin:login",  # kalau pakai admin django
         "verify_email",
+        "google_redirect",
+        "google_login_redirect",
+        "socialaccount_login",
+        "socialaccount_signup",
+        "socialaccount_connections",
+        "socialaccount_logout",
+        "socialaccount_login_cancelled",
+        "socialaccount_login_error",
+        "socialaccount_email_verification_sent",
+        "socialaccount_email_verification",
+        "socialaccount_inactive",
+        "admin"
     ]
 
     # path yang boleh diakses tanpa login
@@ -25,6 +37,10 @@ class LoginRequiredMiddleware:
         "/register/",
         "/admin/login/",
         "/verify/",
+        "/accounts/",
+        "/go-to-google-login/",
+        "admin/",
+        "/login/google/"
     ]
 
     allowed_urls = [
@@ -33,6 +49,11 @@ class LoginRequiredMiddleware:
     '/static/',
     '/media/',
     '/verify/',
+    '/accounts/',
+    '/go-to-google-login/',
+    '/login/google/',
+    '/admin/login/',
+    '/admin/',
     ]
 
 
@@ -78,6 +99,11 @@ class AutoLogoutMiddleware:
         '/static/',
         '/media/',
         '/verify/',
+        '/accounts/',
+        '/go-to-google-login/',
+        '/login/google/'
+        '/admin/',
+        '/admin/login/',
         ]
 
         # Allow static & media files

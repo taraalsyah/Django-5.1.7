@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+<script>
+document.getElementById('google-login-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // URL for Google login from django-allauth
+    const googleLoginUrl = "{% provider_login_url 'google' process='login' %}";
+
+    // Open in popup
+    const width = 500;
+    const height = 600;
+    const left = (screen.width / 2) - (width / 2);
+    const top = (screen.height / 2) - (height / 2);
+
+    window.open(
+        googleLoginUrl,
+        'GoogleLoginPopup',
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
+    );
+});
+</script>
+
+
+<button id="google-login-btn" type="button" class="btn btn-primary">
+  Lanjutkan dengan Google
+</button>

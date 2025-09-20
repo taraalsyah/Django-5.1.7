@@ -13,10 +13,18 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import ssl, certifi
-
+import logging
+import pytz
+from django.utils import timezone
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Set the default timezone
+timezone.activate(pytz.timezone('Asia/Jakarta'))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,7 +52,25 @@ INSTALLED_APPS = [
     'about',
     'crispy_forms',
     'crispy_bootstrap5',
+    
+    # Required for allauth
+    'django.contrib.sites',
+
+    # allauth apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    
+
+    # Provider for Google
+    'allauth.socialaccount.providers.google',
+    
+    # Django Extensions (baru ditambahkan)
+    'django_extensions',
 ]
+
+SITE_ID = 3
+
 
 MIDDLEWARE = [
     # Security headers & HTTPS handling
@@ -62,6 +88,9 @@ MIDDLEWARE = [
     # User authentication (wajib sebelum middleware custom yang butuh request.user)
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
+    #for allauth
+    'allauth.account.middleware.AccountMiddleware',
+    
     # Middleware custom kamu
     'mywebsite.middleware.LoginRequiredMiddleware',
     'mywebsite.middleware.AutoLogoutMiddleware',
@@ -71,6 +100,14 @@ MIDDLEWARE = [
 
     # Prevent clickjacking
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    
+    
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 
@@ -79,7 +116,9 @@ ROOT_URLCONF = 'mywebsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+                 os.path.join(BASE_DIR, 'templates'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,12 +173,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
 USE_TZ = True
 
+pytz.timezone('Asia/Jakarta')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -185,3 +225,61 @@ EMAIL_SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '589514036411-440sc20l44vcpkk11ffcjtahkli37rt1.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'allauth': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+
+# Django-Allauth updated settings
+ACCOUNT_LOGIN_METHODS = {"email"}  # Login using email only
+
+ACCOUNT_SIGNUP_FIELDS = [
+    "email*",      # Required email field
+    "password1*",  # Required password
+    "password2*"   # Required password confirmation
+]
+
+# Optional but recommended
+ACCOUNT_EMAIL_VERIFICATION = "none"  # or "mandatory" if you need email verification
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[MyWebsite] "
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)

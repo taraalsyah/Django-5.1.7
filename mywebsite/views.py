@@ -14,7 +14,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse,reverse_lazy
 from django.conf import settings
 from django.contrib.auth.views import PasswordChangeView
-
+from urllib.parse import urlencode
+import os
+from django.views.decorators.csrf import csrf_exempt
 
 
 User = get_user_model()
@@ -134,3 +136,4 @@ class CustomPasswordChangeView(PasswordChangeView):
     def form_valid(self, form):
         messages.success(self.request, "Password berhasil diperbarui")
         return super().form_valid(form)
+    

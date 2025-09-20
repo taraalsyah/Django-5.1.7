@@ -4,6 +4,12 @@
 
 {% block app_css %}
 {{ block.super }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Make URL available to JS file
+    var ajaxLoadCitiesUrl = "{% url 'blog:ajax_load_cities2' %}";
+</script>
+<script src="{% static 'blog/js/scripts.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
 <script>
     function confirmDelete() {
@@ -26,6 +32,8 @@
                 <th class="post-edit-form__th">Title</th>
                 <th class="post-edit-form__th">Body</th>
                 <th class="post-edit-form__th">Category</th>
+                <th class="post-edit-form__th">Country</th>
+                <th class="post-edit-form__th">City</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +47,10 @@
                 <td class="post-edit-form__td">
                     <input type="text" name="category" value="{{ post_form.category }}" class="post-edit-form__input">
                 </td>
+                
+                {% for field in location_form %}
+                <td class="post-edit-form__td">{{ field }}</td>
+                {% endfor %}
             </tr>
         </tbody>
     </table>
