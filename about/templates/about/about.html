@@ -1,98 +1,29 @@
+{% extends "base.html" %}
+{% load socialaccount %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProDeal Dashboard</title>
-  
-  <link rel="stylesheet" type="text/css" href="{% static 'about/css/styles.css' %}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
 
-  <div class="app">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">ProDeal</div>
-        <div class="team-info">
-          <img src="https://via.placeholder.com/40" alt="Team Logo" class="team-logo">
-          <div>
-            <h4>Filllo Team</h4>
-            <p>hello@filllo.com</p>
-          </div>
-        </div>
-      </div>
 
-      <nav class="menu">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Create Contract</a></li>
-          <li><a href="#">Contracts</a></li>
-          <li><a href="#">Payment</a></li>
-          <li><a href="#">Com. Documents</a></li>
-          <li>
-            <a href="#">
-              Invoice Receipts <span class="badge">8</span>
-            </a>
-          </li>
-          <li><a href="#">Team Settings</a></li>
-        </ul>
 
-        <h5>ORGANISATION</h5>
-        <ul>
-          <li><a href="#">Apps & Perks</a></li>
-          <li><a href="#">Tax Forms <span class="badge new">New</span></a></li>
-          <li><a href="#">Organisation Settings</a></li>
-        </ul>
-      </nav>
-    </aside>
+{% block title %}
+        <title>Ticket</title>
+    {% endblock title %}
 
-    <!-- Main Content -->
-    <div class="main-content">
-      
-      <!-- Top Bar -->
-      <header class="topbar">
-        <div class="search-container">
-          <input type="text" placeholder="Search here..." />
-        </div>
-        <div class="topbar-icons">
-          <button class="icon-btn">🔔</button>
-          <button class="icon-btn">☀️</button>
-          <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic">
-        </div>
-      </header>
+{% block app_css %}
+        {% include "snippets/styles.html" %}
+    {% endblock app_css %}
 
-      <!-- Content Area -->
-      <section class="page-content">
-        <h2>Account Settings</h2>
+{% block content %}
 
-        <div class="tabs">
-          <button class="active">My Profile</button>
-          <button>Security</button>
-          <button>Teams</button>
-          <button>Team Member</button>
-          <button>Notifications</button>
-          <button>Billing</button>
-          <button>Data Export</button>
-          <button class="delete">Delete Account</button>
-        </div>
+{% block message %}
 
-        <div class="profile-section">
-          <div class="profile-card">
-            <div class="profile-info">
-              <img src="https://via.placeholder.com/80" alt="User Photo">
-              <div>
-                <h3>Rafiqur Rahman</h3>
-                <p>Team Manager</p>
-                <span>Leeds, United Kingdom</span>
-              </div>
-            </div>
-            <button class="edit-btn">Edit ✏️</button>
-          </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock message %}
+
+        <h2>Ticket</h2>
 
           <div class="info-box">
             <h4>Personal Information</h4>
@@ -118,13 +49,8 @@
                 <p>Team Manager</p>
               </div>
             </div>
-            <button class="edit-btn">Edit ✏️</button>
+            
           </div>
         </div>
 
-      </section>
-    </div>
-  </div>
-
-</body>
-</html>
+{% endblock content %}

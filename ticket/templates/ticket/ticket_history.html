@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}
+    <title>Index Dashboard</title>
+{% endblock title %}
+
+{% block app_css %}
+    {% include "snippets/styles.html" %}
+{% endblock app_css %}
+
+{% block sidebar %}
+
+{% endblock sidebar %}
+
+{% block topbar %}
+
+{% endblock topbar %}
+
+{% block content %}
+
+{% block message %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock message %}
+
+
+
+<div class="container mt-4" id="createTicketModal" data-bs-backdrop="true" data-bs-keyboard="true">
+    <h3>Comment Close</h3>
+    <form id="ticketForm" method="POST" enctype="multipart/form-data" action="{% url 'ticket:ticket_history' ticket.id_ticket %}">
+    {% csrf_token %}
+
+        {{ form.ticket }}  <!-- hidden -->
+
+        {{ form.updated_by }}  <!-- hidden -->
+
+    <div class="mb-3">
+        {{ form.comment.label_tag }}
+        {{ form.comment }}
+        {{ form.comment.errors }}
+    </div>
+       
+        {{ form.status }}  <!-- hidden -->
+
+    <div class="mb-3">
+        {{ form.attachment.label_tag }}
+        {{ form.attachment }}
+        {{ form.attachment.errors }}
+    </div>
+
+
+    <div>
+        <button type="submit" class="btn btn-primary">Simpan Comment</button>
+        <button class="btn btn-primary">
+            <a style="color: aliceblue; text-decoration: none;" href="{% url 'ticket:ticket_index' %}">Cancel</a>
+        </button>
+        
+    </div>
+</form>
+
+</div>
+
+{% endblock %}

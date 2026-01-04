@@ -2,37 +2,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% block title %}
+       <title>ProDeal Dashboard</title>
+   {% endblock title %}
 
-    
-    {% block app_css %}
-    {% include "snippets/styles.html" %}
-    {% endblock app_css %}
-    
-    <title>{{judul}}</title>
+
+   {% block header %}
+   {% endblock header %}
+
+
+   {% block app_css %}
+       {% include "snippets/styles.html" %}       
+   {% endblock app_css %}
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    {% include "snippets/navbar.html" %}
-    <div class="container">
-        <div class="header">
-          {% block header %}
 
-          {% endblock header %}
+<div class="app">
+   <!-- Sidebar -->
+   {% block sidebar %}
+  <aside class="sidebar" id="sidebarid">
+      <div class="sidebar-header">
+        <div class="hamburgerandbrand">
+          <button class="hamburger" id="hamburgerBtn" aria-controls="siteNav" aria-expanded="false" aria-label="Buka menu">
+            <span class="box" aria-hidden="true">
+              <span class="line"></span>
+              <span class="line"></span>
+              <span class="line"></span>
+            </span>
+          </button>
+          <div class="logo">
+            <span>Taratech</span>
+          </div>
         </div>
-        <div class="content">
-        {% block content %}
-          <p>This is a simple example of a container layout. It is centered on the page, has a fixed maximum width, and includes padding and shadows for a clean and modern look.</p>
-          <p>You can customize the styles further to suit your needs.</p>
-        {% endblock content %}
-
-        
-        </div>
-        <div class="footer">
-          <p>&copy; 2025 Your Company. All rights reserved.</p>
+        <div class="team-info">
+          <div>
+            <h4>Filllo Team</h4>
+            <p>{{ email }}</p>
+          </div>
         </div>
       </div>
 
-{% include "snippets/scripts.html" %}
+      <nav class="menu" id="siteNav">
+        <ul>
+          <li>
+            <a href="{% url 'ticket:dashboard' %}">
+              <img src="/static/img/home.svg" alt="home" />
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'ticket:ticket_index' %}">
+              <img src="/static/img/ticket.svg" alt="about" />
+              <span>Ticket</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+   {% endblock sidebar %}
+
+
+   <!-- Main Content -->
+   <div class="main-content">
+       {% block topbar %}
+     <!-- Top Bar -->
+     <header class="topbar" id="topbar">
+       <div class="search-container">
+         <input type="text" placeholder="Search here..." />
+       </div>
+       <div class="topbar-icons">
+         <button class="icon-btn">🔔</button>
+         <button class="icon-btn">☀️</button>
+         <a href="{% url 'profile' %}">
+           <img src="/static/img/profile.png" alt="Profile"/>
+         </a>
+       </div>
+     </header>
+       {% endblock topbar %}
+
+
+
+     <!-- Content Area -->
+     <section class="page-content">
+       {% block content %}
+       {% block message %}
+
+       {% endblock message %}
+       <h2>Account Settings</h2>
+
+       <div class="tabs">
+         <button class="active">My Profile</button>
+         <button>Security</button>
+         <button>Teams</button>
+         <button>Team Member</button>
+         <button>Notifications</button>
+         <button>Billing</button>
+         <button>Data Export</button>
+         <button class="delete">Delete Account</button>
+       </div>
+
+       <div class="profile-section">
+         <div class="profile-card">
+           <div class="profile-info">
+             <img src="https://via.placeholder.com/80" alt="User Photo">
+             <div>
+               <h3>Rafiqur Rahman</h3>
+               <p>Team Manager</p>
+               <span>Leeds, United Kingdom</span>
+             </div>
+           </div>
+           <button class="edit-btn">Edit ✏️</button>
+         </div>
+
+         <div class="info-box">
+           <h4>Personal Information</h4>
+           <div class="info-grid">
+             <div>
+               <label>First Name</label>
+               <p>Rafiqur</p>
+             </div>
+             <div>
+               <label>Last Name</label>
+               <p>Rahman</p>
+             </div>
+             <div>
+               <label>Email address</label>
+               <p>rafiqurrahman51@gmail.com</p>
+             </div>
+             <div>
+               <label>Phone</label>
+               <p>+09 345 346 46</p>
+             </div>
+             <div>
+               <label>Bio</label>
+               <p>Team Manager</p>
+             </div>
+           </div>
+           <button class="edit-btn">Edit ✏️</button>
+         </div>
+       </div>
+       {% endblock content %}
+     </section>
+   </div>
+ </div>
+
+ 
+{% block app_js %}
+    {% include "snippets/scripts.html" %}
+{% endblock app_js %}
+
 </body>
 </html>

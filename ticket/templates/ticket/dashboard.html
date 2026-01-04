@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}
+        <title>Index Dashboard</title>
+    {% endblock title %}
+
+{% block app_css %}
+        {% include "snippets/styles.html" %}
+    {% endblock app_css %}
+
+{% block content %}
+
+{% block message %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock message %}
+
+<div class="dashboard">
+
+  <h2>Status Ticket</h2>
+  
+  <div class="chart-container">
+
+    <!-- Chart -->
+    <div class="chart-box">
+      <canvas id="statusChart" width="220" height="220"></canvas>
+    </div>
+
+    <!-- Legend -->
+   
+    <div class="legend">
+ 
+      <div class="legend-item" data-status="open" data-value="{{ ticket.1 }}">
+        <span class="dot open"></span>
+        <span>Open : {{ ticket.1 }} %</span>
+      </div>
+      <div class="legend-item" data-status="progress" data-value="{{ ticket.2 }}">
+        <span class="dot progress"></span>
+        <span>In Progress : {{ ticket.2 }} %</span>
+      </div>
+      <div class="legend-item" data-status="closed" data-value="{{ ticket.3 }}">
+        <span class="dot closed"></span>
+        <span>Closed : {{ ticket.3 }} %</span>
+      </div>
+
+    </div>
+    
+
+  </div>
+
+</div>
+
+
+{% endblock content %}
+
+{% block app_js %}
+{{ block.super }}
+        {% include "ticket/snippets/scripts.html" %}
+{% endblock app_js %}

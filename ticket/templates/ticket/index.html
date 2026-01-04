@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}
+        <title>Index Dashboard</title>
+{% endblock title %}
+
+{% block app_css %}
+        {% include "snippets/styles.html" %}
+{% endblock app_css %}
+
+{% block content %}
+
+{% block message %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock message %}
+
+{% csrf_token %}
+        <div id="toast" class="toast"></div>
+
+        <h2>Ticket</h2>
+        <div class="profile-section" id="profile-section">
+          <div class="profile-card">
+            <div class="profile-info">
+              <div class="search-div">
+                <form method="get">
+                  <input class="search-input" type="text" name="q" placeholder="Search by anything..." value="{{ query }}">
+                  <button class="search-btn" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+            <button id="btnCreateTicket" class="edit-btn">
+              <a href="{% url 'ticket:create_ticket' %}">Create Ticket</a>
+            </button>
+            {% if perms.ticket.close_ticket %}
+              <li>ADMIN</li>
+            {% endif %}
+            
+          </div>
+          <div class="info-box">
+        <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>ID</th>
+                <th style="width: 30%;">Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Requested By</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <div id="closeModal" class="modal" style="display:none;">
+              <form id="closeForm" enctype="multipart/form-data">
+                <input type="hidden" name="ticket_id" id="modalTicketId">
+                <input type="hidden" name="status" value="closed">
+
+                <label>Comment</label>
+                <textarea name="comment" required></textarea>
+
+                <label>Attachment</label>
+                <input type="file" name="attachment" required>
+
+                <input type="hidden" name="updated_at" id="updatedAt">
+
+                <button type="submit">Submit</button>
+                <button type="button" onclick="closeModal()">Cancel</button>
+              </form>
+            </div>
+
+            {% for ticket in page_obj %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ ticket.id_ticket }}</td>
+                <td class="wrap">{{ ticket.title }}</td>
+                <td>{{ ticket.category }}</td>
+                <td>
+                  
+                  <span id="showStatusIndex" class="IndexStatusShow" data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}" data-ticket-id="{{ ticket.id_ticket }}">
+                    {% if ticket.status == 1 %}Open{% elif ticket.status == 2 %}In Progress{% elif ticket.status == 3 %}Closed{% else %}Unknown{% endif %}
+                  </span>
+                  
+
+                </td>
+                <td>{{ ticket.assigned_to}} </td>
+                <td>{{ ticket.requested_by }}</td>
+                <td>{{ ticket.created_at }}</td>
+                <td class="btn-tombol">
+                  <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete">
+                      <img src="/static/ticket/img/view-btn.svg" alt="view" />
+                    </button>
+                  </form>
+
+                  {% if perms.ticket.delete_ticket %}
+                  <form action="{% url 'ticket:delete_ticket' ticket.id_ticket %}" method="POST" class=""
+                    onsubmit="return confirmDelete('{{ ticket.id_ticket }}');">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-delete" title="Delete">
+                    <img src="/static/ticket/img/delete-btn.svg" alt="view" />
+                  </button>
+                  </form>
+                  {% endif %}
+
+                  <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
+                  Show
+                  </button>
+
+                  {% if perms.ticket.close_ticket %}
+                  <div class="status-dropdown"
+                    data-ticket-id="{{ ticket.id_ticket }}"
+                    data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}">
+                    <button class="status-btn" onclick="toggleDropdown(this)">
+                      ▼
+                    </button>
+
+                    <ul class="status-menu">
+                      <li class="status-item" data-status="open" onclick="setStatus(this)">Open</li>
+                      <li class="status-item" data-status="in-progress" onclick="setStatus(this)">In Progress</li>
+                      <li class="status-item" data-status="closed" onclick="setStatus(this)">Closed</li>
+                    </ul>
+                  </div>
+                  {% endif %}
+                </td>
+            </tr>
+            <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
+                <td colspan="4" class="detailShow">
+                  <strong>Description:</strong> {{ ticket.description }}<br>
+                  <hr>
+                  <strong>Attachments:</strong>
+                  {% if ticket.attachments %}
+                    <a href="{{ ticket.attachments.url }}" target="_blank">View Attachment</a>
+                  {% else %}
+                    No attachments.
+                  {% endif %}
+                </td>
+                </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">No tickets found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tr>
+      
+    </tr>
+          
+      </table>
+      <ul class="pagination">
+  {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+    </li>
+  {% endif %}
+
+  <li class="page-item active">
+    <span class="page-link">{{ page_obj.number }}</span>
+  </li>
+
+  {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
+  {% endif %}
+
+</ul>
+</div>
+</div>
+{% endblock content %}
+
+{% block app_js %}
+{{ block.super }}
+        {% include "ticket/snippets/scripts.html" %}
+{% endblock app_js %}

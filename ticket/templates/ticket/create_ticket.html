@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}
+    <title>Index Dashboard</title>
+{% endblock title %}
+
+{% block app_css %}
+    {% include "snippets/styles.html" %}
+{% endblock app_css %}
+
+{% block sidebar %}
+
+{% endblock sidebar %}
+
+{% block topbar %}
+
+{% endblock topbar %}
+
+{% block content %}
+
+{% block message %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock message %}
+
+
+<div class="container mt-4" id="createTicketModal" data-bs-backdrop="true" data-bs-keyboard="true">
+    <h3>Create New Ticket</h3>
+    <form id="ticketForm" method="POST" enctype="multipart/form-data" action="{% url 'ticket:create_ticket' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{form.title.label_tag}}
+            {{form.title}}
+            {{form.title.errors}}
+        </div>
+
+        <div class="mb-3">
+            {{form.description.label_tag}}
+            {{form.description}}
+            {{form.description.errors}}
+        </div>
+
+        <div class="mb-3">
+            {{form.category.label_tag}}
+            {{form.category}}
+            {{form.category.errors}}
+        </div>
+
+        <div class="mb-3">
+            {{form.status}}
+            {{form.status.errors}}
+        </div>
+
+        <div class="mb-3">
+            {{form.assigned_to.label_tag}}
+            {{form.assigned_to}}
+            {{form.assigned_to.errors}}
+        </div>
+
+        <div class="mb-3">
+            {{form.requested_by.label_tag}}
+            {{form.requested_by}}
+            {{form.requested_by.errors}}
+        </div>
+
+        <div class="mb-3">
+            {{form.attachments.label_tag}} <p>Upload PDF For Multiple Image.</p>
+            {{form.attachments}}
+            {{form.attachments.errors}}
+        </div>
+
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-primary cancel-btn">
+            <a href="{% url 'ticket:ticket_index' %}">Cancel</a>
+        </button>
+    </form>
+</div>
+
+{% endblock %}

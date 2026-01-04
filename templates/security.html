@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+
+
+{% block title %}
+        <title>About Us</title>
+    {% endblock title %}
+
+{% block app_css %}
+        {% include "snippets/styles.html" %}
+    {% endblock app_css %}
+
+{% block content %}
+
+{% block message %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock message %}
+        
+        <h2>Account Settings</h2>
+
+        <div class="tabs">
+          <button class="active"><a href="{% url 'profile' %}">My Profile</a></button>
+          <button><a href="{% url 'security' %}">Security</a></button>
+          <form method="post" action="{% url 'logout' %}" style="margin:0;">
+          {% csrf_token %}
+          <button class="logout-btn" type="submit">Logout</button>
+            </form>
+        </div>
+        <div class="profile-section">
+          <div class="profile-card">
+            {% if user.has_usable_password %}
+            <a href="{% url 'password_change' %}">Changes Password</a>
+            {% else %}
+            <a href="{% url 'account_set_password' %}">Set Password</a>
+            {% endif %}
+            <hr>
+            <a href="{% provider_login_url 'google' process='connect' %}">
+            Link Google Account
+            </a>
+            <hr>
+            <a href="/accounts/social/connections/">Manage Connected Accounts</a>
+            <hr>
+            <a href="{% url 'password_change' %}">Change Password</a>
+        </div>
+{% endblock content %}

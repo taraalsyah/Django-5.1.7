@@ -1,22 +1,59 @@
 {% extends "base.html" %}
 {% load socialaccount %}
 
-{% block header %}
-    
+{% block title %}
+        <title>Index Dashboard</title>
+    {% endblock title %}
+
+{% block app_css %}
+        {% include "snippets/styles.html" %}
+    {% endblock app_css %}
+
+{% block content %}
+
+{% block message %}
+
     {% if messages %}
         {% for message in messages %}
             <div class="error">{{ message }}</div>
         {% endfor %}
     {% endif %}
-    
-    <h1>Ini Halaman Utama My Websites</h1>
-{% endblock header %}
+{% endblock message %}
 
-{% block content %}
-    <p>Ini dashboard utama my website contoh overloading root</p>
-    <p>Selamat datang, {{ username }}</p>
-    <a href="{% provider_login_url 'google' process='connect' %}" class="btn btn-google">
-    Hubungkan ke Google
-    </a>
+<div class="dashboard">
 
+  <h2>Status Ticket</h2>
+
+  <div class="chart-container">
+
+    <!-- Chart -->
+    <div class="chart-box">
+      <canvas id="statusChart" width="220" height="220"></canvas>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <span class="dot open"></span>
+        <span>Open</span>
+      </div>
+      <div class="legend-item">
+        <span class="dot progress"></span>
+        <span>In Progress</span>
+      </div>
+      <div class="legend-item">
+        <span class="dot closed"></span>
+        <span>Closed</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% block app_js %}
+    {% include "snippets/scripts.html" %}
+{% endblock app_js %}
 {% endblock content %}
+
+

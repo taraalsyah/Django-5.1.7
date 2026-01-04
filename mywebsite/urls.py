@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import CustomPasswordChangeView
+from .views import CustomPasswordChangeView, unlink_social
 from django.contrib.auth import views as auth_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 
@@ -28,12 +30,25 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('register/', views.register, name='register'),
     path('accounts/', include('allauth.urls')),
+    path("accounts/unlink/<int:pk>/", unlink_social, name="unlink_social"),
+    #path("unlink-google/", views.unlink_google, name="unlink_google"),
     #path('go-to-google-login/', views.google_redirect, name='google_redirect'),
     #path('login/google/', views.google_login_redirect, name='google_login_redirect'),
-    path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
+    #path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
     path('blog/',include(('blog.urls','blog'),namespace='blog')),
     path('about/',include(('about.urls','about'),namespace='about')),
+    path('ticket/',include(('ticket.urls','ticket'),namespace='ticket')),
     path('logout/', views.logout_view, name='logout'),
+    path('security/', views.security_view, name='security'),
+    path('profile/', views.profile_view, name='profile'),
     path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
+    path('verify/<str:uid>/<str:token>/', views.verify_account, name='verify_account'),
+    path('verify-success/', views.verify_success, name='verify_success'),
+    path('verify-failed/', views.verify_failed, name='verify_failed'),
+    path('verify-email/<str:token>/', views.verify_email, name='verify_email'),
+    path('resend-verification/', views.resend_verification, name='resend_verification'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

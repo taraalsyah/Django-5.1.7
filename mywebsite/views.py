@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -9,6 +9,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse,reverse_lazy
@@ -17,25 +18,43 @@ from django.contrib.auth.views import PasswordChangeView
 from urllib.parse import urlencode
 import os
 from django.views.decorators.csrf import csrf_exempt
+from allauth.socialaccount.models import SocialAccount
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+from .models import EmailVerificationCode
 
 
 User = get_user_model()
 
+
+from django.http import HttpResponse
+
+def debug_url(request):
+    return HttpResponse(request.build_absolute_uri())
 
 
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
+            # Save the user instance but don't commit it yet
             user = form.save(commit=False)
-            user.is_active = False   # ⛔ User belum bisa login
-            user.save()
-            #user = form.save()
+            user.is_active = False  # User can't log in until they verify their email
+            user.save()  # Save the user to the database
+            
+            # Add the user to the Operator group
+            user = User.objects.get(username=user.username)
+            Operation_group = Group.objects.get(name='Operation')
+            user.groups.add(Operation_group)
+
             # Kirim email verifikasi
-            send_verification_email(request, user)
+            #send_verification_email(request, user)
+            #send_verification_code(user.email)
+            print("user registered:",user.username,user.email)
             messages.success(request, "Registration successful! Please check your email to verify your account.")
             # login(request, user)  # auto login after register
-            return redirect("index")
+            return redirect("/login/")
     else:
         form = RegisterForm()
     return render(request, "register.html", {"form": form})
@@ -59,19 +78,101 @@ def send_verification_email(request, user):
         fail_silently=False,
     )
 
-def verify_email(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
+def send_verification_code(email):
+    code = str(random.randint(100000, 999999))
+    
+    # Hapus kode lama dari email yg sama
+    EmailVerificationCode.objects.filter(email=email).delete()
 
-    if user is not None and default_token_generator.check_token(user, token):
+    # Simpan kode baru ke DB
+    EmailVerificationCode.objects.create(email=email, code=code)
+    
+    subject = "Your Verification Code"
+    message = f"Your verification code is {code}. Code valid for 5 minutes."
+    
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
+    
+    return code
+
+def resend_verification(request):
+    print("masuk resend verification",request.user)
+    user = request.user
+
+    if user.email_verified:
+        # Kalau sudah verified, redirect ke halaman success
+        return redirect("verify-success")
+
+    # Kirim ulang email verifikasi
+    send_verification_email(user, request)
+
+    # Bisa redirect ke halaman "email dikirim" atau tampil pesan
+    return JsonResponse({"success": True, "message": "Email verifikasi telah dikirim ulang."})
+
+
+def verify_account(request, uid, token):
+    print('masuk verify account',uid,token,request.method,request.headers.get('X-Requested-With'))
+    print("HEADERS:", request.headers)
+    #print("META:", request.META)
+    # Jika ini request pertama (GET biasa) → tampilkan halaman loading
+    if request.method == "GET" and request.headers.get('x-requested-with') != 'XMLHttpRequest':
+        
+        print('ini uid=',uid)
+        return render(request, 'verify.html')
+
+    # Jika ini request AJAX (POST via fetch)
+    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        print('ini uid post=',uid)
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = User.objects.get(pk=uid)
+
+            # Cek apakah token valid
+            if user.verification_token == token:
+                user.is_active = True
+                user.verification_token = ""
+                user.verified_at = now()
+                user.save()
+
+                return JsonResponse({"success": True})
+
+            return JsonResponse({"success": False, "message": "Invalid token"})
+
+        except User.DoesNotExist:
+            return JsonResponse({"success": False, "message": "User not found"})
+
+    return JsonResponse({"success": False, "message": "Invalid request"})
+
+
+def verify_success(request):
+    """
+    Show a success message after successful email verification.
+    """
+    return render(request, 'verify_success.html')
+
+def verify_failed(request):
+    """
+    Show an error message if verification fails.
+    """
+    return render(request, 'verify_failed.html')
+
+def verify_email(request, token):
+    try:
+        user = User.objects.get(verification_token=token)
         user.is_active = True
+        user.email_verified = True
+        user.verification_token = ""
         user.save()
+        messages.success(request, "Email successfully verified! You can now log in.")
         return redirect("login")
-    else:
-        return HttpResponse("Link verifikasi tidak valid / kadaluarsa.")
+    except User.DoesNotExist:
+        messages.error(request, "Invalid or expired verification link.")
+        return redirect("register")
 
 def send_test_email():
     subject = "Email Test Django"
@@ -85,6 +186,16 @@ def send_test_email():
 @never_cache
 def index(request):
     username = request.user.username
+    user_obj = User.objects.get(username=username)
+    first_name = user_obj.first_name
+    last_name = user_obj.last_name
+    email = user_obj.email
+    phone_number = user_obj.phone_number if hasattr(user_obj, 'phone_number') else 'N/A'
+    print('ini first name',first_name)
+    print('ini last name',last_name)
+    print('ini email',email)
+    print('ini phone number',phone_number)
+    print('ini user obj',user_obj)
     print('ini index',username)
     judul="Halo index"
     subjudul=f"Welcome to my website, {username}"
@@ -93,13 +204,20 @@ def index(request):
     context = {
         'judul':'MyWebsites',
         'username': username,
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        'phone_number': phone_number,
     }
     return render(request,'index.html',context)
 
 
 def custom_login(request):
-    if request.method == "POST":
-         
+    # Kalo session user = login > langsung ke dashboard
+    if request.user.is_authenticated:
+        return redirect('ticket:dashboard')
+
+    if request.method == "POST":    
         username = request.POST.get("username")
         password = request.POST.get("password")
         next_url = request.POST.get("next") or reverse("index")
@@ -112,7 +230,7 @@ def custom_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect(next_url)  # redirect ke halaman tujuan
+            return redirect('/ticket/dashboard/')  # redirect ke halaman tujuan
         else:
             messages.error(request, "Invalid username or password.")
         
@@ -137,3 +255,45 @@ class CustomPasswordChangeView(PasswordChangeView):
         messages.success(self.request, "Password berhasil diperbarui")
         return super().form_valid(form)
     
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    user = request.user
+    email=user.email
+    context = {
+        'user': user,
+        'judul':'Profile',
+        'email': email,
+        'username': user.username,
+    }
+    return render(request, 'profile.html', context)
+
+#def unlink_google(request):
+#    try:
+#        account = SocialAccount.objects.get(user=request.user, provider="google")
+#        account.delete()
+#        messages.success(request, "Google account successfully unlinked.")
+#    except SocialAccount.DoesNotExist:
+#        messages.error(request, "No Google account linked.")
+#    return redirect("profile")  # change to your profile page name
+
+@login_required
+def unlink_social(request, pk):
+    account = get_object_or_404(SocialAccount, pk=pk, user=request.user)
+    account.delete()
+    messages.success(request, "Akun berhasil dihapus.")
+    return redirect("socialaccount_connections")
+
+
+def security_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    user = request.user
+    
+    context = {
+        'user': user,
+        'judul':'Security',
+        'email': user.email,
+    }
+    return render(request, 'security.html', context)

@@ -40,20 +40,22 @@ class LoginRequiredMiddleware:
         "/accounts/",
         "/go-to-google-login/",
         "admin/",
-        "/login/google/"
+        "/login/google/",
+        
     ]
 
     allowed_urls = [
     '/login/',
     '/register/',
     '/static/',
-    '/media/',
+    '/media/attachments/',
     '/verify/',
     '/accounts/',
     '/go-to-google-login/',
     '/login/google/',
     '/admin/login/',
     '/admin/',
+    
     ]
 
 
@@ -104,10 +106,15 @@ class AutoLogoutMiddleware:
         '/login/google/'
         '/admin/',
         '/admin/login/',
+        '/verify-success/',
+        '/verify-failed/',
+        '/resend-verification/',
+        '/media/attachments/',
+        
         ]
 
         # Allow static & media files
-        if request.path.startswith('/static/') or request.path.startswith('/media/'):
+        if request.path.startswith('/static/') or request.path.startswith('/media/attachments/'):
             return self.get_response(request)
 
         # Check authentication

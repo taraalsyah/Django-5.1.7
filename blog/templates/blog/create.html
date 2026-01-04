@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block app_css %}
+{% block header %}
 {{ block.super }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -10,12 +10,9 @@
     var ajaxLoadCitiesUrl = "{% url 'blog:ajax_load_cities' %}";
 </script>
 <script src="{% static 'blog/js/scripts.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
-{% endblock app_css %}
-
-{% block header %}
-<h1>{{heading}}</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}"/>
 {% endblock header %}
+
 
 {% block content %}
 <p>Ini dashboard BLOG contoh overloading 3 blog</p>

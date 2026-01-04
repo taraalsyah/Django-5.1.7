@@ -1,16 +1,138 @@
-{% extends "base.html" %}
+{% load static %}
 {% load socialaccount %}
 
-{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Connected Accounts</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: #333;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    h3 {
+      margin-top: 30px;
+      font-size: 20px;
+      color: #444;
+    }
+
+    .messages {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 20px;
+    }
+
+    .messages li {
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .messages li.success {
+      background: #e6ffed;
+      border: 1px solid #b7eb8f;
+      color: #2f6627;
+    }
+
+    .messages li.error {
+      background: #fff2f0;
+      border: 1px solid #ffccc7;
+      color: #a8071a;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      background: #fafafa;
+      border: 1px solid #eee;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-primary {
+      background: #4285f4;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: #3367d6;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+
+    form {
+      display: inline;
+    }
+
+    .account-email {
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
 <div class="container">
     <h2>Manage Your Connected Accounts</h2>
 
     {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+      <ul class="messages">
+        {% for message in messages %}
+          {% if "third-party account has been connected" in message %}
+             <li class="success">Your Google account is now linked!</li>
+          {% else %}
+             <li class="{{ message.tags }}">{{ message }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
     {% endif %}
 
     <h3>Connected Accounts</h3>
@@ -18,11 +140,20 @@
         <ul>
             {% for account in form.accounts %}
                 <li>
-                    <strong>{{ account.get_provider.name }}</strong> - {{ account.account.extra_data.email }}
-                    <form method="post" action="">
+                    <div>
+                      <strong>{{ account.get_provider.name }}</strong>
+                      <span class="account-email"> - {{ account.account.extra_data.email }}</span>
+                    </div>
+                    <!--<form method="post" action="{% url 'unlink_social' account.pk %}">
                         {% csrf_token %}
-                        <input type="hidden" name="account" value="{{ account.account.pk }}">
                         <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>-->
+
+                    
+                    <form method="post" action="{% url 'socialaccount_connections' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="account" value="{{ account.pk }}">
+                    <button type="submit" name="action" value="disconnect">Remove</button>
                     </form>
                 </li>
             {% endfor %}
@@ -31,11 +162,12 @@
         <p>No connected accounts.</p>
     {% endif %}
 
-    <h3>Add a new account</h3>
+    <h3>Add a new accounts</h3>
     <a class="btn btn-primary" href="{% provider_login_url 'google' process='connect' %}">
         Connect Google Account
     </a>
-    
+    <a href="{% url 'index' %}">back to index</a>
 
 </div>
-{% endblock %}
+</body>
+</html>

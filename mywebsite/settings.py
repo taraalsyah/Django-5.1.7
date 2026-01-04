@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'about',
     'crispy_forms',
     'crispy_bootstrap5',
+    'ticket',
     
     # Required for allauth
     'django.contrib.sites',
@@ -67,9 +68,11 @@ INSTALLED_APPS = [
     
     # Django Extensions (baru ditambahkan)
     'django_extensions',
+    'mywebsite',
+    
 ]
 
-SITE_ID = 3
+SITE_ID = 4
 
 
 MIDDLEWARE = [
@@ -198,7 +201,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect here after successful login if no ?next= param
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = '/ticket/dashboard/'  # after login, go here
 
 # Redirect to login page if user not authenticated
 LOGIN_URL = 'register'
@@ -241,29 +244,31 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
-        }
+            'prompt': 'select_account' # This forces Google to show the account chooser
+        },
+        'OAUTH_PKCE_ENABLED': True,
     }
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-        'allauth': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'handlers': {
+#        'console': {
+#            'class': 'logging.StreamHandler',
+#        },
+#    },
+#    'loggers': {
+#        'django': {
+#            'handlers': ['console'],
+#            'level': 'DEBUG',
+#        },
+#        'allauth': {
+#            'handlers': ['console'],
+#            'level': 'DEBUG',
+#        },
+#    },
+#}
 
 
 # Django-Allauth updated settings
@@ -276,10 +281,31 @@ ACCOUNT_SIGNUP_FIELDS = [
 ]
 
 # Optional but recommended
-ACCOUNT_EMAIL_VERIFICATION = "none"  # or "mandatory" if you need email verification
+
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[MyWebsite] "
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+#logging.basicConfig(
+#    level=logging.DEBUG,
+#    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+#)
+
+AUTH_USER_MODEL = 'mywebsite.CustomUser'
+
+# Disable automatic signup via Google
+SOCIALACCOUNT_AUTO_SIGNUP = False # Disable automatic signup
+ 
+# Require email confirmation before linking Google
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+#ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_SIGNUP_FIELDS = ['username*', 'email*', 'password1*', 'password2*']
+SOCIALACCOUNT_STORE_TOKENS = True # Save Google tokens in the database
+SOCIALACCOUNT_ADAPTER = 'mywebsite.adapters.CustomSocialAccountAdapter'
+
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

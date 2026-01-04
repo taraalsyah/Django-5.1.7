@@ -2,15 +2,11 @@
 {% load static %}
 
 
-{% block app_css %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
-<script src="{% static 'blog/js/scripts.js' %}"></script>
-{% endblock app_css %}
-
 
 {% block header %}
-<h1>{{heading}}</h1>
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}"/>
+<script src="{% static 'blog/js/scripts.js' %}"></script>
 {% endblock header %}
 
 

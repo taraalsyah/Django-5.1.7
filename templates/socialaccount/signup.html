@@ -1,31 +1,149 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Connect Google Account</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #f9fafc, #eef3f9);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
 
-{% block content %}
-<div class="signup-container">
+    .signup-container {
+      max-width: 450px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 40px 35px;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .signup-container h1 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    .signup-container p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .error {
+      background: #fff2f0;
+      border: 1px solid #ffccc7;
+      color: #a8071a;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    form {
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #444;
+      font-weight: 500;
+    }
+
+    .form-group input[type="email"],
+    .form-group input[type="text"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #dcdfe3;
+      font-size: 14px;
+      transition: border 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: #4285f4;
+      outline: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4285f4;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: #3367d6;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .note a {
+      color: #4285f4;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .note a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
     <h1>Connect Your Google Account</h1>
 
     <p>
-        You're about to sign up or connect with Google.  
-        Please confirm your email below:
+      Your account is not linked with Google.<br>
+      Please log in with your email and password first, then link your account for faster login next time.
     </p>
 
-    {% if form.errors %}
-        <div class="error">
-            <p>{{ form.non_field_errors }}</p>
-        </div>
+    <!--{% if form.errors %}
+      <div class="error">
+        <p>{{ form.non_field_errors }}</p>
+      </div>
     {% endif %}
 
     <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="id_email">Email:</label>
-            {{ form.email }}
-        </div>
-        <button type="submit" class="btn btn-primary">Continue</button>
-    </form>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_email">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="error">
+            {{ form.email.errors }}
+          </div>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn-submit">Continue</button>
+    </form>-->
 
     <p class="note">
-        Already have an account? <a href="{% url 'login' %}">Login here</a>
+      Already have an account? <a href="{% url 'login' %}">Login here</a>
     </p>
-</div>
-{% endblock %}
+  </div>
+</body>
+</html>

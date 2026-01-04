@@ -1,39 +1,58 @@
-{% extends "base.html" %}
-{% load socialaccount %}
+{% load socialaccount %} 
+{% load i18n %}
 
-{% block header %}
-<script>
-document.getElementById('google-login-btn').addEventListener('click', function(e) {
-    e.preventDefault();
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; text-align: center; padding: 50px; }
+    .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+    .btn-google {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; background: #fff; color: #444;
+      border: 1px solid #ddd; border-radius: 6px;
+      padding: 10px 15px; text-decoration: none; font-size: 16px;
+      transition: all .2s;
+    }
+    .btn-google:hover { background: #f1f1f1; }
+    .btn-google img { width: 20px; height: 20px; }
+    .btn-google button { all: unset; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+    .divider { margin: 20px 0; position: relative; }
+    .divider::before, .divider::after {
+      content: ""; position: absolute; top: 50%; width: 40%;
+      height: 1px; background: #ccc;
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .divider span { background: #fff; padding: 0 10px; color: #888; font-size: 14px; }
+  </style>
+</head>
+<body>
 
-    // URL for Google login from django-allauth
-    const googleLoginUrl = "{% provider_login_url 'google' process='login' %}";
+<div class="card">
+  <h2>Masuk ke Akun Anda</h2>
 
-    // Open in popup
-    const width = 500;
-    const height = 600;
-    const left = (screen.width / 2) - (width / 2);
-    const top = (screen.height / 2) - (height / 2);
-
-    window.open(
-        googleLoginUrl,
-        'GoogleLoginPopup',
-        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
-    );
-});
-</script>
-  <h2>Login dengan Google</h2>
-{% endblock header %}
-
-{% block content %}
-  <h1>{{ judul|default:"Login dengan Google" }}</h1>
-  <p>Provider: {{ provider.name }}</p>
-  <form method="post">
+  <!-- Tombol Google -->
+  
+    <form method="post" class="btn-google">
     {% csrf_token %}
     <button id="google-login-btn" type="submit" class="btn btn-primary">
-        Lanjutkan dengan Google
+        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
+    <span>Lanjutkan dengan {{ provider.name }}</span>
     </button>
   </form>
 
+  <div class="divider"><span>atau</span></div>
 
-{% endblock %}
+  <!-- Form login biasa -->
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+</body>
+</html>

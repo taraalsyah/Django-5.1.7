@@ -10,7 +10,7 @@ $(document).ready(function () {
         var countryId = $(this).val();
         if (countryId) {
             $.ajax({
-                url: ajaxLoadCitiesUrl, // ✅ namespace + view name
+                url: ajaxLoadCitiesUrl, // namespace + view name
                 data: { 'country_id': countryId },
                 method: 'GET',
                 headers: {

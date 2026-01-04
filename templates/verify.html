@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verifikasi</title>
+</head>
+<body>
+    <h2>Memverifikasi akun...</h2>
+
+    <script>
+    // Ambil CSRF token dari cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const startTime = Date.now();
+        const minimumWait = 5000; // Minimal 5 detik
+
+        fetch(window.location.href, {
+            method: "POST",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": csrftoken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const elapsed = Date.now() - startTime;
+            const delay = elapsed < minimumWait ? minimumWait - elapsed : 0;
+
+            setTimeout(() => {
+                if (data.success) {
+                    window.location.href = "/verify-success/";
+                } else {
+                    window.location.href = "/verify-failed/";
+                }
+            }, delay);
+        })
+        .catch((error) => {
+            const elapsed = Date.now() - startTime;
+            const delay = elapsed < minimumWait ? minimumWait - elapsed : 0;
+
+            console.error("Fetch error:", error);
+
+            setTimeout(() => {
+                window.location.href = "/verify-failed/";
+            }, delay);
+        });
+    });
+    </script>
+</body>
+</html>

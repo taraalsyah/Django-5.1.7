@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}
+  <title>About Us</title>
+{% endblock title %}
+
+{% block app_css %}
+  {% include "snippets/styles.html" %}
+{% endblock app_css %}
+
+{% block content %}
+
+{% block message %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="error">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endblock message %}
+
+  <h2>Account Settings</h2>
+  <div class="tabs">
+    <button class="active">My Profile</button>
+    <button><a href="{% url 'security' %}">Security</a></button>
+      <form method="post" action="{% url 'logout' %}" style="margin:0;">
+        {% csrf_token %}
+        <button class="logout-btn" type="submit">Logout</button>
+      </form>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-card">
+      <div class="profile-info">
+        <img src="/static/img/account.png" alt="User Photo">
+        <div>
+          <h3>{{ username }}</h3>
+            <p>Team Manager</p>
+          <span>Leeds, United Kingdom</span>
+        </div>
+      </div>
+      <button class="edit-btn">Edit ✏️</button>
+    </div>
+
+    <div class="info-box">
+      <h4>Personal Information</h4>
+      <div class="info-grid">
+        <div>
+          <label>First Name</label>
+          <p>Rafiqur</p>
+        </div>
+        <div>
+          <label>Last Name</label>
+          <p>Rahman</p>
+        </div>
+        <div>
+          <label>Email address</label>
+          <p>rafiqurrahman51@gmail.com</p>
+        </div>
+        <div>
+          <label>Phone</label>
+          <p>+09 345 346 46</p>
+        </div>
+        <div>
+          <label>Bio</label>
+          <p>Team Manager</p>
+        </div>
+      </div>
+      <button class="edit-btn">Edit ✏️</button>
+    </div>
+  </div>
+{% endblock content %}
