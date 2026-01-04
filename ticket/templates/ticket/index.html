@@ -3,27 +3,24 @@
 {% load static %}
 
 {% block title %}
-        <title>Index Dashboard</title>
+  <title>Index Dashboard</title>
 {% endblock title %}
 
 {% block app_css %}
-        {% include "snippets/styles.html" %}
+  {% include "snippets/styles.html" %}
 {% endblock app_css %}
 
 {% block content %}
-
 {% block message %}
-
-    {% if messages %}
-        {% for message in messages %}
-            <div>{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+  {% if messages %}
+    {% for message in messages %}
+      <div>{{ message }}</div>
+    {% endfor %}
+  {% endif %}
 {% endblock message %}
 
 {% csrf_token %}
-        <div id="toast" class="toast"></div>
-
+  <div id="toast" class="toast"></div>
         <h2>Ticket</h2>
         <div class="profile-section" id="profile-section">
           <div class="profile-card">
@@ -38,10 +35,6 @@
             <button id="btnCreateTicket" class="edit-btn">
               <a href="{% url 'ticket:create_ticket' %}">Create Ticket</a>
             </button>
-            {% if perms.ticket.close_ticket %}
-              <li>ADMIN</li>
-            {% endif %}
-            
           </div>
           <div class="info-box">
         <table>
@@ -86,7 +79,7 @@
                 <td>
                   
                   <span id="showStatusIndex" class="IndexStatusShow" data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}" data-ticket-id="{{ ticket.id_ticket }}">
-                    {% if ticket.status == 1 %}Open{% elif ticket.status == 2 %}In Progress{% elif ticket.status == 3 %}Closed{% else %}Unknown{% endif %}
+                    {% if ticket.status == 1 %}<div class="ColorStatus ColorStatus-open">Open</div>{% elif ticket.status == 2 %}<div class="ColorStatus ColorStatus-inprogress">In Progress</div>{% elif ticket.status == 3 %}<div class="ColorStatus ColorStatus-closed">Closed</div>{% else %}<div class="ColorStatus">Unknown Status</div>{% endif %}
                   </span>
                   
 
@@ -152,29 +145,57 @@
             {% endfor %}
           </tbody>
           <tr>
-      
-    </tr>
-          
-      </table>
-      <ul class="pagination">
+          </tr>
+  </table>
+</div>
+
+<ul class="pagination">
   {% if page_obj.has_previous %}
     <li class="page-item">
       <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
     </li>
   {% endif %}
 
-  <li class="page-item active">
-    <span class="page-link">{{ page_obj.number }}</span>
-  </li>
+  {% if page_obj.number > 4 %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1">1</a>
+    </li>
+    {% if page_obj.number > 5 %}
+      <li class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+    {% endif %}
+  {% endif %}
+
+  {% for num in page_obj.paginator.page_range %}
+    {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %}
+      <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+
+  {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
+    {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
+      <li class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+    {% endif %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+    </li>
+  {% endif %}
 
   {% if page_obj.has_next %}
     <li class="page-item">
       <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
     </li>
   {% endif %}
-
 </ul>
-</div>
+
+
+
+
 </div>
 {% endblock content %}
 

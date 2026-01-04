@@ -3,39 +3,34 @@
 {% load static %}
 
 {% block title %}
-        <title>Index Dashboard</title>
-    {% endblock title %}
+  <title>Index Dashboard</title>
+{% endblock title %}
 
 {% block app_css %}
-        {% include "snippets/styles.html" %}
-    {% endblock app_css %}
+  {{ block.super }}
+  {% include "ticket/snippets/styles.html" %}
+{% endblock app_css %}
+
 
 {% block content %}
-
 {% block message %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="error">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  {% endblock message %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="error">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-{% endblock message %}
-
-<div class="dashboard">
-
-  <h2>Status Ticket</h2>
-  
-  <div class="chart-container">
-
+  <div class="dashboard">
+    <h2>Status Ticket</h2>
+    <div class="chart-container">
     <!-- Chart -->
     <div class="chart-box">
       <canvas id="statusChart" width="220" height="220"></canvas>
     </div>
 
     <!-- Legend -->
-   
     <div class="legend">
- 
       <div class="legend-item" data-status="open" data-value="{{ ticket.1 }}">
         <span class="dot open"></span>
         <span>Open : {{ ticket.1 }} %</span>
@@ -48,16 +43,30 @@
         <span class="dot closed"></span>
         <span>Closed : {{ ticket.3 }} %</span>
       </div>
-
     </div>
-    
-
-  </div>
-
-</div>
-
-
+    </div>
+  
+  <div class="card">
+        <h3>Ticket Status Overview</h3>
+        <!-- Open status section -->
+        <div class="status-section">
+            <span class="status-label">Open</span>
+            <span class="status-count status-open" id="open-count">{{ ticket2.1 }}</span>
+        </div>
+        <!-- In Progress status section -->
+        <div class="status-section">
+            <span class="status-label">In Progress</span>
+            <span class="status-count status-in-progress" id="in-progress-count">{{ ticket2.2 }}</span>
+        </div>
+        <!-- Closed status section -->
+        <div class="status-section">
+            <span class="status-label">Closed</span>
+            <span class="status-count status-closed" id="closed-count">{{ ticket2.3 }}</span>
+        </div>
+    </div>
+    </div>
 {% endblock content %}
+
 
 {% block app_js %}
 {{ block.super }}

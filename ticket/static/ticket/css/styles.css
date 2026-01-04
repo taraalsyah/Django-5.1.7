@@ -1,0 +1,146 @@
+/* BLOCK CARD */
+/* Basic card styling */
+.card {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Card title */
+.card h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Section for each status */
+.status-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.status-section:last-child {
+    border-bottom: none;
+}
+
+.status-label {
+    font-size: 1.1em;
+    color: #666;
+}
+
+.status-count {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Status colors */
+.status-open { color: #28a745; } /* Green */
+.status-in-progress { color: #ffc107; } /* Yellow */
+.status-closed { color: #dc3545; } /* Red */
+
+/* ENDBLOCK CARD */
+
+
+
+/* BLOCK COlor Status */
+/* Basic styling for the statuses */
+.ColorStatus {
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+/* Styling for different statuses */
+.ColorStatus-open {
+    background-color: #28a745; /* Green */
+}
+
+.ColorStatus-inprogress {
+    background-color: #ffc107; /* Yellow */
+}
+.ColorStatus-closed {
+    background-color: #dc3545; /* Red */
+}
+/* ENDBLOCK COlor Status */
+
+
+
+
+/* BLOCK DASHBOARD */
+/* Dashboard card */
+.dashboard {
+  width: 480px;
+  margin: auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.dashboard h2 {
+  margin-bottom: 20px;
+}
+
+/* Chart layout */
+.chart-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Chart area */
+.chart-box {
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffc107;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+/* Dots */
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.open {
+  background: #ef4444;
+}
+
+.dot.progress {
+  background: #f59e0b;
+}
+
+.dot.closed {
+  background: #22c55e;
+}
+
+/* ENDBLOCK DASHBOARD*/

@@ -18,12 +18,15 @@ def index(request):
     user_obj = User.objects.get(username=username)
     email = user_obj.email
     query = request.GET.get('q')
+    
     if user.is_superuser:
         tickets = Ticket.objects.all().order_by('-created_at')  # ambil semua tiket
+        role = 'Admin'
     else:
         # Operation user can only see tickets assigned to him/her
         if user.groups.filter(name='Operation').exists():
             tickets = Ticket.objects.filter(requested_by=email).order_by('-created_at')
+            role = 'Operation'
         else:
             raise Http404("You are not authorized to view this page.")
     if query:
@@ -40,8 +43,11 @@ def index(request):
     paginator = Paginator(tickets, 10)  # 10 data per halaman
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(user.groups.filter(name='operation').exists())
-    return render(request, 'ticket/index.html', {'tickets': tickets,'query': query, 'email': email,'page_obj': page_obj})
+    print('Paginator Object', page_obj)
+    print(user.groups.filter(name='operation'))
+    
+    
+    return render(request, 'ticket/index.html', {'tickets': tickets,'query': query, 'email': email,'page_obj': page_obj,'role':role})
 
 def create_ticket(request):
     if request.method == 'POST':
@@ -138,4 +144,8 @@ def dashboard(request):
         row['status']: round(row['count'] / total * 100)
         for row in ticket
     }
-    return render(request, 'ticket/dashboard.html', {'ticket': summaryTicket, 'email': email})
+    summaryTicket2 = {
+        row['status']: round(row['count'])
+        for row in ticket
+    }
+    return render(request, 'ticket/dashboard.html', {'ticket': summaryTicket,'ticket2' : summaryTicket2, 'email': email})

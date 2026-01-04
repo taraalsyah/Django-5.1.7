@@ -203,8 +203,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Redirect here after successful login if no ?next= param
 LOGIN_REDIRECT_URL = '/ticket/dashboard/'  # after login, go here
 
-# Redirect to login page if user not authenticated
-LOGIN_URL = 'register'
+# Redirect to login page if user not authenticated or session timeout
+LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = 'login' # after logout, go here
 
