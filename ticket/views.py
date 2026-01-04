@@ -135,6 +135,7 @@ def dashboard(request):
     username = request.user.username
     user_obj = User.objects.get(username=username)
     email = user_obj.email
+    user = request.user
     
     ticket = Ticket.objects.values('status').filter(status__in=[1,2,3]).annotate(count=Count('id_ticket'))
     print('Ticket Dashboard',ticket)
@@ -148,4 +149,9 @@ def dashboard(request):
         row['status']: round(row['count'])
         for row in ticket
     }
-    return render(request, 'ticket/dashboard.html', {'ticket': summaryTicket,'ticket2' : summaryTicket2, 'email': email})
+    if user.is_superuser:
+        role = 'Admin'
+    else:
+        if user.groups.filter(name='Operation').exists():
+            role = 'Operation'
+    return render(request, 'ticket/dashboard.html', {'ticket': summaryTicket,'ticket2' : summaryTicket2, 'email': email,'role':role})
