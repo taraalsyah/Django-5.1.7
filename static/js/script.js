@@ -1,24 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const sidebars = document.getElementById('sidebarid');
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const topbar = document.getElementById('topbar');
+if (!window.__sidebarInitialized) {
+  window.__sidebarInitialized = true;
 
-  // pastikan elemen ada sebelum akses classList
-  if (!sidebars || !hamburgerBtn || !topbar) return;
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded triggered');
 
-  // Load saved state
-  const collapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-  if (collapsed) {
-    sidebars.classList.add('collapsed');
-    topbar.classList.add('collapsed');
-  }
+    const sidebar = document.getElementById('sidebarid');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const topbar = document.getElementById('topbar');
 
-  // Toggle and save state
-  hamburgerBtn.addEventListener('click', () => {
-    sidebars.classList.toggle('collapsed');
-    topbar.classList.toggle('collapsed');
-    const isCollapsed = sidebars.classList.contains('collapsed');
-    localStorage.setItem('sidebarCollapsed', isCollapsed);
+    if (!sidebar || !hamburgerBtn || !topbar) return;
+
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+    sidebar.classList.toggle('collapsed', isCollapsed);
+    topbar.classList.toggle('collapsed', isCollapsed);
+
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const collapsed = sidebar.classList.toggle('collapsed');
+      topbar.classList.toggle('collapsed', collapsed);
+      localStorage.setItem('sidebarCollapsed', collapsed);
+    });
   });
-});
-
+}

@@ -131,22 +131,19 @@ def verify_account(request, uid, token):
         try:
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
-
             # Cek apakah token valid
             if user.verification_token == token:
                 user.is_active = True
                 user.verification_token = ""
                 user.verified_at = now()
                 user.save()
-
                 return JsonResponse({"success": True})
-
             return JsonResponse({"success": False, "message": "Invalid token"})
-
         except User.DoesNotExist:
             return JsonResponse({"success": False, "message": "User not found"})
 
     return JsonResponse({"success": False, "message": "Invalid request"})
+
 
 
 def verify_success(request):

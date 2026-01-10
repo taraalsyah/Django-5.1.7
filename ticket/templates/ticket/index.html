@@ -7,10 +7,12 @@
 {% endblock title %}
 
 {% block app_css %}
-  {% include "snippets/styles.html" %}
+  {{ block.super }}
+  {% include "ticket/snippets/styles.html" %}
 {% endblock app_css %}
 
 {% block content %}
+
 {% block message %}
   {% if messages %}
     {% for message in messages %}
@@ -79,7 +81,7 @@
                 <td>
                   
                   <span id="showStatusIndex" class="IndexStatusShow" data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}" data-ticket-id="{{ ticket.id_ticket }}">
-                    {% if ticket.status == 1 %}<div class="ColorStatus ColorStatus-open">Open</div>{% elif ticket.status == 2 %}<div class="ColorStatus ColorStatus-inprogress">In Progress</div>{% elif ticket.status == 3 %}<div class="ColorStatus ColorStatus-closed">Closed</div>{% else %}<div class="ColorStatus">Unknown Status</div>{% endif %}
+                    {% if ticket.status == 1 %}Open{% elif ticket.status == 2 %}InProgress{% elif ticket.status == 3 %}Closed{% else %}Unknown Status{% endif %}
                   </span>
                   
 
@@ -193,13 +195,11 @@
   {% endif %}
 </ul>
 
-
-
-
 </div>
 {% endblock content %}
 
+
 {% block app_js %}
 {{ block.super }}
-        {% include "ticket/snippets/scripts.html" %}
-{% endblock app_js %}
+  {% include "ticket/snippets/scripts.html" %}
+{% endblock %}
