@@ -3,86 +3,189 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
             display: flex;
             height: 100vh;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
+
         .login-box {
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 300px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #e2e8f0;
         }
+
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #1e293b;
         }
+
         form p {
-            margin: 10px 0;
+            margin: 20px 0;
         }
-        input[type="text"], input[type="password"] {
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
-            padding: 8px;
-            margin-top: 4px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 11px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1e293b;
         }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
         button {
             width: 100%;
-            padding: 10px;
-            background: #28a745;
+            padding: 12px;
+            background: #3b82f6;
             border: none;
             color: white;
-            font-size: 16px;
-            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background 0.2s ease;
+            margin-top: 10px;
         }
+
         button:hover {
-            background: #218838;
+            background: #2563eb;
         }
+
+        button:active {
+            background: #1d4ed8;
+        }
+
         .error {
-            color: red;
+            color: #dc2626;
             font-size: 14px;
+            background: #fef2f2;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            border-left: 3px solid #dc2626;
+        }
+
+        .links {
+            margin-top: 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .links a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s ease;
+            padding: 8px;
+        }
+
+        .links a:hover {
+            color: #2563eb;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .divider span {
+            padding: 0 12px;
         }
     </style>
 </head>
+
 <body>
-<div class="login-box">
-    <h2>Login</h2>
+    <div class="login-box">
+        <h2>Login</h2>
 
-    {% if messages %}
+        {% if messages %}
         {% for message in messages %}
-            <div class="error">{{ message }}</div>
+        <div class="error">{{ message }}</div>
         {% endfor %}
-    {% endif %}
+        {% endif %}
 
-    <form method="post">
-        {% csrf_token %}
-        <p>
-            <label>Username</label>
-            <input type="text" name="username" required>
-        </p>
-        <p>
-            <label>Password</label>
-            <input type="password" name="password" required>
-        </p>
-        <input type="hidden" name="next" value="{{ redirect_field_value|default:'' }}">
-        <button type="submit">
-            Login
-        </button>
-    </form>
-    <br>
-    <a class="navbar-brand" href="{% url 'register' %}">Register</a>
-    <a href="{% provider_login_url 'google' %}">Login with Google</a>
-</div>
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </p>
+            <p>
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </p>
+            <input type="hidden" name="next" value="{{ redirect_field_value|default:'' }}">
+            <button type="submit">
+                Login
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <div class="links">
+            <a href="{% url 'register' %}">Don't have an account? Register</a>
+            <a href="{% provider_login_url 'google' %}">🔐 Login with Google</a>
+        </div>
+    </div>
 </body>
+
 </html>

@@ -1,169 +1,186 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   {% block title %}
-       <title>ProDeal Dashboard</title>
-   {% endblock title %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+  <title>ProDeal Dashboard</title>
+  {% endblock title %}
 
 
-   {% block header %}
-   {% endblock header %}
+  {% block header %}
+  {% endblock header %}
 
 
-   {% block app_css %}
-       {% include "snippets/styles.html" %}       
-   {% endblock app_css %}
+  {% block app_css %}
+  {% include "snippets/styles.html" %}
+  {% endblock app_css %}
 
 
-<script src="https://unpkg.com/lucide@latest"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 
-<div class="app">
-   <!-- Sidebar -->
-   {% block sidebar %}
-  <aside class="sidebar" id="sidebarid">
+  <div class="app">
+    <!-- Sidebar -->
+    {% block sidebar %}
+    <aside class="sidebar" id="sidebarid">
+      <!-- Sidebar Header with Logo -->
       <div class="sidebar-header">
-        <div class="hamburgerandbrand">
-          <button class="hamburger" id="hamburgerBtn" aria-controls="siteNav" aria-expanded="false" aria-label="Buka menu">
-            <span class="box" aria-hidden="true">
-              <span class="line"></span>
-              <span class="line"></span>
-              <span class="line"></span>
-            </span>
-          </button>
-          <div class="logo">
-            <span>Taratech</span>
+        <div class="logo-container">
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
           </div>
-        </div>
-        <div class="team-info">
-          <div>
-            <p>{{ email }}</p>
-            <br>
-            <p>{{role}}</p>
+          <div class="logo-text">
+            <h2>SIGAP-IT</h2>
+            <p>Ticketing System</p>
           </div>
         </div>
       </div>
 
+      <!-- User Info -->
+      <div class="user-info-card">
+        <div class="user-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="user-details">
+          <p class="user-name">{{ user.first_name|default:"Admin" }} {{ user.last_name|default:"User" }}</p>
+          <p class="user-email">{{ email|truncatechars:20 }}</p>
+          <span class="user-role">{{ role|default:"User" }}</span>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
       <nav class="menu" id="siteNav">
-        <ul>
-          <li>
-            <a href="{% url 'ticket:dashboard' %}">
-              <img src="/static/img/home.svg" alt="home" />
-              <span>Home</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'ticket:ticket_index' %}">
-              <img src="/static/img/ticket.svg" alt="about" />
-              <span>Ticket</span>
-            </a>
-          </li>
-        </ul>
+        <div class="menu-section">
+          <p class="menu-label">Main Menu</p>
+          <ul>
+            <li>
+              <a href="{% url 'ticket:dashboard' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'ticket:ticket_index' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'ticket_index' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>All Tickets</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'ticket:create_ticket' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'create_ticket' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="16"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                <span>New Ticket</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section">
+          <p class="menu-label">Account</p>
+          <ul>
+            <li>
+              <a href="{% url 'profile' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'security' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'security' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>Security</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </nav>
+
+      <!-- Logout Button -->
+      <div class="sidebar-footer">
+        <a href="{% url 'logout' %}" class="logout-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Logout</span>
+        </a>
+      </div>
     </aside>
-   {% endblock sidebar %}
+    {% endblock sidebar %}
 
 
-   <!-- Main Content -->
-   <div class="main-content">
-       {% block topbar %}
-     <!-- Top Bar -->
-     <header class="topbar" id="topbar">
-       <div class="search-container">
-         <input type="text" placeholder="Search here..." />
-       </div>
-       <div class="topbar-icons">
-         <button class="icon-btn">🔔</button>
-         <button class="icon-btn">☀️</button>
-         <a href="{% url 'profile' %}">
-           <img src="/static/img/profile.png" alt="Profile"/>
-         </a>
-       </div>
-     </header>
-       {% endblock topbar %}
+    <!-- Main Content -->
+    <div class="main-content">
+      {% block topbar %}
+      <!-- Top Bar -->
+      <header class="topbar" id="topbar">
+        <div class="search-container">
+          <input type="text" placeholder="Search here..." />
+        </div>
+        <div class="topbar-icons">
+          <button class="icon-btn">🔔</button>
+          <button class="icon-btn">☀️</button>
+          <a href="{% url 'profile' %}">
+            <img src="/static/img/profile.png" alt="Profile" />
+          </a>
+        </div>
+      </header>
+      {% endblock topbar %}
 
 
 
-     <!-- Content Area -->
-     <section class="page-content">
-       {% block content %}
-       {% block message %}
+      <!-- Content Area -->
+      <section class="page-content">
+        {% block content %}
+        {% endblock content %}
+      </section>
+    </div>
+  </div>
 
-       {% endblock message %}
-       <h2>Account Settings</h2>
 
-       <div class="tabs">
-         <button class="active">My Profile</button>
-         <button>Security</button>
-         <button>Teams</button>
-         <button>Team Member</button>
-         <button>Notifications</button>
-         <button>Billing</button>
-         <button>Data Export</button>
-         <button class="delete">Delete Account</button>
-       </div>
+  {% include "snippets/scripts.html" %}
 
-       <div class="profile-section">
-         <div class="profile-card">
-           <div class="profile-info">
-             <img src="https://via.placeholder.com/80" alt="User Photo">
-             <div>
-               <h3>Rafiqur Rahman</h3>
-               <p>Team Manager</p>
-               <span>Leeds, United Kingdom</span>
-             </div>
-           </div>
-           <button class="edit-btn">Edit ✏️</button>
-         </div>
+  {% block app_js %}
 
-         <div class="info-box">
-           <h4>Personal Information</h4>
-           <div class="info-grid">
-             <div>
-               <label>First Name</label>
-               <p>Rafiqur</p>
-             </div>
-             <div>
-               <label>Last Name</label>
-               <p>Rahman</p>
-             </div>
-             <div>
-               <label>Email address</label>
-               <p>rafiqurrahman51@gmail.com</p>
-             </div>
-             <div>
-               <label>Phone</label>
-               <p>+09 345 346 46</p>
-             </div>
-             <div>
-               <label>Bio</label>
-               <p>Team Manager</p>
-             </div>
-           </div>
-           <button class="edit-btn">Edit ✏️</button>
-         </div>
-       </div>
-
-        
-       {% endblock content %}
-     </section>
-   </div>
- </div>
-
- 
-{% include "snippets/scripts.html" %}
-
-{% block app_js %}
-
-{% endblock %}
+  {% endblock %}
 
 </body>
+
 </html>
