@@ -151,8 +151,12 @@ def dashboard(request):
     in_progress_count = Ticket.objects.filter(status='2').count()
     closed_count = Ticket.objects.filter(status='3').count()
     print('Total status:',open_count,in_progress_count,closed_count)
+    
+    # Get recent tickets for the table widget
+    recent_tickets = Ticket.objects.all().order_by('-created_at')[:5]
+    
     summaryTicket = {
-        row['status']: round(row['count'] / total * 100)
+        row['status']: round(row['count'] / total * 100) if total > 0 else 0
         for row in ticket
     }
     summaryTicket2 = {
@@ -164,7 +168,23 @@ def dashboard(request):
     else:
         if user.groups.filter(name='Operation').exists():
             role = 'Operation'
-    return render(request, 'ticket/dashboard.html', {'ticket': summaryTicket,'ticket2' : summaryTicket2, 'email': email,'role':role,'open': open_count,'inProgress': in_progress_count,'closed': closed_count})
+        else:
+            role = 'User'
+    
+    context = {
+        'ticket': summaryTicket,
+        'ticket2': summaryTicket2,
+        'email': email,
+        'role': role,
+        'open_count': open_count,
+        'progress_count': in_progress_count,
+        'closed_count': closed_count,
+        'total_count': total_count,
+        'recent_tickets': recent_tickets,
+        'user': user
+    }
+    
+    return render(request, 'index.html', context)
     
 def get_ticket_status(request):
     # Fetch the data for auto-refresh (this is the data you'll return as JSON)
