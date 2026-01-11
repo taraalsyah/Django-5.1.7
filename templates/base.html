@@ -28,66 +28,19 @@
 
 <div class="app">
    <!-- Sidebar -->
+   
    {% block sidebar %}
-  <aside class="sidebar" id="sidebarid">
-      <div class="sidebar-header">
-        <div class="hamburgerandbrand">
-          <button class="hamburger" id="hamburgerBtn" aria-controls="siteNav" aria-expanded="false" aria-label="Buka menu">
-            <span class="box" aria-hidden="true">
-              <span class="line"></span>
-              <span class="line"></span>
-              <span class="line"></span>
-            </span>
-          </button>
-          <div class="logo">
-            <span>Taratech</span>
-          </div>
-        </div>
-        <div class="team-info">
-          <div>
-            <p>{{ email }}</p>
-            <br>
-            <p>{{role}}</p>
-          </div>
-        </div>
-      </div>
-
-      <nav class="menu" id="siteNav">
-        <ul>
-          <li>
-            <a href="{% url 'ticket:dashboard' %}">
-              <img src="/static/img/home.svg" alt="home" />
-              <span>Home</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'ticket:ticket_index' %}">
-              <img src="/static/img/ticket.svg" alt="about" />
-              <span>Ticket</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+    {% include "snippets/sidebar.html" %}
    {% endblock sidebar %}
+    
+  
 
 
    <!-- Main Content -->
    <div class="main-content">
        {% block topbar %}
      <!-- Top Bar -->
-     <header class="topbar" id="topbar">
-       <div class="search-container">
-         <input type="text" placeholder="Search here..." />
-       </div>
-       <div class="topbar-icons">
-         <button class="icon-btn">🔔</button>
-         <button class="icon-btn">☀️</button>
-         <a href="{% url 'profile' %}">
-           <img src="/static/img/profile.png" alt="Profile"/>
-         </a>
-       </div>
-     </header>
+      {% include "snippets/topbar.html" %}
        {% endblock topbar %}
 
 
@@ -158,12 +111,8 @@
    </div>
  </div>
 
- 
-{% include "snippets/scripts.html" %}
-
-{% block app_js %}
-
-{% endblock %}
+<script src="{% static 'js/sidebar.js' %}"></script>
+{% block app_js %} {% endblock %}
 
 </body>
 </html>

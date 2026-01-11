@@ -7,14 +7,30 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.removeItem('toast');
   }
   initializeStatusDropdowns()
+
   document.querySelectorAll(".toggle-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const detail = document.getElementById(btn.dataset.target);
-      const isOpen = detail.classList.contains("is-open");
-      detail.classList.toggle("is-open");
-      btn.textContent = isOpen ? "Show" : "Hide";
-    });
+  const detail = document.getElementById(btn.dataset.target);
+  const icon = btn.querySelector(".toggle-icon");
+
+  const isOpen = detail.classList.contains("is-open");
+
+  icon.src = isOpen
+    ? "/static/ticket/img/up-arrow.svg"
+    : "/static/ticket/img/down-arrow.svg";
+
+  icon.alt = isOpen ? "hide" : "show";
+
+  btn.addEventListener("click", () => {
+    const open = detail.classList.toggle("is-open");
+
+    icon.src = open
+      ? "/static/ticket/img/up-arrow.svg"
+      : "/static/ticket/img/down-arrow.svg";
+
+    icon.alt = open ? "hide" : "show";
   });
+});
+
 
   ChangeColor();
 });
@@ -266,7 +282,7 @@ function setStatus(item) {
 function applyStatus(dropdown, status) {
   const btn = dropdown.querySelector('.status-btn');
   btn.className = 'status-btn ' + status;
-  btn.innerText = formatStatus(status) + ' ▼';
+  
 }
 
 // helper text

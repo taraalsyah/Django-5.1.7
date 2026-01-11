@@ -44,7 +44,7 @@
             <tr>
                 <th>No.</th>
                 <th>ID</th>
-                <th style="width: 30%;">Title</th>
+                <th>Title</th>
                 <th>Category</th>
                 <th>Status</th>
                 <th>Assigned To</th>
@@ -88,12 +88,12 @@
                 </td>
                 <td>{{ ticket.assigned_to}} </td>
                 <td>{{ ticket.requested_by }}</td>
-                <td>{{ ticket.created_at }}</td>
+                <td class="timestamp">{{ ticket.created_at }}</td>
                 <td class="btn-tombol">
                   <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="">
                     {% csrf_token %}
                     <button type="submit" class="btn-delete">
-                      <img src="/static/ticket/img/view-btn.svg" alt="view" />
+                      <img src="/static/ticket/img/detail.svg" alt="view" />
                     </button>
                   </form>
 
@@ -108,7 +108,7 @@
                   {% endif %}
 
                   <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
-                  Show
+                    <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
                   </button>
 
                   {% if perms.ticket.close_ticket %}
@@ -116,7 +116,7 @@
                     data-ticket-id="{{ ticket.id_ticket }}"
                     data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}">
                     <button class="status-btn" onclick="toggleDropdown(this)">
-                      ▼
+                      <img src="/static/ticket/img/change.svg" alt="view" class="toggle-icon" />
                     </button>
 
                     <ul class="status-menu">
