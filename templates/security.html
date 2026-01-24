@@ -2,51 +2,123 @@
 {% load socialaccount %}
 {% load static %}
 
-
-
 {% block title %}
-        <title>About Us</title>
-    {% endblock title %}
+<title>Security Settings | SIGAP-IT</title>
+{% endblock title %}
 
 {% block app_css %}
-        {% include "snippets/styles.html" %}
-    {% endblock app_css %}
+{% include "snippets/styles.html" %}
+<style>
+    .security-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    .security-card {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-xl);
+        transition: all var(--transition-base);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .security-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    .security-card h4 {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .security-card p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .security-link {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--radius-md);
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-weight: 500;
+        transition: all var(--transition-base);
+    }
+
+    .security-link:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .security-link i {
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock app_css %}
 
 {% block content %}
-
 {% block message %}
-
-    {% if messages %}
-        {% for message in messages %}
-            <div class="error">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+{% if messages %}
+<div class="messages-container mb-4">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% endblock message %}
-        
-        <h2>Account Settings</h2>
 
-        <div class="tabs">
-          <button class="active"><a href="{% url 'profile' %}">My Profile</a></button>
-          <button><a href="{% url 'security' %}">Security</a></button>
-          <form method="post" action="{% url 'logout' %}" style="margin:0;">
-          {% csrf_token %}
-          <button class="logout-btn" type="submit">Logout</button>
-            </form>
-        </div>
-        <div class="profile-section">
-          <div class="profile-card">
-            {% if user.has_usable_password %}
-            <a href="{% url 'password_change' %}">Changes Password</a>
-            {% else %}
-            <a href="{% url 'account_set_password' %}">Set Password</a>
-            {% endif %}
-            <hr>
-            <a href="{% provider_login_url 'google' process='connect' %}">
-            Link Google Account
-            </a>
-            <hr>
-            <a href="/accounts/social/connections/">Manage Connected Accounts</a>
-            <hr>
-            <a href="{% url 'password_change' %}">Change Password</a>
-        </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Account Settings</h2>
+</div>
+
+<div class="tabs mb-4">
+    <a href="{% url 'profile' %}" class="btn btn-light me-2">My Profile</a>
+    <a href="{% url 'security' %}" class="btn btn-primary">Security</a>
+</div>
+
+<div class="security-options">
+    <!-- Password Section -->
+    <div class="security-card">
+        <h4><i class="bi bi-shield-lock"></i> Password</h4>
+        <p>Manage your password and security settings to keep your account safe.</p>
+        {% if user.has_usable_password %}
+        <a href="{% url 'password_change' %}" class="security-link">
+            <i class="bi bi-key"></i> Change Password
+        </a>
+        {% else %}
+        <a href="{% url 'account_set_password' %}" class="security-link">
+            <i class="bi bi-plus-circle"></i> Set Password
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Social Connections -->
+    <div class="security-card">
+        <h4><i class="bi bi-share"></i> Connected Accounts</h4>
+        <p>Connect and manage your social media accounts for easier login.</p>
+        <a href="{% provider_login_url 'google' process='connect' %}" class="security-link">
+            <i class="bi bi-google"></i> Link Google Account
+        </a>
+        <a href="/accounts/social/connections/" class="security-link">
+            <i class="bi bi-gear"></i> Manage Connections
+        </a>
+    </div>
+</div>
 {% endblock content %}

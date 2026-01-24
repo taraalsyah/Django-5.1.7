@@ -32,7 +32,9 @@
 <div class="container mt-4" id="createTicketModal" data-bs-backdrop="true" data-bs-keyboard="true">
     <h3>Comment Close</h3>
     <form id="ticketForm" method="POST" enctype="multipart/form-data" action="{% url 'ticket:ticket_history' ticket.id_ticket %}">
-    {% csrf_token %}
+    
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
 
         {{ form.ticket }}  <!-- hidden -->
 
@@ -56,7 +58,9 @@
     <div>
         <button type="submit" class="btn btn-primary">Simpan Comment</button>
         <button class="btn btn-primary">
-            <a style="color: aliceblue; text-decoration: none;" href="{% url 'ticket:ticket_index' %}">Cancel</a>
+            <!--<a style="color: aliceblue; text-decoration: none;" href="{% url 'ticket:ticket_index' %}">Cancel</a>-->
+            
+            <a style="color: aliceblue; text-decoration: none;" onclick="cancelAndBack()">Cancel</a>
         </button>
         
     </div>

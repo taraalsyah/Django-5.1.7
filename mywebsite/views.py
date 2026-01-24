@@ -235,13 +235,18 @@ def custom_login(request):
 
 
 def logout_view(request):
-    logout(request)  # Clears the session
-    response = redirect('login')
+    next_url = request.GET.get('next', '/')
+    
+    print('Next URL=',next_url)
+    logout(request)  # Clears the session  
+    login_url = reverse('login')
+    
+    response = redirect(f'{login_url}?next={next_url}')
     # Prevent browser from caching authenticated pages
     response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response['Pragma'] = 'no-cache'
     response['Expires'] = '0'
-    return response
+    return redirect(next_url)
 
 
 class CustomPasswordChangeView(PasswordChangeView):
@@ -257,11 +262,21 @@ def profile_view(request):
         return redirect('login')
     user = request.user
     email=user.email
+    first_name = user.first_name
+    last_name = user.last_name
+    phone_number= user.phone_number
+    first_group = request.user.groups.first()
+    role = first_group.name if first_group else 'User'
+    print('Role=',role)
     context = {
         'user': user,
         'judul':'Profile',
         'email': email,
         'username': user.username,
+        'role':role,
+        'first_name':first_name,
+        'last_name':last_name,
+        'phone_number':phone_number,
     }
     return render(request, 'profile.html', context)
 

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load socialaccount %}
+{% load static %}
 
 {% block title %}
 <title>Index Dashboard</title>
@@ -25,7 +26,7 @@
                 <form id="ticketForm" method="POST" enctype="multipart/form-data"
                     action="{% url 'ticket:create_ticket' %}">
                     {% csrf_token %}
-
+                    
                     {% if messages %}
                     {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
@@ -93,7 +94,10 @@
 
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn-primary">Submit Ticket</button>
-                        <a href="{% url 'ticket:ticket_index' %}" class="btn-secondary">Cancel</a>
+                        <!--<a href="{% url 'ticket:ticket_index' %}" class="btn-secondary">Cancel</a>-->
+                        <button class="close-btn">
+                        <a onclick="cancelAndBack()" class="close-btn">Cancel</a>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -116,5 +120,6 @@
         </div>
     </div>
 </div>
+<script src="{% static 'ticket/js/script.js' %}"></script>
 
 {% endblock %}

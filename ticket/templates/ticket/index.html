@@ -3,44 +3,46 @@
 {% load static %}
 
 {% block title %}
-  <title>Index Dashboard</title>
+<title>Index Dashboard</title>
 {% endblock title %}
 
 {% block app_css %}
-  {{ block.super }}
-  {% include "ticket/snippets/styles.html" %}
+{{ block.super }}
+{% include "ticket/snippets/styles.html" %}
 {% endblock app_css %}
 
 {% block content %}
 
 {% block message %}
-  {% if messages %}
-    {% for message in messages %}
-      <div>{{ message }}</div>
-    {% endfor %}
-  {% endif %}
+{% if messages %}
+<div id="toast-data"
+  data-messages='[{% for m in messages %}"{{ m|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}]'>
+</div>
+{% endif %}
 {% endblock message %}
 
+
+
 {% csrf_token %}
-  <div id="toast" class="toast"></div>
-        <h2>Ticket</h2>
-        <div class="profile-section" id="profile-section">
-          <div class="profile-card">
-            <div class="profile-info">
-              <div class="search-div">
-                <form method="get">
-                  <input class="search-input" type="text" name="q" placeholder="Search by anything..." value="{{ query }}">
-                  <button class="search-btn" type="submit">Search</button>
-                </form>
-              </div>
-            </div>
-            <button id="btnCreateTicket" class="edit-btn">
-              <a href="{% url 'ticket:create_ticket' %}">Create Ticket</a>
-            </button>
-          </div>
-          <div class="info-box">
-        <table>
+<div id="toast" class="toast"></div>
+<h2>Ticket <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;">Role: {{ role }}</span>
+</h2>
+<div class="profile-section" id="profile-section">
+  <div class="profile-card">
+    <div class="profile-info">
+      <div class="search-div">
+        <form method="get">
+          <input class="search-input" type="text" name="q" placeholder="Search by anything..." value="{{ query }}">
+          <button class="search-btn" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <div class="table-wrapper">
+      <table>
         <thead>
+<<<<<<< HEAD
             <tr>
                 <th>No.</th>
                 <th>ID</th>
@@ -52,24 +54,81 @@
                 <th>Created At</th>
                 <th>Action</th>
             </tr>
+=======
+          <tr>
+            <th>No.</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th style="white-space: nowrap;">Assigned To</th>
+            <th>Requested By</th>
+            <th style="white-space: nowrap;">Created At</th>
+            <th colspan="4" style="text-align: center;">Action</th>
+          </tr>
+>>>>>>> banyak
         </thead>
         <tbody>
-            <div id="closeModal" class="modal" style="display:none;">
-              <form id="closeForm" enctype="multipart/form-data">
-                <input type="hidden" name="ticket_id" id="modalTicketId">
-                <input type="hidden" name="status" value="closed">
+          <div id="closeModal" class="modal" style="display:none;">
+            <form id="closeForm" enctype="multipart/form-data">
+              <input type="hidden" name="ticket_id" id="modalTicketId">
+              <input type="hidden" name="status" value="closed">
 
-                <label>Comment</label>
-                <textarea name="comment" required></textarea>
+              <label>Comment</label>
+              <textarea name="comment" required></textarea>
 
-                <label>Attachment</label>
-                <input type="file" name="attachment" required>
+              <label>Attachment</label>
+              <input type="file" name="attachment" required>
 
-                <input type="hidden" name="updated_at" id="updatedAt">
+              <input type="hidden" name="updated_at" id="updatedAt">
 
-                <button type="submit">Submit</button>
-                <button type="button" onclick="closeModal()">Cancel</button>
+              <button type="submit">Submit</button>
+              <button type="button" onclick="closeModal()">Cancel</button>
+            </form>
+          </div>
+
+          {% for ticket in page_obj %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ ticket.id_ticket }}</td>
+            <td class="wrap">{{ ticket.title }}</td>
+            <td>{{ ticket.category }}</td>
+            <td>
+
+              <span id="showStatusIndex" class="IndexStatusShow status-open"
+                data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}"
+                data-ticket-id="{{ ticket.id_ticket }}">
+                {% if ticket.status == 1 %}Open
+                {% elif ticket.status == 2 %}In Progress
+                {% elif ticket.status == 3 %}Closed
+                {% else %}Unknown Status{% endif %}
+              </span>
+
+
+            </td>
+            <td>{{ ticket.assigned_to}} </td>
+            <td>{{ ticket.requested_by }}</td>
+            <td class="timestamp">{{ ticket.created_at }}</td>
+            <td>
+              <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">
+                  <img src="/static/ticket/img/detail.svg" alt="view" />
+                </button>
               </form>
+            </td>
+
+
+            {% if role == 'Admin' %}
+            <td>
+              <form method="POST" class="button-delete" data-url="{% url 'ticket:delete_ticket' ticket.id_ticket %}"
+                data-ticket-id="{{ ticket.id_ticket }}">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete" title="Delete">
+                  <img src="/static/ticket/img/delete-btn.svg" alt="view" />
+                </button>
+              </form>
+<<<<<<< HEAD
             </div>
 
             {% for ticket in page_obj %}
@@ -146,60 +205,114 @@
             </tr>
             {% endfor %}
           </tbody>
-          <tr>
+=======
+            </td>
+            {% endif %}
+
+            <td>
+              <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
+                <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
+              </button>
+            </td>
+
+            {% if role == 'Admin' %}
+            <td>
+              <div class="status-dropdown" data-ticket-id="{{ ticket.id_ticket }}"
+                data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}">
+                <button class="status-btn" onclick="toggleDropdown(this)">
+                  <img src="/static/ticket/img/change.svg" alt="view" class="toggle-icon" />
+                </button>
+
+                <ul class="status-menu">
+                  <li href="javascript:void(0)" class="status-item" data-status="open"
+                    onclick="return handleStatusChange(this)">Open</li>
+                  <li href="javascript:void(0)" class="status-item" data-status="in-progress"
+                    onclick="return handleStatusChange(this)">In Progress</li>
+                  <li href="javascript:void(0)" class="status-item" data-status="closed"
+                    onclick="return handleStatusChange(this)">Closed</li>
+                </ul>
+              </div>
+            </td>
+            {% endif %}
+
           </tr>
-  </table>
-</div>
+          <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
+            <td colspan="4" class="detailShow">
+              <strong>Description:</strong> {{ ticket.description }}<br>
+              <hr>
+              <strong>Attachments:</strong>
+              {% if ticket.attachments %}
+              <a href="{{ ticket.attachments.url }}" target="_blank">View Attachment</a>
+              {% else %}
+              No attachments.
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+>>>>>>> banyak
+          <tr>
+            <td colspan="10">No tickets found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tr>
+        </tr>
+      </table>
+    </div>
 
-<ul class="pagination">
-  {% if page_obj.has_previous %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
-    </li>
-  {% endif %}
+    <ul class="pagination"
+      style="margin-top: 20px; display: flex; list-style: none; gap: 5px; justify-content: center;">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+      </li>
+      {% endif %}
 
-  {% if page_obj.number > 4 %}
-    <li class="page-item">
-      <a class="page-link" href="?page=1">1</a>
-    </li>
-    {% if page_obj.number > 5 %}
+      {% if page_obj.number > 4 %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1">1</a>
+      </li>
+      {% if page_obj.number > 5 %}
       <li class="page-item disabled">
         <span class="page-link">...</span>
       </li>
-    {% endif %}
-  {% endif %}
+      {% endif %}
+      {% endif %}
 
-  {% for num in page_obj.paginator.page_range %}
-    {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %}
-      <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+      {% for num in page_obj.paginator.page_range %}
+      {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %} <li
+        class="page-item {% if num == page_obj.number %}active{% endif %}">
         <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-      </li>
-    {% endif %}
-  {% endfor %}
+        </li>
+        {% endif %}
+        {% endfor %}
 
-  {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
-    {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
-      <li class="page-item disabled">
-        <span class="page-link">...</span>
-      </li>
-    {% endif %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-    </li>
-  {% endif %}
+        {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
+        {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+        {% endif %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+              {{ page_obj.paginator.num_pages }}
+            </a>
+          </li>
+          {% endif %}
 
-  {% if page_obj.has_next %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-    </li>
-  {% endif %}
-</ul>
-
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+          {% endif %}
+    </ul>
+  </div>
 </div>
 {% endblock content %}
 
 
 {% block app_js %}
 {{ block.super }}
-  {% include "ticket/snippets/scripts.html" %}
+{% include "ticket/snippets/scripts.html" %}
+
 {% endblock %}

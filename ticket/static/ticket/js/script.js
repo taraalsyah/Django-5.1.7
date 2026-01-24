@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(message, type);
     sessionStorage.removeItem('toast');
   }
+<<<<<<< HEAD
   initializeStatusDropdowns()
 
   document.querySelectorAll(".toggle-btn").forEach(btn => {
@@ -32,43 +33,40 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+=======
+
+
+
+
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    const detail = document.getElementById(btn.dataset.target);
+    const icon = btn.querySelector(".toggle-icon");
+
+    const isOpen = detail.classList.contains("is-open");
+
+    icon.src = isOpen
+      ? "/static/ticket/img/up-arrow.svg"
+      : "/static/ticket/img/down-arrow.svg";
+
+    icon.alt = isOpen ? "hide" : "show";
+
+    btn.addEventListener("click", () => {
+      const open = detail.classList.toggle("is-open");
+
+      icon.src = open
+        ? "/static/ticket/img/up-arrow.svg"
+        : "/static/ticket/img/down-arrow.svg";
+
+      icon.alt = open ? "hide" : "show";
+    });
+  });
+>>>>>>> banyak
   ChangeColor();
 });
 
 
 
-function initializeStatusDropdowns() {
-  document.querySelectorAll('.status-dropdown').forEach(dropdown => {
-    const ticketId = dropdown.dataset.ticketId;
-    console.log('Initializing dropdown for ticket ID:', ticketId);
-    if (!dropdown.dataset.listenerAttached) {
-      dropdown.addEventListener('click', e => {
-        const item = e.target.closest('[data-status]');
-        if (!item) return;
 
-        const status = item.dataset.status;
-        const currentStatus = dropdown.dataset.status;
-        
-        console.log('Clicked status:', status, 'Current status:', currentStatus);
-
-        if ((currentStatus === 'open' || currentStatus === 'in-progress') && status === 'closed') {
-          const confirmClose = confirm(
-            'Ticket akan ditutup. Lanjutkan ke form penyelesaian?'
-          );
-          if (!confirmClose) return;
-
-          window.location.href = `/ticket/history/${ticketId}`;
-          return;
-        }
-
-        // update dataset supaya log berikutnya akurat
-        dropdown.dataset.status = status;
-      });
-
-      dropdown.dataset.listenerAttached = "true";
-    }
-  });
-}
 
 function confirmStatusChange(ticketId, statusText) {
   return confirm(
@@ -88,26 +86,29 @@ const STATUS_CODE = {
 };
 
 
+
+
+
 function updateDropdownRules(dropdown, currentStatus) {
-    const items = dropdown.querySelectorAll('.status-item');
-    items.forEach(item => {
-      const targetStatus = item.dataset.status;
-      let disabled = false;
-      if (currentStatus === 'open') {
-        disabled = targetStatus === 'open'  || targetStatus === 'closed';
-      }
-      if (currentStatus === 'in-progress') {
-        disabled = targetStatus === 'open' || targetStatus === 'in-progress';
-      }
-      if (currentStatus === 'closed') {
-        disabled = true;
-      }
-      item.classList.toggle('disabled', disabled);
-      item.style.pointerEvents = disabled ? 'none' : 'auto';
-      item.style.opacity = disabled ? '0.5' : '1';
-    });
-    dropdown.dataset.currentStatus = currentStatus;
-  }
+  const items = dropdown.querySelectorAll('.status-item');
+  items.forEach(item => {
+    const targetStatus = item.dataset.status;
+    let disabled = false;
+    if (currentStatus === 'open') {
+      disabled = targetStatus === 'open' || targetStatus === 'closed';
+    }
+    if (currentStatus === 'in-progress') {
+      disabled = targetStatus === 'open' || targetStatus === 'in-progress';
+    }
+    if (currentStatus === 'closed') {
+      disabled = true;
+    }
+    item.classList.toggle('disabled', disabled);
+    item.style.pointerEvents = disabled ? 'none' : 'auto';
+    item.style.opacity = disabled ? '0.5' : '1';
+  });
+  dropdown.dataset.currentStatus = currentStatus;
+}
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -131,21 +132,9 @@ function toggleDropdown(btn) {
 }
 
 
-function setLoading(dropdown, isLoading) {
-  const btn = dropdown.querySelector('.status-btn');
-  if (isLoading) {
-    btn.dataset.oldText = btn.innerText;
-    console.log('Old text:', btn.dataset.oldText, isLoading);
-    btn.innerText = 'Loading...';
-    btn.disabled = true;
-  } else {
-    btn.innerText = btn.dataset.oldText;
-    btn.disabled = false;
-  }
-}
 
 
-window.showToast = function (message, type = 'success', duration = 3000) {
+window.showToast = function (message, type = 'success', duration = 2000) {
   const toast = document.getElementById('toast');
   if (!toast) return;
   toast.textContent = message;
@@ -170,7 +159,64 @@ function getCSRFToken() {
     }
   }
   return cookieValue;
+}
+
+function handleStatusChange(item) {
+  const statusText = item.innerText;
+  const status = item.dataset.status;
+  const dropdown = item.closest('.status-dropdown');
+  const ticketId = dropdown.dataset.ticketId;
+  const statusCode = STATUS_CODE[status];
+
+  // CONFIRM
+  if (!confirmStatusChange(ticketId, statusText)) {
+    dropdown.querySelector('.status-menu').style.display = 'none';
+    return false;
   }
+
+  console.log('Status handleStatusChange= ', status);
+  if (status === 'closed') {
+    console.log('Masuk status === closed');
+
+
+
+    // Kirim update status ke server dengan AJAX/fetch
+
+    fetch('/ticket/update/', {
+      method: 'POST',
+      body: JSON.stringify({ status: 'closed' }),  // Kirim status baru
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify({
+        ticket_id: ticketId,
+        status_code: statusCode
+      })
+    })
+
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showToast(`Ticket ${data.ticket_id} Successfully Update to ${data.status}`, 'success');
+          setTimeout(() => {
+            const nextUrl = encodeURIComponent(window.location.pathname + window.location.search);
+            window.location.href = `/ticket/history/${ticketId}?next=${nextUrl}`;
+          }, 500);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showToast('Error updating status', 'error');
+      });
+  } else {
+    setStatus(item);  // Pastikan status diperbarui jika tidak 'closed'
+  }
+
+
+  return false; // Kalau button ada di form, ini penting
+}
+
 
 
 // klik option
@@ -181,20 +227,18 @@ function setStatus(item) {
   console.log('Clicked status item', item);
   const statusText = item.innerText;
   const status = item.dataset.status;
-  console.log('Clicked status status', status);
+  console.log('Status yang di click', status);
   const dropdown = item.closest('.status-dropdown');
   console.log('Clicked status dropdown', dropdown);
   const ticketId = dropdown.dataset.ticketId;
   console.log('Clicked status ticketId', ticketId);
   const statusCode = STATUS_CODE[status];
-  console.log('AwaticketIdl:', ticketId,status,statusCode);
+  console.log('AwaticketIdl:', ticketId, status, statusCode);
 
 
-  // CONFIRM
-  if (!confirmStatusChange(ticketId, statusText)) {
-    dropdown.querySelector('.status-menu').style.display = 'none';
-    return;
-  }
+  const row = item.closest('tr');
+  console.log('Row', row)
+  const statusEl = row.querySelector('.IndexStatusShow');
 
 
   applyStatus(dropdown, status);
@@ -205,11 +249,10 @@ function setStatus(item) {
   dropdown.dataset.loading = 'true';
 
   function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-  // 🔥 START LOADING
-  setLoading(dropdown, true);
+
 
   // TODO: fetch update ke backend
   console.log('Status changed to:', status);
@@ -234,46 +277,43 @@ function setStatus(item) {
     sleep(1000)
   ])
 
-  .then(([response]) => {
-  if (!response.ok) throw response;
-  return response.json();
-})
+    .then(([response]) => {
+      if (!response.ok) throw response;
+      return response.json();
+    })
 
 
-  .then(data => {
+    .then(data => {
       if (data.success) {
-      applyStatus(dropdown, status);
-      formatStatusIndex(status);
-      updateDropdownRules(dropdown, status);
-      sessionStorage.setItem(
-      'toast',
-      JSON.stringify({
-        message: 'Status updated successfully',
-        type: 'success'
-      })
-    );
-    location.reload();
-      
-    } else {
-      applyStatus(dropdown, prevStatus);
-      formatStatusIndex(status);
-      showToast('Failed to update status', 'error');
-      console.error('Error updating status:', data.error);
-    }
-  })
+        applyStatus(dropdown, status);
+        formatStatusIndex(statusEl, status);
+        updateDropdownRules(dropdown, status);
+        showToast(`Ticket ${data.ticket_id} Successfully Update to ${data.status}`, 'success');
 
-  .catch(() => {
-    console.error('Network or server error');
-    showToast('Server error', 'error');
-  })
-  .finally(() => {
-  console.log('Finalizing status update');
-  setTimeout(() => {
-    setLoading(dropdown, false);
-    dropdown.dataset.loading = 'false';
-  });
-  });
+
+      } else {
+        applyStatus(dropdown, prevStatus);
+        formatStatusIndex(statusEl, status);
+        showToast('Failed to update status', 'error');
+        console.error('Error updating status:', data.error);
+      }
+    })
+
+    .catch(() => {
+      console.error('Network or server error');
+      showToast('Server error', 'error');
+    })
+    .finally(() => {
+      console.log('Finalizing status update');
+      setTimeout(() => {
+        dropdown.dataset.loading = 'true';
+      });
+    });
+
+
 }
+
+
 
 
 
@@ -282,7 +322,11 @@ function setStatus(item) {
 function applyStatus(dropdown, status) {
   const btn = dropdown.querySelector('.status-btn');
   btn.className = 'status-btn ' + status;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> banyak
 }
 
 // helper text
@@ -293,9 +337,9 @@ function formatStatus(status) {
 
 // close dropdown on outside click
 document.addEventListener('click', e => {
-    if (!e.target.closest('.status-dropdown')) {
+  if (!e.target.closest('.status-dropdown')) {
     document.querySelectorAll('.status-menu')
-          .forEach(m => m.style.display = 'none');
+      .forEach(m => m.style.display = 'none');
   }
 });
 
@@ -320,19 +364,24 @@ document.querySelectorAll('.history-item').forEach(htn => {
 
 
 // update status index display after change
-function formatStatusIndex(status) {
-  const IndexStatus = document.querySelector('.IndexStatusShow');
-  console.log('IndexStatus=',IndexStatus,status)
+function formatStatusIndex(statusEl, status) {
   const formattedStatus = formatStatus(status);
 
-  if (IndexStatus) {
-    IndexStatus.innerText = formattedStatus;
-    
+  statusEl.innerText = formattedStatus;
+
+  statusEl.classList.remove('open', 'in-progress', 'closed');
+
+  if (status === 'open') {
+    statusEl.classList.add('open');
+  } else if (status === 'in-progress') {
+    statusEl.classList.add('in-progress');
+  } else if (status === 'closed') {
+    statusEl.classList.add('closed');
   }
- 
 }
 
-function ChangeColor(){
+
+function ChangeColor() {
   document.querySelectorAll('.IndexStatusShow').forEach(el => {
     const status = el.dataset.status;
     console.log('Masuk Change COlor=', status)
@@ -347,34 +396,57 @@ function ChangeColor(){
       el.classList.add('closed');
     }
   });
-  
+
 }
 
 
 
 // BLOCK CONFIRM DELETE TICKET //
 function confirmDelete(ticketId) {
-    return confirm("Are you sure you want to delete Ticket ID: " + ticketId + "?");
+  return confirm("Are you sure you want to delete Ticket ID: " + ticketId + "?");
 };
 // ENDBLOCK CONFIRM DELETE TICKET //
 
 
+function cancelAndBack() {
+  window.history.back();
+}
 
-// update 
 
-// Function to fetch and update ticket counts
-    function updateTicketStatus() {
-        fetch('/ticket/get_ticket_status/')  // Replace with your actual URL
-            
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                document.getElementById('open-count').textContent = data.open;
-                document.getElementById('in-progress-count').textContent = data.inProgress;
-                document.getElementById('closed-count').textContent = data.closed;
-                document.getElementById('percentopen').textContent = data.openpercent;
-                document.getElementById('percentinprogress').textContent = data.inProgresspercent;
-                document.getElementById('percentclosed').textContent = data.closedpercent;
-            })
-            .catch(error => console.error('Error fetching ticket status:', error));
+
+
+// BLOCK delete ticket //
+document.addEventListener('submit', function (e) {
+  const form = e.target.closest('.button-delete');
+  if (!form) return;
+
+  e.preventDefault(); // ⛔ STOP submit normal
+
+  const ticketId = form.dataset.ticketId;
+  const url = form.dataset.url;
+
+
+  if (!confirm(`Delete ticket ${ticketId}?`)) return;
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': getCSRFToken(),
+      'X-Requested-With': 'XMLHttpRequest'
     }
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // HAPUS ROW / CARD dari DOM
+        form.closest('tr')?.remove();
+        // atau
+        // form.closest('.ticket-card')?.remove();
+        showToast(`Data Success Delete ${data.id_ticket}`, 'success');
+        console.log('Ticket deleted, page stays', data.id_ticket);
+
+      }
+    });
+});
+
+// ENDBLOCK delete ticket //

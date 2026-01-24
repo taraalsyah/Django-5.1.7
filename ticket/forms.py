@@ -38,6 +38,7 @@ class TicketForm(forms.ModelForm):
         if self.is_create:
             return 1  # 'Open'
         return int(self.cleaned_data['status'])
+    
 
 class TicketHistoryForm(forms.ModelForm):
     class Meta:

@@ -145,7 +145,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djangoproject',
         'USER': 'root',
-        'PASSWORD' : 'root',
+        'PASSWORD' : 'Tara2025#',
         'HOST' : 'localhost',
         'PORT' : '3306',
     }
@@ -201,7 +201,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect here after successful login if no ?next= param
-LOGIN_REDIRECT_URL = '/ticket/dashboard/'  # after login, go here
+LOGIN_REDIRECT_URL = '/'  # after login, go here
 
 # Redirect to login page if user not authenticated or session timeout
 LOGIN_URL = 'login'
@@ -222,7 +222,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'taraalsyah45@gmail.com'
-EMAIL_HOST_PASSWORD = 'jgyjrejoysspxhqx'  # Gunakan App Password jika 2FA aktif
+EMAIL_HOST_PASSWORD = 'qjbpveviahwrvgeo'  # Gunakan App Password jika 2FA aktif
 
 EMAIL_SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 

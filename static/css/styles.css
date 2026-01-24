@@ -81,7 +81,7 @@ ul {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-  width: 280px;
+  width: 230px;
   height: 100vh;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   border-right: 1px solid var(--border-color);
@@ -198,11 +198,23 @@ ul {
   margin-bottom: var(--spacing-xs);
 }
 
-.sidebar.collapsed .team-info,
-.sidebar.collapsed .menu span,
-.sidebar.collapsed .logo span {
-  opacity: 0;
-  pointer-events: none;
+/* sembunyikan text saat collapse */
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .user-details,
+.sidebar.collapsed .menu-label,
+.sidebar.collapsed .menu-item span,
+.sidebar.collapsed .logout-btn span {
+  display: none;
+}
+
+.menu-item,
+.logout-btn {
+  justify-content: flex-start;
+}
+
+.sidebar.collapsed .menu-item,
+.sidebar.collapsed .logout-btn {
+  justify-content: center;
 }
 
 /* ===== NAVIGATION MENU ===== */
@@ -628,7 +640,7 @@ ul {
 }
 
 .btn-delete {
-  background: var(--danger-color);
+  
   color: white;
   padding: var(--spacing-sm) var(--spacing-md);
   border: none;
@@ -643,7 +655,7 @@ ul {
 }
 
 .btn-delete:hover {
-  background: #dc2626;
+
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
@@ -741,6 +753,12 @@ table {
   box-shadow: var(--shadow-sm);
 }
 
+.table-wrapper {
+  max-width: 100%;
+  overflow-x: scroll;
+  
+}
+
 th,
 td {
   padding: var(--spacing-md) var(--spacing-lg);
@@ -813,7 +831,7 @@ tr:hover {
 }
 
 .status-btn.open {
-  background: var(--warning-color);
+  background: var(--success-color);
 }
 
 <<<<<<< HEAD
@@ -823,11 +841,11 @@ tr:hover {
 .status-btn.closed { background: #d30505; }
 =======
 .status-btn.in-progress {
-  background: var(--secondary-color);
+  background: var(--warning-color);
 }
 
 .status-btn.closed {
-  background: var(--success-color);
+  background: var(--danger-color);
 }
 >>>>>>> Enhance dashboard and sidebar layout
 

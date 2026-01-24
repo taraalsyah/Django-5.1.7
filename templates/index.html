@@ -59,7 +59,7 @@
       </div>
       <div class="stat-info">
         <p class="stat-label">Open Tickets</p>
-        <h2 class="stat-value">{{ open_count|default:0 }}</h2>
+        <h2 class="stat-value" id="percentopen"></h2>
         <p class="stat-change positive">+12% from last month</p>
       </div>
     </div>
@@ -72,7 +72,7 @@
       </div>
       <div class="stat-info">
         <p class="stat-label">In Progress</p>
-        <h2 class="stat-value">{{ progress_count|default:0 }}</h2>
+        <h2 class="stat-value" id="percentinprogress"></h2>
         <p class="stat-change neutral">No change</p>
       </div>
     </div>
@@ -85,7 +85,7 @@
       </div>
       <div class="stat-info">
         <p class="stat-label">Resolved</p>
-        <h2 class="stat-value">{{ closed_count|default:0 }}</h2>
+        <h2 class="stat-value" id="percentclosed"></h2>
         <p class="stat-change positive">+8% from last month</p>
       </div>
     </div>
@@ -100,7 +100,7 @@
       </div>
       <div class="stat-info">
         <p class="stat-label">Total Tickets</p>
-        <h2 class="stat-value">{{ total_count|default:0 }}</h2>
+        <h2 class="stat-value" id="total_count"></h2>
         <p class="stat-change neutral">This month</p>
       </div>
     </div>
@@ -116,11 +116,11 @@
       <div class="widget chart-widget">
         <div class="widget-header">
           <h3>Ticket Status Overview</h3>
-          <select class="period-select">
+          <!--<select class="period-select">
             <option>Last 7 days</option>
             <option>Last 30 days</option>
             <option>Last 3 months</option>
-          </select>
+          </select>-->
         </div>
         <div class="widget-body">
           <div class="chart-container">
@@ -155,7 +155,7 @@
       </div>
 
       <!-- Recent Tickets Table -->
-      <div class="widget table-widget">
+      <!--<div class="widget table-widget">
         <div class="widget-header">
           <h3>Recent Tickets</h3>
           <a href="{% url 'ticket:ticket_index' %}" class="view-all">View All →</a>
@@ -200,7 +200,9 @@
             </table>
           </div>
         </div>
-      </div>
+      </div>-->
+
+
     </div>
 
     <!-- Right Column -->
@@ -255,7 +257,7 @@
       </div>
 
       <!-- Activity Timeline -->
-      <div class="widget activity-widget">
+      <!--<div class="widget activity-widget">
         <div class="widget-header">
           <h3>Recent Activity</h3>
         </div>
@@ -311,8 +313,7 @@
             </div>
           </div>
         </div>
-      </div>
-
+      </div>-->
     </div>
   </div>
 

@@ -257,4 +257,37 @@ td {
   justify-content: center;
 }
 
+<<<<<<< HEAD
 /*end pagination*/
+=======
+/*end pagination*/
+
+
+.toggle-btn img {
+  width: 8px;
+  height: 8px;
+}
+
+.btn-tombol {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  height: auto;
+}
+
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 4px 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.status-dropdown img{
+  width: 24px;
+  height: 16px;
+}
+
+
+>>>>>>> banyak
