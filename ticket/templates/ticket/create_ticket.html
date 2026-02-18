@@ -57,7 +57,7 @@
                             <div class="text-danger">{{form.category.errors}}</div>
                             {% endif %}
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3" hidden>
                             <label class="form-label">Assigned To</label>
                             {{form.assigned_to}}
                             {% if form.assigned_to.errors %}
@@ -66,9 +66,9 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" hidden>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Status</label>
+                            <label class="form-label" >Status</label>
                             {{form.status}}
                             {% if form.status.errors %}
                             <div class="text-danger">{{form.status.errors}}</div>

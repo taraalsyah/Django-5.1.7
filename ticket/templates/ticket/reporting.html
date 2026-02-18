@@ -2,45 +2,51 @@
 {% load static %}
 
 {% block title %}
-  <title>Ticket Reporting</title>
+<title>Ticket Reporting</title>
 {% endblock title %}
 
 {% block app_css %}
-  {{ block.super }}
-  {% include "ticket/snippets/styles.html" %}
-  <style>
+{{ block.super }}
+{% include "ticket/snippets/styles.html" %}
+<style>
     .reporting-container {
         padding: 20px;
     }
+
     .filter-section {
         background: white;
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }
+
     .filter-form {
         display: flex;
         gap: 15px;
         flex-wrap: wrap;
         align-items: flex-end;
     }
+
     .form-group {
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
+
     .form-group label {
         font-weight: 500;
         font-size: 0.9em;
         color: #555;
     }
+
     .form-control {
         padding: 8px 12px;
         border: 1px solid #ddd;
         border-radius: 4px;
         font-size: 14px;
     }
+
     .btn-primary {
         background-color: #007bff;
         color: white;
@@ -50,9 +56,11 @@
         cursor: pointer;
         font-weight: 500;
     }
+
     .btn-primary:hover {
         background-color: #0056b3;
     }
+
     .btn-success {
         background-color: #28a745;
         color: white;
@@ -63,10 +71,11 @@
         font-weight: 500;
         text-decoration: none;
     }
+
     .btn-success:hover {
         background-color: #218838;
     }
-    
+
     /* Summary Cards */
     .summary-cards {
         display: grid;
@@ -74,61 +83,90 @@
         gap: 20px;
         margin-bottom: 20px;
     }
+
     .card {
         background: white;
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
         align-items: center;
     }
+
     .card-title {
         font-size: 0.9em;
         color: #666;
         margin-bottom: 10px;
     }
+
     .card-value {
         font-size: 2em;
         font-weight: bold;
         color: #333;
     }
-    .card.open .card-value { color: #007bff; }
-    .card.progress .card-value { color: #ffc107; }
-    .card.closed .card-value { color: #28a745; }
+
+    .card.open .card-value {
+        color: #007bff;
+    }
+
+    .card.progres .card-value {
+        color: #ffc107;
+    }
+
+    .card.closed .card-value {
+        color: #28a745;
+    }
 
     /* Reuse some table styles from index if possible, otherwise define here */
     .table-wrapper {
         background: white;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;
         overflow-x: auto;
     }
+
     table {
         width: 100%;
         border-collapse: collapse;
     }
-    th, td {
+
+    th,
+    td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #eee;
     }
+
     th {
         background-color: #f8f9fa;
         font-weight: 600;
         color: #444;
     }
+
     .status-badge {
         padding: 4px 8px;
         border-radius: 12px;
         font-size: 0.85em;
         font-weight: 500;
     }
-    .status-open { background-color: #e3f2fd; color: #0d47a1; }
-    .status-progress { background-color: #fff8e1; color: #ff6f00; }
-    .status-closed { background-color: #e8f5e9; color: #1b5e20; }
-  </style>
+
+    .status-open {
+        background-color: #e3f2fd;
+        color: #0d47a1;
+    }
+
+    .status-progress {
+        background-color: #fff8e1;
+        color: #ff6f00;
+    }
+
+    .status-closed {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+    }
+</style>
 {% endblock app_css %}
 
 {% block content %}
@@ -145,7 +183,7 @@
             <span class="card-title">Open</span>
             <span class="card-value">{{ open_count }}</span>
         </div>
-        <div class="card progress">
+        <div class="card progres">
             <span class="card-title">In Progress</span>
             <span class="card-value">{{ in_progress_count }}</span>
         </div>
@@ -170,9 +208,9 @@
                 <label for="status">Status</label>
                 <select id="status" name="status" class="form-control">
                     <option value="">All Statuses</option>
-                    <option value="1" {% if status == '1' %}selected{% endif %}>Open</option>
-                    <option value="2" {% if status == '2' %}selected{% endif %}>In Progress</option>
-                    <option value="3" {% if status == '3' %}selected{% endif %}>Closed</option>
+                    <option value="1" {% if status_val == '1' %}selected{% endif %}>Open</option>
+                    <option value="2" {% if status_val == '2' %}selected{% endif %}>In Progress</option>
+                    <option value="3" {% if status_val == '3' %}selected{% endif %}>Closed</option>
                 </select>
             </div>
             <div class="form-group">
@@ -180,13 +218,15 @@
                 <select id="category" name="category" class="form-control">
                     <option value="">All Categories</option>
                     {% for cat in categories %}
-                        <option value="{{ cat.name }}" {% if category_filter == cat.name %}selected{% endif %}>{{ cat.name }}</option>
+                    <option value="{{ cat.name }}" {% if category_filter == cat.name %}selected{% endif %}>{{ cat.name }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-primary">Filter</button>
-                <a href="{% url 'ticket:reporting' %}" class="btn-primary" style="background-color: #6c757d; text-decoration:none;">Reset</a>
+                <a href="{% url 'ticket:reporting' %}" class="btn-primary"
+                    style="background-color: #6c757d; text-decoration:none;">Reset</a>
             </div>
             <div class="form-group" style="margin-left: auto;">
                 <button type="submit" name="export" value="csv" class="btn-success">Export to CSV</button>
@@ -205,7 +245,10 @@
                     <th>Status</th>
                     <th>Assigned To</th>
                     <th>Requested By</th>
-                    <th>Created At</th>
+                    <th>Open Date</th>
+                    <th>In Progress Date</th>
+                    <th>Closed Date</th>
+                    <th>SLA</th>
                 </tr>
             </thead>
             <tbody>
@@ -216,22 +259,26 @@
                     <td>{{ ticket.category }}</td>
                     <td>
                         {% if ticket.status == 1 %}
-                            <span class="status-badge status-open">Open</span>
+                        <span class="status-badge status-open">Open</span>
                         {% elif ticket.status == 2 %}
-                            <span class="status-badge status-progress">In Progress</span>
+                        <span class="status-badge status-progress">In Progress</span>
                         {% elif ticket.status == 3 %}
-                            <span class="status-badge status-closed">Closed</span>
+                        <span class="status-badge status-closed">Closed</span>
                         {% else %}
-                            {{ ticket.status }}
+                        {{ ticket.status }}
                         {% endif %}
                     </td>
                     <td>{{ ticket.assigned_to|default:"-" }}</td>
                     <td>{{ ticket.requested_by }}</td>
-                    <td>{{ ticket.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ ticket.open_date|date:"Y-m-d H:i" }}</td>
+                    <td>{{ ticket.in_progress_date|date:"Y-m-d H:i"|default:"-" }}</td>
+                    <td>{{ ticket.closed_date|date:"Y-m-d H:i"|default:"-" }}</td>
+                    <td>{{ ticket.sla_duration|default:"-" }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" style="text-align:center; padding: 20px;">No tickets found matching current filters.</td>
+                    <td colspan="11" style="text-align:center; padding: 20px;">No tickets found matching current
+                        filters.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -241,23 +288,52 @@
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
     <div class="pagination-container" style="margin-top: 20px; display: flex; justify-content: center;">
-        <ul class="pagination" style="display: flex; list-style: none; gap: 5px;">
-            {% if page_obj.has_previous %}
-                <li><a href="?page={{ page_obj.previous_page_number }}&date_start={{ date_start }}&date_end={{ date_end }}&status={{ status }}&category={{ category_filter }}" class="btn-primary" style="padding: 5px 10px;">Prev</a></li>
-            {% endif %}
+        <ul class="pagination"
+      style="margin-top: 20px; display: flex; list-style: none; gap: 5px; justify-content: center;">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+      </li>
+      {% endif %}
 
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <li><span class="btn-primary" style="background-color: #0056b3; padding: 5px 10px;">{{ num }}</span></li>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <li><a href="?page={{ num }}&date_start={{ date_start }}&date_end={{ date_end }}&status={{ status }}&category={{ category_filter }}" class="btn-primary" style="background-color: #f8f9fa; color: #333; border: 1px solid #ddd; padding: 5px 10px;">{{ num }}</a></li>
-                {% endif %}
-            {% endfor %}
+      {% if page_obj.number > 4 %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1">1</a>
+      </li>
+      {% if page_obj.number > 5 %}
+      <li class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+      {% endif %}
+      {% endif %}
 
-            {% if page_obj.has_next %}
-                <li><a href="?page={{ page_obj.next_page_number }}&date_start={{ date_start }}&date_end={{ date_end }}&status={{ status }}&category={{ category_filter }}" class="btn-primary" style="padding: 5px 10px;">Next</a></li>
-            {% endif %}
-        </ul>
+      {% for num in page_obj.paginator.page_range %}
+      {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %} <li
+        class="page-item {% if num == page_obj.number %}active{% endif %}">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
+        {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+        {% endif %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+              {{ page_obj.paginator.num_pages }}
+            </a>
+          </li>
+          {% endif %}
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+          {% endif %}
+    </ul>
     </div>
     {% endif %}
 </div>

@@ -14,19 +14,25 @@
 {% block content %}
 
 {% block message %}
-{% if messages %}
-<div id="toast-data"
-  data-messages='[{% for m in messages %}"{{ m|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}]'>
-</div>
-{% endif %}
+
+
+
+
+
+
 {% endblock message %}
 
 
 
 {% csrf_token %}
 <div id="toast" class="toast"></div>
-<h2>Ticket <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;">Role: {{ role }}</span>
+<h2>Ticket <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;"></span>
 </h2>
+{% for message in messages %}
+<div id="flash-message" class="alert alert-success">
+      {{ message }}
+</div>
+{% endfor %}
 <div class="profile-section" id="profile-section">
   <div class="profile-card">
     <div class="profile-info">
@@ -104,20 +110,22 @@
                 {% else %}Unknown Status{% endif %}
               </span>
 
-
             </td>
-            <td>{{ ticket.assigned_to}} </td>
+            <td>{{ ticket.assigned_to|default_if_none:"-"}} </td>
+
             <td>{{ ticket.requested_by }}</td>
             <td class="timestamp">{{ ticket.created_at }}</td>
             <td>
-              <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="">
+              <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="mytooltip">
                 {% csrf_token %}
                 <button type="submit" class="btn-delete">
                   <img src="/static/ticket/img/detail.svg" alt="view" />
                 </button>
+                <span class="tooltip-text">History Ticket</span>
               </form>
             </td>
 
+<<<<<<< HEAD
 
             {% if role == 'Admin' %}
             <td>
@@ -215,9 +223,11 @@
               </button>
             </td>
 
+=======
+>>>>>>> update
             {% if role == 'Admin' %}
             <td>
-              <div class="status-dropdown" data-ticket-id="{{ ticket.id_ticket }}"
+              <div class="status-dropdown mytooltip" data-ticket-id="{{ ticket.id_ticket }}"
                 data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}">
                 <button class="status-btn" onclick="toggleDropdown(this)">
                   <img src="/static/ticket/img/change.svg" alt="view" class="toggle-icon" />
@@ -231,10 +241,30 @@
                   <li href="javascript:void(0)" class="status-item" data-status="closed"
                     onclick="return handleStatusChange(this)">Closed</li>
                 </ul>
+                <span class="tooltip-text">Change Ticket</span>
               </div>
             </td>
             {% endif %}
 
+            {% if role == 'Admin' %}
+            <td>
+              <form method="POST" class="button-delete mytooltip" data-url="{% url 'ticket:delete_ticket' ticket.id_ticket %}"
+                data-ticket-id="{{ ticket.id_ticket }}">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete" title="Delete">
+                  <img src="/static/ticket/img/delete-btn.svg" alt="view" />
+                </button>
+                <span class="tooltip-text">Delete Ticket</span>
+              </form>
+            </td>
+            {% endif %}
+
+            <td>
+              <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
+                <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
+              </button>
+            </td>
+            
           </tr>
           <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
             <td colspan="4" class="detailShow">

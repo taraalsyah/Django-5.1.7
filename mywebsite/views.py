@@ -30,6 +30,10 @@ User = get_user_model()
 
 from django.http import HttpResponse
 
+def landing_page(request):
+    return render(request, 'landing_page.html')
+
+
 def debug_url(request):
     return HttpResponse(request.build_absolute_uri())
 
@@ -49,7 +53,7 @@ def register(request):
             user.groups.add(Operation_group)
 
             # Kirim email verifikasi
-            #send_verification_email(request, user)
+            send_verification_email(request, user)
             #send_verification_code(user.email)
             print("user registered:",user.username,user.email)
             messages.success(request, "Registration successful! Please check your email to verify your account.")
@@ -66,7 +70,7 @@ def send_verification_email(request, user):
     verify_url = request.build_absolute_uri(
         reverse("verify_email", kwargs={"uidb64": uid, "token": token})
     )
-
+    print('Verify URL=',verify_url)
     subject = "Verifikasi Akun Anda"
     message = f"Halo {user.username}, klik link berikut untuk verifikasi akun:\n\n{verify_url}"
 
@@ -158,18 +162,23 @@ def verify_failed(request):
     """
     return render(request, 'verify_failed.html')
 
-def verify_email(request, token):
+def verify_email(request, uidb64, token):
     try:
-        user = User.objects.get(verification_token=token)
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except Exception:
+        user = None
+
+    if user and default_token_generator.check_token(user, token):
         user.is_active = True
-        user.email_verified = True
-        user.verification_token = ""
         user.save()
         messages.success(request, "Email successfully verified! You can now log in.")
         return redirect("login")
-    except User.DoesNotExist:
+        
+    else:
         messages.error(request, "Invalid or expired verification link.")
         return redirect("register")
+    
 
 def send_test_email():
     subject = "Email Test Django"
@@ -227,6 +236,7 @@ def custom_login(request):
 
         if user is not None:
             login(request, user)
+            messages.success(request, f"Successfully Login as {username}")
             return redirect('/ticket/dashboard/')  # redirect ke halaman tujuan
         else:
             messages.error(request, "Invalid username or password.")
@@ -298,6 +308,21 @@ def unlink_social(request, pk):
 
 
 def security_view(request):
+    user = request.user
+    username = request.user.username
+    user_obj = User.objects.get(username=username)
+    email = user_obj.email
+
+    # Base queryset
+    if user.is_superuser or user.groups.filter(name='Admin').exists():
+        role = 'Admin'
+    elif user.groups.filter(name='Operation').exists():
+        role = 'Operation'
+    else:
+         role = 'Engineer'
+         
+    print('Role=',role)
+    
     if not request.user.is_authenticated:
         return redirect('login')
     
@@ -307,5 +332,6 @@ def security_view(request):
         'user': user,
         'judul':'Security',
         'email': user.email,
+        'role':role
     }
     return render(request, 'security.html', context)

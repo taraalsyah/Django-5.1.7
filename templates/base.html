@@ -183,6 +183,19 @@
                 <span>All Tickets</span>
               </a>
             </li>
+            {% if request.user.is_superuser or role == 'Admin' %}
+            <li>
+              <a href="{% url 'ticket:reporting' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'reporting' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                  <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                </svg>
+                <span>Reporting</span>
+              </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser or role == 'Admin' or role == 'Operation' %}
             <li>
               <a href="{% url 'ticket:create_ticket' %}"
                 class="menu-item {% if request.resolver_match.url_name == 'create_ticket' %}active{% endif %}">
@@ -194,6 +207,7 @@
                 <span>New Ticket</span>
               </a>
             </li>
+            {% endif %}
 
             {% if request.user.is_superuser or role == 'Admin' %}
             <li>
@@ -208,6 +222,19 @@
                 <span>User Management</span>
               </a>
             </li>
+            <li>
+              <a href="{% url 'ticket:category_management' %}"
+                class="menu-item {% if request.resolver_match.url_name == 'category_management' %}active{% endif %}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                  <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                  <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                  <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                </svg>
+                <span>Category</span>
+              </a>
+            </li>
+
             {% endif %}
 
           </ul>

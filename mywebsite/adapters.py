@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from allauth.socialaccount.models import SocialAccount
-from allauth.exceptions import ImmediateHttpResponse
+from allauth.core.exceptions import ImmediateHttpResponse
 from django.shortcuts import render
 
 

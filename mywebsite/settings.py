@@ -78,6 +78,8 @@ SITE_ID = 4
 MIDDLEWARE = [
     # Security headers & HTTPS handling
     'django.middleware.security.SecurityMiddleware',
+    
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
     # Session management (wajib sebelum AuthenticationMiddleware)
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -107,6 +109,9 @@ MIDDLEWARE = [
     
     
 ]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

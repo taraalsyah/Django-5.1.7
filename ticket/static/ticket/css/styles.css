@@ -290,4 +290,36 @@ td {
 }
 
 
+<<<<<<< HEAD
 >>>>>>> banyak
+=======
+/* tooltip*/
+
+.mytooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.mytooltip .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.15s;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  font-size: 12px;
+  z-index: 9999;
+}
+
+.mytooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+>>>>>>> update

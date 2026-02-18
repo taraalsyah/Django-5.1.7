@@ -62,6 +62,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 >>>>>>> banyak
   ChangeColor();
+
+  setTimeout(() => {
+    const msg = document.getElementById('flash-message');
+    if (msg) {
+      msg.classList.add('fade');
+      setTimeout(() => msg.remove(), 500);
+    }
+  }, 500);
 });
 
 
@@ -134,7 +142,7 @@ function toggleDropdown(btn) {
 
 
 
-window.showToast = function (message, type = 'success', duration = 2000) {
+window.showToast = function (message, type = 'success', duration = 500) {
   const toast = document.getElementById('toast');
   if (!toast) return;
   toast.textContent = message;
@@ -274,7 +282,7 @@ function setStatus(item) {
 
   Promise.all([
     updateRequest,
-    sleep(1000)
+    sleep(500)
   ])
 
     .then(([response]) => {

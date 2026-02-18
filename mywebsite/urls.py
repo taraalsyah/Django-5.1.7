@@ -22,10 +22,12 @@ from .views import CustomPasswordChangeView, unlink_social
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.shortcuts import redirect
 
 
 
 urlpatterns = [
+    path('', views.landing_page, name="landing_page"),
     path('index/',views.index,name='index'),
     path('admin/', admin.site.urls, name='admin'),
     path('register/', views.register, name='register'),
@@ -34,7 +36,7 @@ urlpatterns = [
     #path("unlink-google/", views.unlink_google, name="unlink_google"),
     #path('go-to-google-login/', views.google_redirect, name='google_redirect'),
     #path('login/google/', views.google_login_redirect, name='google_login_redirect'),
-    #path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
+    path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
     path('blog/',include(('blog.urls','blog'),namespace='blog')),
     path('about/',include(('about.urls','about'),namespace='about')),

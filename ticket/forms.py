@@ -1,5 +1,14 @@
 from django import forms
-from .models import Ticket, TicketHistory
+from .models import Ticket, TicketHistory, Category
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter category name'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter category description'}),
+        }
 
 class TicketForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -9,6 +18,15 @@ class TicketForm(forms.ModelForm):
         if user:
             self.fields['requested_by'].initial = user.email  # set default
             self.fields['requested_by'].widget.attrs['readonly'] = True # buat readonly
+        
+        # Populate category choices from Category model
+        category_choices = [('', 'Select Category')] + [(c.name, c.name) for c in Category.objects.all()]
+        self.fields['category'] = forms.ChoiceField(
+            choices=category_choices,
+            widget=forms.Select(attrs={'class': 'form-select'}),
+            required=False
+        )
+
         if self.is_create:
             # Saat create → status fix 'Open' dan disembunyikan
             self.fields['status'].widget=forms.HiddenInput()

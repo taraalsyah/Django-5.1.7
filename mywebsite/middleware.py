@@ -11,6 +11,7 @@ class LoginRequiredMiddleware:
 
     # nama view yang boleh diakses tanpa login (url_name dari urls.py)
     EXEMPT_NAMES = [
+        "/",
         "login",
         "logout",
         "register",
@@ -27,11 +28,13 @@ class LoginRequiredMiddleware:
         "socialaccount_email_verification_sent",
         "socialaccount_email_verification",
         "socialaccount_inactive",
-        "admin"
+        "admin",
+        "landing_page"
     ]
 
     # path yang boleh diakses tanpa login
     EXEMPT_PATHS = [
+        "/",
         "/login/",
         "/logout/",
         "/register/",
@@ -41,10 +44,13 @@ class LoginRequiredMiddleware:
         "/go-to-google-login/",
         "admin/",
         "/login/google/",
-        
+        "/accounts/google/login/",
+        "/accounts/google/login/callback/",
+        "/landing_page/",
     ]
 
     allowed_urls = [
+    '/',
     '/login/',
     '/register/',
     '/static/',
@@ -55,7 +61,9 @@ class LoginRequiredMiddleware:
     '/login/google/',
     '/admin/login/',
     '/admin/',
-    
+    '/accounts/google/login/',
+    '/accounts/google/login/callback/',
+    '/landing_page/',
     ]
 
 
@@ -110,7 +118,7 @@ class AutoLogoutMiddleware:
         '/verify-failed/',
         '/resend-verification/',
         '/media/attachments/',
-        
+        '/'
         ]
 
         # Allow static & media files

@@ -21,6 +21,8 @@ urlpatterns = [
     path('delete-user/', views.delete_user, name='delete_user'),
     path('edit-user/', views.edit_user, name='edit_user'),
     path('toggle-user-status/', views.toggle_user_status, name='toggle_user_status'),
+    path('categories/', views.category_management, name='category_management'),
+    path('categories/delete/<int:category_id>/', views.delete_category, name='delete_category'),
 ]
 
 if settings.DEBUG:

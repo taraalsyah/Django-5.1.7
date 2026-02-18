@@ -157,9 +157,9 @@
                         <select class="role-select" data-user-id="{{ u.id }}"
                             data-current-role="{% for group in u.groups.all %}{{ group.name }}{% empty %}None{% endfor %}"
                             style="padding: 4px; border-radius: 4px; border: 1px solid #ccc;">
-                            <option value="None">None (User)</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Operation">Operation</option>
+                            {% for roles in groups %}
+                            <option value="{{roles.name}}">{{roles.name}}</option>
+                            {% endfor %}
                         </select>
                     </td>
                     <td id="status-cell-{{ u.id }}">

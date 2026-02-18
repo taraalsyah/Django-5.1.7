@@ -502,6 +502,8 @@ ul {
   padding: var(--spacing-xl);
   transition: all var(--transition-base);
   box-shadow: var(--shadow-sm);
+  position: relative;
+  display: inline-block;
 }
 
 .profile-card:hover,
@@ -749,14 +751,15 @@ table {
   border-spacing: 0;
   background: var(--bg-primary);
   border-radius: var(--radius-lg);
-  overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
 
 .table-wrapper {
   max-width: 100%;
-  overflow-x: scroll;
-  
+  position: relative;
+  display: inline-block;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 th,
@@ -860,7 +863,7 @@ tr:hover {
   padding: var(--spacing-sm);
   margin: 0;
   min-width: 150px;
-  z-index: 1000;
+  z-index: 99999;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
 }
