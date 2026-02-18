@@ -6,37 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(message, type);
     sessionStorage.removeItem('toast');
   }
-<<<<<<< HEAD
-  initializeStatusDropdowns()
-
-  document.querySelectorAll(".toggle-btn").forEach(btn => {
-  const detail = document.getElementById(btn.dataset.target);
-  const icon = btn.querySelector(".toggle-icon");
-
-  const isOpen = detail.classList.contains("is-open");
-
-  icon.src = isOpen
-    ? "/static/ticket/img/up-arrow.svg"
-    : "/static/ticket/img/down-arrow.svg";
-
-  icon.alt = isOpen ? "hide" : "show";
-
-  btn.addEventListener("click", () => {
-    const open = detail.classList.toggle("is-open");
-
-    icon.src = open
-      ? "/static/ticket/img/up-arrow.svg"
-      : "/static/ticket/img/down-arrow.svg";
-
-    icon.alt = open ? "hide" : "show";
+  // Consolidate initialization
+  document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+    const statusInit = dropdown.dataset.status;
+    applyStatus(dropdown, statusInit);
+    updateDropdownRules(dropdown, statusInit);
   });
-});
-
-
-=======
-
-
-
 
   document.querySelectorAll(".toggle-btn").forEach(btn => {
     const detail = document.getElementById(btn.dataset.target);
@@ -60,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
       icon.alt = open ? "hide" : "show";
     });
   });
->>>>>>> banyak
+
+
   ChangeColor();
 
   setTimeout(() => {
@@ -119,15 +95,6 @@ function updateDropdownRules(dropdown, currentStatus) {
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  // INIT status saat page load
-  document.querySelectorAll('.status-dropdown').forEach(dropdown => {
-    const statusInit = dropdown.dataset.status;
-    applyStatus(dropdown, statusInit);
-    updateDropdownRules(dropdown, statusInit);
-
-  });
-});
 
 
 // toggle dropdown
@@ -330,11 +297,7 @@ function setStatus(item) {
 function applyStatus(dropdown, status) {
   const btn = dropdown.querySelector('.status-btn');
   btn.className = 'status-btn ' + status;
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> banyak
 }
 
 // helper text

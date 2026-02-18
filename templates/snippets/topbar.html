@@ -2,14 +2,21 @@
 
 
 <header class="topbar" id="topbar">
-       <div class="search-container">
-         <input type="text" placeholder="Search here..." />
-       </div>
-       <div class="topbar-icons">
-         <button class="icon-btn">🔔</button>
-         <button class="icon-btn">☀️</button>
-         <a href="{% url 'profile' %}">
-           <img src="/static/img/profile.png" alt="Profile"/>
-         </a>
-       </div>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+    <span class="box">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </span>
+  </button>
+  <div class="search-container">
+    <input type="text" placeholder="Search here..." />
+  </div>
+  <div class="topbar-icons">
+    <button class="icon-btn">🔔</button>
+    <button class="icon-btn">☀️</button>
+    <a href="{% url 'profile' %}">
+      <img src="/static/img/profile.png" alt="Profile" />
+    </a>
+  </div>
 </header>

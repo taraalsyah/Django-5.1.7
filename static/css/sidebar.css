@@ -1,8 +1,13 @@
 /* ===== IMPROVED SIDEBAR STYLES ===== */
 
-/* Sidebar Base - Override existing */
+:root {
+    --sidebar-width: 230px;
+    --sidebar-collapsed-width: 80px;
+}
+
+/* Sidebar Base */
 .sidebar {
-    width: 230px;
+    width: var(--sidebar-width);
     height: 100vh;
     background: #ffffff;
     border-right: 1px solid var(--border-color);
@@ -13,9 +18,14 @@
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+    z-index: 1001;
 }
 
-/* Sidebar Header with Logo */
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+/* Sidebar Header */
 .sidebar-header {
     padding: var(--spacing-xl) var(--spacing-lg);
     border-bottom: 1px solid var(--border-light);
@@ -40,12 +50,19 @@
     flex-shrink: 0;
 }
 
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: opacity var(--transition-base);
+}
+
 .logo-text h2 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 2px 0;
-    line-height: 1;
+    color: var(--text-primary) !important;
+    margin: 0;
+    line-height: 1.2;
 }
 
 .logo-text p {
@@ -65,18 +82,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-}
-
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    flex-shrink: 0;
+    transition: all var(--transition-base);
 }
 
 .user-details {
@@ -126,15 +132,6 @@
     width: 4px;
 }
 
-.menu::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.menu::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 2px;
-}
-
 .menu-section {
     margin-bottom: var(--spacing-lg);
 }
@@ -163,7 +160,7 @@
     align-items: center;
     gap: var(--spacing-md);
     color: var(--text-secondary);
-    text-decoration: none;
+    text-decoration: none !important;
     padding: 12px var(--spacing-md);
     border-radius: var(--radius-md);
     transition: all var(--transition-base);
@@ -174,17 +171,11 @@
 
 .menu-item svg {
     flex-shrink: 0;
-    transition: all var(--transition-base);
 }
 
 .menu-item:hover {
     background: var(--bg-tertiary);
     color: var(--text-primary);
-}
-
-.menu-item:hover svg {
-    color: var(--primary-color);
-    transform: translateX(2px);
 }
 
 .menu-item.active {
@@ -193,23 +184,7 @@
     font-weight: 600;
 }
 
-.menu-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 60%;
-    background: var(--primary-color);
-    border-radius: 0 2px 2px 0;
-}
-
-.menu-item.active svg {
-    color: var(--primary-color);
-}
-
-/* Sidebar Footer with Logout */
+/* Sidebar Footer */
 .sidebar-footer {
     padding: var(--spacing-lg);
     border-top: 1px solid var(--border-light);
@@ -221,48 +196,44 @@
     align-items: center;
     gap: var(--spacing-md);
     color: var(--danger-color);
-    text-decoration: none;
+    text-decoration: none !important;
     padding: 12px var(--spacing-md);
     border-radius: var(--radius-md);
     transition: all var(--transition-base);
     font-weight: 600;
     font-size: 0.875rem;
-    border: 1px solid transparent;
     width: 100%;
+}
+
+/* Collapse Handles */
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .user-info-card,
+.sidebar.collapsed .menu-label,
+.sidebar.collapsed .menu-item span,
+.sidebar.collapsed .logout-btn span {
+    display: none !important;
+}
+
+.sidebar.collapsed .sidebar-header {
+    padding: var(--spacing-xl) var(--spacing-sm);
+    display: flex;
     justify-content: center;
 }
 
-.logout-btn svg {
-    flex-shrink: 0;
+.sidebar.collapsed .menu-item,
+.sidebar.collapsed .logout-btn {
+    justify-content: center;
+    padding: 12px;
 }
 
-.logout-btn:hover {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: var(--danger-color);
-    transform: translateY(-1px);
-}
-
-/* Responsive Sidebar */
+/* Responsive */
 @media (max-width: 768px) {
     .sidebar {
         position: fixed;
-        left: -280px;
-        z-index: 1000;
-        transition: left var(--transition-slow);
+        left: -230px;
     }
 
     .sidebar.open {
         left: 0;
     }
-
-    .user-info-card {
-        margin: var(--spacing-md);
-    }
-}
-
-/* Hide old styles that conflict */
-.hamburgerandbrand,
-.hamburger,
-.team-info {
-    display: none !important;
 }

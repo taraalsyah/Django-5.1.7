@@ -30,7 +30,7 @@
 </h2>
 {% for message in messages %}
 <div id="flash-message" class="alert alert-success">
-      {{ message }}
+  {{ message }}
 </div>
 {% endfor %}
 <div class="profile-section" id="profile-section">
@@ -48,31 +48,17 @@
     <div class="table-wrapper">
       <table>
         <thead>
-<<<<<<< HEAD
-            <tr>
-                <th>No.</th>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Assigned To</th>
-                <th>Requested By</th>
-                <th>Created At</th>
-                <th>Action</th>
-            </tr>
-=======
           <tr>
             <th>No.</th>
             <th>ID</th>
             <th>Title</th>
             <th>Category</th>
             <th>Status</th>
-            <th style="white-space: nowrap;">Assigned To</th>
+            <th>Assigned To</th>
             <th>Requested By</th>
-            <th style="white-space: nowrap;">Created At</th>
-            <th colspan="4" style="text-align: center;">Action</th>
+            <th>Created At</th>
+            <th>Action</th>
           </tr>
->>>>>>> banyak
         </thead>
         <tbody>
           <div id="closeModal" class="modal" style="display:none;">
@@ -125,106 +111,6 @@
               </form>
             </td>
 
-<<<<<<< HEAD
-
-            {% if role == 'Admin' %}
-            <td>
-              <form method="POST" class="button-delete" data-url="{% url 'ticket:delete_ticket' ticket.id_ticket %}"
-                data-ticket-id="{{ ticket.id_ticket }}">
-                {% csrf_token %}
-                <button type="submit" class="btn-delete" title="Delete">
-                  <img src="/static/ticket/img/delete-btn.svg" alt="view" />
-                </button>
-              </form>
-<<<<<<< HEAD
-            </div>
-
-            {% for ticket in page_obj %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ ticket.id_ticket }}</td>
-                <td class="wrap">{{ ticket.title }}</td>
-                <td>{{ ticket.category }}</td>
-                <td>
-                  
-                  <span id="showStatusIndex" class="IndexStatusShow" data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}" data-ticket-id="{{ ticket.id_ticket }}">
-                    {% if ticket.status == 1 %}Open{% elif ticket.status == 2 %}InProgress{% elif ticket.status == 3 %}Closed{% else %}Unknown Status{% endif %}
-                  </span>
-                  
-
-                </td>
-                <td>{{ ticket.assigned_to}} </td>
-                <td>{{ ticket.requested_by }}</td>
-                <td class="timestamp">{{ ticket.created_at }}</td>
-                <td class="btn-tombol">
-                  <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-delete">
-                      <img src="/static/ticket/img/detail.svg" alt="view" />
-                    </button>
-                  </form>
-
-                  {% if perms.ticket.delete_ticket %}
-                  <form action="{% url 'ticket:delete_ticket' ticket.id_ticket %}" method="POST" class=""
-                    onsubmit="return confirmDelete('{{ ticket.id_ticket }}');">
-                  {% csrf_token %}
-                  <button type="submit" class="btn-delete" title="Delete">
-                    <img src="/static/ticket/img/delete-btn.svg" alt="view" />
-                  </button>
-                  </form>
-                  {% endif %}
-
-                  <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
-                    <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
-                  </button>
-
-                  {% if perms.ticket.close_ticket %}
-                  <div class="status-dropdown"
-                    data-ticket-id="{{ ticket.id_ticket }}"
-                    data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}">
-                    <button class="status-btn" onclick="toggleDropdown(this)">
-                      <img src="/static/ticket/img/change.svg" alt="view" class="toggle-icon" />
-                    </button>
-
-                    <ul class="status-menu">
-                      <li class="status-item" data-status="open" onclick="setStatus(this)">Open</li>
-                      <li class="status-item" data-status="in-progress" onclick="setStatus(this)">In Progress</li>
-                      <li class="status-item" data-status="closed" onclick="setStatus(this)">Closed</li>
-                    </ul>
-                  </div>
-                  {% endif %}
-                </td>
-            </tr>
-            <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
-                <td colspan="4" class="detailShow">
-                  <strong>Description:</strong> {{ ticket.description }}<br>
-                  <hr>
-                  <strong>Attachments:</strong>
-                  {% if ticket.attachments %}
-                    <a href="{{ ticket.attachments.url }}" target="_blank">View Attachment</a>
-                  {% else %}
-                    No attachments.
-                  {% endif %}
-                </td>
-                </tr>
-            {% empty %}
-            <tr>
-                <td colspan="10">No tickets found.</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-=======
-            </td>
-            {% endif %}
-
-            <td>
-              <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
-                <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
-              </button>
-            </td>
-
-=======
->>>>>>> update
             {% if role == 'Admin' %}
             <td>
               <div class="status-dropdown mytooltip" data-ticket-id="{{ ticket.id_ticket }}"
@@ -248,8 +134,8 @@
 
             {% if role == 'Admin' %}
             <td>
-              <form method="POST" class="button-delete mytooltip" data-url="{% url 'ticket:delete_ticket' ticket.id_ticket %}"
-                data-ticket-id="{{ ticket.id_ticket }}">
+              <form method="POST" class="button-delete mytooltip"
+                data-url="{% url 'ticket:delete_ticket' ticket.id_ticket %}" data-ticket-id="{{ ticket.id_ticket }}">
                 {% csrf_token %}
                 <button type="submit" class="btn-delete" title="Delete">
                   <img src="/static/ticket/img/delete-btn.svg" alt="view" />
@@ -264,7 +150,7 @@
                 <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
               </button>
             </td>
-            
+
           </tr>
           <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
             <td colspan="4" class="detailShow">
@@ -279,7 +165,6 @@
             </td>
           </tr>
           {% empty %}
->>>>>>> banyak
           <tr>
             <td colspan="10">No tickets found.</td>
           </tr>
@@ -310,31 +195,31 @@
       {% endif %}
 
       {% for num in page_obj.paginator.page_range %}
-      {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %} <li
-        class="page-item {% if num == page_obj.number %}active{% endif %}">
-        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %}
+        <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
         </li>
-        {% endif %}
-        {% endfor %}
+      {% endif %}
+      {% endfor %}
 
-        {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
+      {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
         {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
           <li class="page-item disabled">
             <span class="page-link">...</span>
           </li>
         {% endif %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
-              {{ page_obj.paginator.num_pages }}
-            </a>
-          </li>
-          {% endif %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+            {{ page_obj.paginator.num_pages }}
+          </a>
+        </li>
+      {% endif %}
 
-          {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-          </li>
-          {% endif %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
 </div>
