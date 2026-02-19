@@ -42,7 +42,7 @@ class LoginRequiredMiddleware:
         "/verify/",
         "/accounts/",
         "/go-to-google-login/",
-        "admin/",
+        "/admin/",
         "/login/google/",
         "/accounts/google/login/",
         "/accounts/google/login/callback/",
