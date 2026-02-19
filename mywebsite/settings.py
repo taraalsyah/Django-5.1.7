@@ -34,7 +34,7 @@ timezone.activate(pytz.timezone('Asia/Jakarta'))
 SECRET_KEY = 'django-insecure-%8-jl3tb%8c4fjvp5g*)o@mj3ysm7!zh13p=14m3a-kl0fvrz&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["taraalsyah.online","www.taraalsyah.online","76.13.197.54"]
 
