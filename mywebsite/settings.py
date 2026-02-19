@@ -218,7 +218,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect here after successful login if no ?next= param
-LOGIN_REDIRECT_URL = '/'  # after login, go here
+LOGIN_REDIRECT_URL = '/ticket/dashboard/'  # after login, go here
 
 # Redirect to login page if user not authenticated or session timeout
 LOGIN_URL = 'login'

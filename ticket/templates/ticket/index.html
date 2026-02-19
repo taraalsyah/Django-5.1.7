@@ -14,25 +14,18 @@
 {% block content %}
 
 {% block message %}
-
-
-
-
-
-
 {% endblock message %}
-
-
 
 {% csrf_token %}
 <div id="toast" class="toast"></div>
-<h2>Ticket <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;"></span>
-</h2>
+<h2>Ticket <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;"></span></h2>
+
 {% for message in messages %}
 <div id="flash-message" class="alert alert-success">
   {{ message }}
 </div>
 {% endfor %}
+
 <div class="profile-section" id="profile-section">
   <div class="profile-card">
     <div class="profile-info">
@@ -61,24 +54,6 @@
           </tr>
         </thead>
         <tbody>
-          <div id="closeModal" class="modal" style="display:none;">
-            <form id="closeForm" enctype="multipart/form-data">
-              <input type="hidden" name="ticket_id" id="modalTicketId">
-              <input type="hidden" name="status" value="closed">
-
-              <label>Comment</label>
-              <textarea name="comment" required></textarea>
-
-              <label>Attachment</label>
-              <input type="file" name="attachment" required>
-
-              <input type="hidden" name="updated_at" id="updatedAt">
-
-              <button type="submit">Submit</button>
-              <button type="button" onclick="closeModal()">Cancel</button>
-            </form>
-          </div>
-
           {% for ticket in page_obj %}
           <tr>
             <td>{{ forloop.counter }}</td>
@@ -86,7 +61,6 @@
             <td class="wrap">{{ ticket.title }}</td>
             <td>{{ ticket.category }}</td>
             <td>
-
               <span id="showStatusIndex" class="IndexStatusShow status-open"
                 data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}"
                 data-ticket-id="{{ ticket.id_ticket }}">
@@ -95,10 +69,8 @@
                 {% elif ticket.status == 3 %}Closed
                 {% else %}Unknown Status{% endif %}
               </span>
-
             </td>
             <td>{{ ticket.assigned_to|default_if_none:"-"}} </td>
-
             <td>{{ ticket.requested_by }}</td>
             <td class="timestamp">{{ ticket.created_at }}</td>
             <td>
@@ -118,7 +90,6 @@
                 <button class="status-btn" onclick="toggleDropdown(this)">
                   <img src="/static/ticket/img/change.svg" alt="view" class="toggle-icon" />
                 </button>
-
                 <ul class="status-menu">
                   <li href="javascript:void(0)" class="status-item" data-status="open"
                     onclick="return handleStatusChange(this)">Open</li>
@@ -150,7 +121,6 @@
                 <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
               </button>
             </td>
-
           </tr>
           <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
             <td colspan="4" class="detailShow">
@@ -170,64 +140,45 @@
           </tr>
           {% endfor %}
         </tbody>
-        <tr>
-        </tr>
       </table>
     </div>
 
-    <ul class="pagination"
-      style="margin-top: 20px; display: flex; list-style: none; gap: 5px; justify-content: center;">
+    <ul class="pagination" style="margin-top: 20px; display: flex; list-style: none; gap: 5px; justify-content: center;">
       {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
-      </li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
       {% endif %}
 
       {% if page_obj.number > 4 %}
-      <li class="page-item">
-        <a class="page-link" href="?page=1">1</a>
-      </li>
+      <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
       {% if page_obj.number > 5 %}
-      <li class="page-item disabled">
-        <span class="page-link">...</span>
-      </li>
+      <li class="page-item disabled"><span class="page-link">...</span></li>
       {% endif %}
       {% endif %}
 
       {% for num in page_obj.paginator.page_range %}
       {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %}
-        <li class="page-item {% if num == page_obj.number %}active{% endif %}">
-          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-        </li>
+      <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
       {% endif %}
       {% endfor %}
 
       {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
-        {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
-          <li class="page-item disabled">
-            <span class="page-link">...</span>
-          </li>
-        {% endif %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
-            {{ page_obj.paginator.num_pages }}
-          </a>
-        </li>
+      {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
+      <li class="page-item disabled"><span class="page-link">...</span></li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
       {% endif %}
 
       {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-      </li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
       {% endif %}
     </ul>
   </div>
 </div>
 {% endblock content %}
 
-
 {% block app_js %}
 {{ block.super }}
 {% include "ticket/snippets/scripts.html" %}
-
 {% endblock %}
