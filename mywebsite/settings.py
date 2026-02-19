@@ -36,7 +36,19 @@ SECRET_KEY = 'django-insecure-%8-jl3tb%8c4fjvp5g*)o@mj3ysm7!zh13p=14m3a-kl0fvrz&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["taraalsyah.online","www.taraalsyah.online","76.13.197.54"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://taraalsyah.online",
+    "https://www.taraalsyah.online",
+]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Application definition
@@ -150,9 +162,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djangoproject',
         'USER': 'root',
-        'PASSWORD' : 'Tara2025#',
+        'PASSWORD' : 'Talsyah194598',
         'HOST' : 'localhost',
-        'PORT' : '3306',
+        'PORT' : '3307',
     }
 }
 
