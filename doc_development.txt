@@ -1,0 +1,37 @@
+>Server vps dan domain.
+>update OS.
+>buat virtual env
+>install gunicorn(dalam env) and nginx(luar env)
+>install python,
+>install database server mysql/mariddb/docker/podman, d luar env
+>intall mysqlclient (python driver) di env
+>pastikan dapat konek dari dalam env ke luar
+>create database sama dengan yg di lokal.
+>pull file app dari github
+>di dalam env , instalasi depedency kebutuhan aplikasi (bisa pakai requirements.txt yg sudah di collect di lokal)
+>migrate database, untuk pastikan struktur table sama.
+>collect static.
+>Reverse proxy pakai Nginx
+>buat daemon gunicorn
+>tambah configurasi pada file settings.py.
+
+
+
+
+2.persiapan instalasi.
+Kumpulkan keubtuhan instalasi di server lokal=
+
+aktifkan virtual env=
+source /path/to/env/bin/activate
+
+collect=
+pip freeze > requirements.txt
+
+3.
+
+
+1. settings.py
+
+DEBUG = False (jika ada error pada aplikasi akan di tampilkan error umum)
+ALLOWED_HOSTS = ['domain.com', 'www.domain.com','ip_server/vps']
+
