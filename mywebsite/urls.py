@@ -28,7 +28,7 @@ handler400 = "mywebsite.views.error_400"
 
 urlpatterns = [
     path('', views.landing_page, name="landing_page"),
-    path("", include("home.urls")),
+    path("", include("about.urls")),
     path('index/',views.index,name='index'),
     path('admin/', admin.site.urls, name='admin'),
     path('register/', views.register, name='register'),
