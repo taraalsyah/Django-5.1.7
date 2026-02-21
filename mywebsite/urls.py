@@ -28,6 +28,7 @@ handler400 = "mywebsite.views.error_400"
 
 urlpatterns = [
     path('', views.landing_page, name="landing_page"),
+    path("", include("home.urls")),
     path('index/',views.index,name='index'),
     path('admin/', admin.site.urls, name='admin'),
     path('register/', views.register, name='register'),
@@ -39,7 +40,7 @@ urlpatterns = [
     path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
     path('blog/',include(('blog.urls','blog'),namespace='blog')),
-    path('',include(('about.urls','about'),namespace='about')),
+    #path('about/',include(('about.urls','about'),namespace='about')),
     path('ticket/',include(('ticket.urls','ticket'),namespace='ticket')),
     path('logout/', views.logout_view, name='logout'),
     path('security/', views.security_view, name='security'),
