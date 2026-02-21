@@ -23,7 +23,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from .models import EmailVerificationCode
-
+from django.shortcuts import render
 
 User = get_user_model()
 
@@ -36,6 +36,11 @@ def landing_page(request):
 
 def debug_url(request):
     return HttpResponse(request.build_absolute_uri())
+
+
+
+def error_400(request, exception):
+    return render(request, "400.html", status=400)
 
 
 def register(request):

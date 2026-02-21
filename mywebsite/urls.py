@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.shortcuts import redirect
 
-
+handler400 = "mywebsite.views.error_400"
 
 urlpatterns = [
     path('', views.landing_page, name="landing_page"),
