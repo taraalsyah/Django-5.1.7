@@ -49,6 +49,7 @@ class LoginRequiredMiddleware:
         "/accounts/google/login/callback/",
         "/landing_page/",
         "/check-ip/",
+        "/about/"
     ]
 
     allowed_urls = [
@@ -66,7 +67,8 @@ class LoginRequiredMiddleware:
     '/accounts/google/login/',
     '/accounts/google/login/callback/',
     '/landing_page/',
-    '/check-ip/'
+    '/check-ip/',
+    '/about/'
     ]
 
 
@@ -122,7 +124,8 @@ class AutoLogoutMiddleware:
         '/resend-verification/',
         '/media/attachments/',
         '/',
-        '/check-ip/'
+        '/check-ip/',
+        '/about/'
         ]
 
         # Allow static & media files
