@@ -337,4 +337,4 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = timedelta(minutes=1)
-AXES_LOCKOUT_PARAMETERS = ["username", "ip_address"]
+AXES_LOCKOUT_PARAMETERS = [["ip_address", "username"]]
