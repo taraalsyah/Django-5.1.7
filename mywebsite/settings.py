@@ -16,6 +16,8 @@ import ssl, certifi
 import logging
 import pytz
 from django.utils import timezone
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -334,5 +336,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AXES_FAILURE_LIMIT = 3
-AXES_COOLOFF_TIME = 1  # menit
+AXES_COOLOFF_TIME = timedelta(minutes=1)
 AXES_LOCKOUT_PARAMETERS = ["username", "ip_address"]
