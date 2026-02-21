@@ -38,11 +38,13 @@ SECRET_KEY = 'django-insecure-%8-jl3tb%8c4fjvp5g*)o@mj3ysm7!zh13p=14m3a-kl0fvrz&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["taraalsyah.online","www.taraalsyah.online","76.13.197.54"]
+ALLOWED_HOSTS = ["taraalsyah.online","www.taraalsyah.online","76.13.197.54","pertama.taraalsyah.online"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://taraalsyah.online",
     "https://www.taraalsyah.online",
+    "https://pertama.taraalsyah.online",
+    "https://www.pertama.taraalsyah.online",
 ]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
