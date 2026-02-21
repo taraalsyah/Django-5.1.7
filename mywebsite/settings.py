@@ -43,8 +43,8 @@ ALLOWED_HOSTS = [".taraalsyah.online",]
 CSRF_TRUSTED_ORIGINS = [
     "https://taraalsyah.online",
     "https://www.taraalsyah.online",
-    "https://pertama.taraalsyah.online",
-    "https://www.pertama.taraalsyah.online",
+    "https://about.taraalsyah.online",
+    "https://www.about.taraalsyah.online",
 ]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
