@@ -50,6 +50,7 @@ urlpatterns = [
     path('verify-failed/', views.verify_failed, name='verify_failed'),
     path('verify-email/<str:token>/', views.verify_email, name='verify_email'),
     path('resend-verification/', views.resend_verification, name='resend_verification'),
+    path("check-ip/", views.check_ip, name='check-ip'),
 ]
 
 if settings.DEBUG:

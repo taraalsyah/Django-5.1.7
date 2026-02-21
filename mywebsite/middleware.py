@@ -29,7 +29,8 @@ class LoginRequiredMiddleware:
         "socialaccount_email_verification",
         "socialaccount_inactive",
         "admin",
-        "landing_page"
+        "landing_page",
+        "check-ip"
     ]
 
     # path yang boleh diakses tanpa login
@@ -47,6 +48,7 @@ class LoginRequiredMiddleware:
         "/accounts/google/login/",
         "/accounts/google/login/callback/",
         "/landing_page/",
+        "/check-ip/",
     ]
 
     allowed_urls = [
@@ -64,6 +66,7 @@ class LoginRequiredMiddleware:
     '/accounts/google/login/',
     '/accounts/google/login/callback/',
     '/landing_page/',
+    '/check-ip/'
     ]
 
 
@@ -118,7 +121,8 @@ class AutoLogoutMiddleware:
         '/verify-failed/',
         '/resend-verification/',
         '/media/attachments/',
-        '/'
+        '/',
+        '/check-ip/'
         ]
 
         # Allow static & media files

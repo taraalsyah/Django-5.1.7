@@ -335,3 +335,13 @@ def security_view(request):
         'role':role
     }
     return render(request, 'security.html', context)
+
+
+
+
+
+def check_ip(request):
+    return JsonResponse({
+        "REMOTE_ADDR": request.META.get("REMOTE_ADDR"),
+        "X_FORWARDED_FOR": request.META.get("HTTP_X_FORWARDED_FOR"),
+    })

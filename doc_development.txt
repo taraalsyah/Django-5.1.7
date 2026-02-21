@@ -16,9 +16,9 @@
 >tambah configurasi pada file settings.py.
 
 
+------------------------------------------------------
 
-
-2.persiapan instalasi.
+>>>> persiapan instalasi.
 Kumpulkan keubtuhan instalasi di server lokal=
 
 aktifkan virtual env=
@@ -27,11 +27,34 @@ source /path/to/env/bin/activate
 collect=
 pip freeze > requirements.txt
 
-3.
 
-
-1. settings.py
+>>>> settings.py
 
 DEBUG = False (jika ada error pada aplikasi akan di tampilkan error umum)
 ALLOWED_HOSTS = ['domain.com', 'www.domain.com','ip_server/vps']
 
+
+
+>>>> config gunicorn
+
+[root@srv1394391 nginx]# sudo systemctl cat gunicorn
+# /etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon for django
+After=network.target
+
+[Service]
+User=root
+Group=nginx
+WorkingDirectory=/home/tara_alsyah/django/Django-5.1.7
+Environment="PATH=/home/tara_alsyah/django/env/bin"
+ExecStart=/home/tara_alsyah/django/env/bin/gunicorn mywebsite.wsgi:application --workers 3 --bind 127.0.0.1:8001 --forwarded-allow-ips="*" --access-logfile /var>
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+[root@srv1394391 nginx]# 
+
+
+>>>>config Nginx

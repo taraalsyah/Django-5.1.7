@@ -83,6 +83,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'mywebsite',
     
+    'axes',
+    
 ]
 
 SITE_ID = 4
@@ -119,7 +121,8 @@ MIDDLEWARE = [
     # Prevent clickjacking
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    
+    #
+    'axes.middleware.AxesMiddleware',
     
 ]
 
@@ -127,8 +130,10 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
+    
 ]
 
 
@@ -327,3 +332,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+AXES_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME = 1  # menit
+AXES_LOCKOUT_PARAMETERS = ["username", "ip_address"]
