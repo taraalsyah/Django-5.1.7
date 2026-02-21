@@ -220,6 +220,10 @@ def index(request):
 
 def custom_login(request):
     # Kalo session user = login > langsung ke dashboard
+    
+    print(request.META.get("REMOTE_ADDR"))
+    print(request.META.get("HTTP_X_FORWARDED_FOR"))
+    
     if request.user.is_authenticated:
         return redirect('ticket:dashboard')
 
