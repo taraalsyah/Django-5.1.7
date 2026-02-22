@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'axes',
     
     'django_hosts',
+    'home',
     
 ]
 
