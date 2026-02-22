@@ -27,7 +27,7 @@ from django.shortcuts import redirect
 handler400 = "mywebsite.views.error_400"
 
 urlpatterns = [
-    path('', include('about.urls')),
+    #path('', include('about.urls')),
     #path('', views.landing_page, name="landing_page"),
     path('index/',views.index,name='index'),
     path('admin/', admin.site.urls, name='admin'),
@@ -39,9 +39,9 @@ urlpatterns = [
     #path('login/google/', views.google_login_redirect, name='google_login_redirect'),
     path("verify/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path('login/', views.custom_login, name='login'),
-    path('blog/',include(('blog.urls','blog'),namespace='blog')),
+    #path('blog/',include(('blog.urls','blog'),namespace='blog')),
     #path('about/',include(('about.urls','about'),namespace='about')),
-    path('ticket/',include(('ticket.urls','ticket'),namespace='ticket')),
+    #path('ticket/',include(('ticket.urls','ticket'),namespace='ticket')),
     path('logout/', views.logout_view, name='logout'),
     path('security/', views.security_view, name='security'),
     path('profile/', views.profile_view, name='profile'),

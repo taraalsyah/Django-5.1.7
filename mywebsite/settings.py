@@ -89,6 +89,8 @@ INSTALLED_APPS = [
     
     'axes',
     
+    'django_hosts',
+    
 ]
 
 SITE_ID = 4
@@ -340,3 +342,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = timedelta(minutes=1)
 AXES_LOCKOUT_PARAMETERS = [["ip_address", "username"]]
+
+
+ROOT_HOSTCONF = "mywebsite.hosts"
+DEFAULT_HOST = "home"
+PARENT_HOST = "taraalsyah.online"
