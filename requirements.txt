@@ -17,6 +17,7 @@ django-allauth==65.14.3
 django-axes==8.3.1
 django-crispy-forms==2.5
 django-extensions==4.1
+django-hosts==7.0.0
 Flask==3.1.1
 frozenlist==1.7.0
 gunicorn==25.1.0
