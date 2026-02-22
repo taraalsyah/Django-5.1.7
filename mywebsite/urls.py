@@ -27,8 +27,8 @@ from django.shortcuts import redirect
 handler400 = "mywebsite.views.error_400"
 
 urlpatterns = [
-    path('', views.landing_page, name="landing_page"),
     path('', include('about.urls')),
+    #path('', views.landing_page, name="landing_page"),
     path('index/',views.index,name='index'),
     path('admin/', admin.site.urls, name='admin'),
     path('register/', views.register, name='register'),
