@@ -8,7 +8,7 @@ from .models import AboutDb
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectMixin
-
+from django.shortcuts import redirect
 # Create your views here.
 
 def about_page(request):
@@ -37,10 +37,10 @@ class IndexClassView(View):
         'appcssabout':'about/css/styles.css',
         }
         
-        return render("/about/")
+        return redirect("about:index")
 
 class Template(TemplateView):
-    template_name='about/templates/about/templateview.html'
+    template_name='about/templateview.html'
     extra={'nama':'tara'}
     def get_context_data(self,*args,**kwargs):
         kwargs.update(self.extra)
@@ -54,7 +54,7 @@ class Template(TemplateView):
         return context
     
 class Createview(CreateView):
-    template_name = 'about/templates/about/createview.html'
+    template_name = 'about/createview.html'
     model=AboutDb
     success_url = reverse_lazy('about:index')
     print('ini create view')
@@ -72,7 +72,7 @@ class Createview(CreateView):
         return super().get_context_data(**kwargs)
     
 class Updateview(UpdateView):
-    template_name='about/templates/about/createview.html'
+    template_name='about/createview.html'
     model=AboutDb
     success_url = reverse_lazy('about:index')
     fields=[
@@ -90,7 +90,7 @@ class Updateview(UpdateView):
 class Listview(ListView):
     model=AboutDb
     print('ini list view')
-    template_name='about/templates/about/listview.html'
+    template_name='about/listview.html'
     ordering=['sex']
     paginate_by=2
     paginate_orphans = 0
@@ -109,7 +109,7 @@ class Listview(ListView):
         return super().get_context_data(**kwargs)
     
 class Ubsi(View):
-    template_name = 'about/templates/about/ubsi.html'
+    template_name = 'about/ubsi.html'
     context = {}
     def get(self,request):
         print(request,'ini dari get index')
