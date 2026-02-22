@@ -37,7 +37,7 @@ class IndexClassView(View):
         'appcssabout':'about/css/styles.css',
         }
         
-        return HttpResponseRedirect("/about/")
+        return render("/about/")
 
 class Template(TemplateView):
     template_name='about/templates/about/templateview.html'
