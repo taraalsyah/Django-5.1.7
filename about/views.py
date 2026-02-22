@@ -12,7 +12,7 @@ from django.views.generic.detail import SingleObjectMixin
 # Create your views here.
 
 def about_page(request):
-    return render(request, "about/templates/index.html")
+    return render(request, "about/index.html")
 
 class IndexClassView(View):
     template_name = 'about/about.html'
