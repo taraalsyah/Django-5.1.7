@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}
+<title>List Ticket</title>
+{% endblock title %}
+
+{% block app_css %}
+{{ block.super }}
+{% include "ticket/snippets/styles.html" %}
+{% endblock app_css %}
+
+{% block content %}
+
+{% block message %}
+{% endblock message %}
+
+{% csrf_token %}
+<div id="toast" class="toast"></div>
+<h2>Ticket <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;"></span></h2>
+
+{% for message in messages %}
+<div id="flash-message" class="alert alert-success">
+  {{ message }}
+</div>
+{% endfor %}
+
+<div class="profile-section" id="profile-section">
+  <div class="profile-card">
+    <div class="profile-info">
+      <div class="search-div">
+        <form method="get">
+          <input class="search-input" type="text" name="q" placeholder="Search by anything..." value="{{ query }}">
+          <button class="search-btn" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="info-box">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Requested By</th>
+            <th>Created At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in page_obj %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ ticket.id_ticket }}</td>
+            <td class="wrap">{{ ticket.title }}</td>
+            <td>{{ ticket.category }}</td>
+            <td>
+              <span id="showStatusIndex" class="IndexStatusShow status-open"
+                data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}"
+                data-ticket-id="{{ ticket.id_ticket }}">
+                {% if ticket.status == 1 %}Open
+                {% elif ticket.status == 2 %}In Progress
+                {% elif ticket.status == 3 %}Closed
+                {% else %}Unknown Status{% endif %}
+              </span>
+            </td>
+            <td>{{ ticket.assigned_to|default_if_none:"-"}} </td>
+            <td>{{ ticket.requested_by }}</td>
+            <td class="timestamp">{{ ticket.created_at }}</td>
+            <td>
+              <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="mytooltip">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">
+                  <img src="/static/ticket/img/detail.svg" alt="view" />
+                </button>
+                <span class="tooltip-text">History Ticket</span>
+              </form>
+            </td>
+
+            {% if role == 'Admin' %}
+            <td>
+              <div class="status-dropdown mytooltip" data-ticket-id="{{ ticket.id_ticket }}"
+                data-status="{% if ticket.status == 1 %}open{% elif ticket.status == 2 %}in-progress{% elif ticket.status == 3 %}closed{% endif %}">
+                <button class="status-btn" onclick="toggleDropdown(this)">
+                  <img src="/static/ticket/img/change.svg" alt="view" class="toggle-icon" />
+                </button>
+                <ul class="status-menu">
+                  <li href="javascript:void(0)" class="status-item" data-status="open"
+                    onclick="return handleStatusChange(this)">Open</li>
+                  <li href="javascript:void(0)" class="status-item" data-status="in-progress"
+                    onclick="return handleStatusChange(this)">In Progress</li>
+                  <li href="javascript:void(0)" class="status-item" data-status="closed"
+                    onclick="return handleStatusChange(this)">Closed</li>
+                </ul>
+                <span class="tooltip-text">Change Ticket</span>
+              </div>
+            </td>
+            {% endif %}
+
+            {% if role == 'Admin' %}
+            <td>
+              <form method="POST" class="button-delete mytooltip"
+                data-url="{% url 'ticket:delete_ticket' ticket.id_ticket %}" data-ticket-id="{{ ticket.id_ticket }}">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete" title="Delete">
+                  <img src="/static/ticket/img/delete-btn.svg" alt="view" />
+                </button>
+                <span class="tooltip-text">Delete Ticket</span>
+              </form>
+            </td>
+            {% endif %}
+
+            <td>
+              <button class="toggle-btn" data-target="detail-{{ ticket.id_ticket }}">
+                <img src="/static/ticket/img/up-arrow.svg" alt="view" class="toggle-icon" />
+              </button>
+            </td>
+          </tr>
+          <tr id="detail-{{ ticket.id_ticket }}" class="detail-row">
+            <td colspan="4" class="detailShow">
+              <strong>Description:</strong> {{ ticket.description }}<br>
+              <hr>
+              <strong>Attachments:</strong>
+              {% if ticket.attachments %}
+              <a href="{{ ticket.attachments.url }}" target="_blank">View Attachment</a>
+              {% else %}
+              No attachments.
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="10">No tickets found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="pagination" style="margin-top: 20px; display: flex; list-style: none; gap: 5px; justify-content: center;">
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+      {% endif %}
+
+      {% if page_obj.number > 4 %}
+      <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+      {% if page_obj.number > 5 %}
+      <li class="page-item disabled"><span class="page-link">...</span></li>
+      {% endif %}
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+      {% if num >= page_obj.number|add:-4 and num <= page_obj.number|add:4 %}
+      <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+
+      {% if page_obj.number < page_obj.paginator.num_pages|add:-4 %}
+      {% if page_obj.number < page_obj.paginator.num_pages|add:-5 %}
+      <li class="page-item disabled"><span class="page-link">...</span></li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+      {% endif %}
+
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock content %}
+
+{% block app_js %}
+{{ block.super }}
+{% include "ticket/snippets/scripts.html" %}
+{% endblock %}

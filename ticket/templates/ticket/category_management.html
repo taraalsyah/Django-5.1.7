@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Category Management</title>
+{% endblock title %}
+
+{% block app_css %}
+{{ block.super }}
+{% include "ticket/snippets/styles.html" %}
+<style>
+    /* Add any local overrides if necessary */
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .submit-row {
+        margin-top: 20px;
+    }
+</style>
+{% endblock app_css %}
+
+{% block content %}
+<h2>Category Management <span class="badge bg-secondary" style="font-size: 0.5em; vertical-align: middle;"></span></h2>
+
+{% for message in messages %}
+<div id="flash-message" class="alert alert-success">
+    {{ message }}
+</div>
+{% endfor %}
+
+<div class="profile-section">
+    <!-- Add Category Form Card -->
+    <div class="profile-card">
+        <div style="width: 100%;">
+            <h4 class="mb-3">Add New Category</h4>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Category Name</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Description</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100" style="height: 38px;">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category List Card -->
+    <div class="info-box">
+        <h4 class="mb-3">Category List</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th style="text-align: center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr id="category-row-{{ category.id }}">
+                        <td>{{ forloop.counter|add:categories.start_index|add:-1 }}</td>
+                        <td><strong>{{ category.name }}</strong></td>
+                        <td>{{ category.description|default:"-" }}</td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-danger btn-sm" data-category-id="{{ category.id }}"
+                                data-category-name="{{ category.name }}" onclick="handleDelete(this)">
+                                <img src="/static/ticket/img/delete-btn.svg" alt="delete"
+                                    style="width: 16px; margin-right: 4px;" />
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px;">No categories found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <ul class="pagination mt-4">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block app_js %}
+{{ block.super }}
+<script>
+    function handleDelete(button) {
+        const categoryId = button.getAttribute('data-category-id');
+        const categoryName = button.getAttribute('data-category-name');
+
+        if (confirm(`Are you sure you want to delete category "${categoryName}"?`)) {
+            fetch(`/ticket/categories/delete/${categoryId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const row = document.getElementById(`category-row-${categoryId}`);
+                        row.style.transition = 'opacity 0.3s';
+                        row.style.opacity = '0';
+                        setTimeout(() => row.remove(), 300);
+                    } else {
+                        alert('Error deleting category: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the category.');
+                });
+        }
+    }
+    setTimeout(() => {
+    const msg = document.getElementById('flash-message');
+    if (msg) {
+      msg.classList.add('fade');
+      setTimeout(() => msg.remove(), 500);
+    }
+  }, 1000);
+</script>
+{% endblock %}

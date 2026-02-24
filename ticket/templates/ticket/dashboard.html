@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}
+  <title>Index Dashboard</title>
+{% endblock title %}
+
+{% block app_css %}
+  {{ block.super }}
+  {% include "ticket/snippets/styles.html" %}
+{% endblock app_css %}
+
+
+{% block content %}
+{% block message %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="error">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  {% endblock message %}
+
+  <div class="dashboard">
+    
+    <div class="chart-container">
+    <!-- Chart -->
+    
+
+    <!-- Legend -->
+    <div class="legend">
+      <h2>Status Ticket</h2>
+      <div class="legend-item">
+        <span class="dot open" ></span>
+        <span>Open : </span>
+        <span id=""></span>
+        <span>%</span>
+      </div>
+      <div class="legend-item">
+        <span class="dot progress" ></span>
+        <span>In Progress :</span>
+        <span id=""></span>
+        <span>%</span>
+      </div>
+      <div class="legend-item">
+        <span class="dot closed" ></span>
+        <span>Closed :</span>
+        <span id=""></span>
+        <span>%</span>
+      </div>
+    </div>
+    </div>
+  
+  <div class="card">
+        <h3>Ticket Status Overviews</h3>
+        <!-- Open status section -->
+        <div class="status-section">
+            <span class="status-label">Open</span>
+            <span class="status-count status-open" id="open-count">{{ ticket2.1 }}</span>
+        </div>
+        <!-- In Progress status section -->
+        <div class="status-section">
+            <span class="status-label">In Progress</span>
+            <span class="status-count status-in-progress" id="in-progress-count">{{ ticket2.2 }}</span>
+        </div>
+        <!-- Closed status section -->
+        <div class="status-section">
+            <span class="status-label">Closed</span>
+            <span class="status-count status-closed" id="closed-count">{{ ticket2.3 }}</span>
+        </div>
+    </div>
+    </div>
+{% endblock content %}
+
+
+{% block app_js %}
+{{ block.super }}
+        {% include "ticket/snippets/scripts.html" %}
+{% endblock app_js %}

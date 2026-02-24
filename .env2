@@ -1,0 +1,4 @@
+DEBUG=0
+SECRET_KEY='django-insecure-%8-jl3tb%8c4fjvp5g*)o@mj3ysm7!zh13p=14m3a-kl0fvrz&'
+ALLOWED_HOSTS=127.0.0.1,localhost
+DATABASE_URL=mysql://root:Tara2025%23@127.0.0.1:3306/djangoproject

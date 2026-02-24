@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block app_css %}
+{{ block.super }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Make URL available to JS file
+    var ajaxLoadCitiesUrl = "{% url 'blog:ajax_load_cities2' %}";
+</script>
+<script src="{% static 'blog/js/scripts.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this item?");
+    }
+</script>
+{% endblock app_css %}
+{% block header %}
+    <h1>Ini Halaman BLOG create</h1>
+{% endblock header %}
+{% block content %}
+    <p>Ini dashboard BLOG contoh overloading</p>
+    <h3 style="text-align: center;">Contoh Form Django HTML</h3>
+
+    <form action="" method="POST" class="post-edit-form" onsubmit="return confirmDelete();">
+    {% csrf_token %}
+    <table class="post-edit-form__table">
+        <thead>
+            <tr>
+                <th class="post-edit-form__th">Title</th>
+                <th class="post-edit-form__th">Body</th>
+                <th class="post-edit-form__th">Category</th>
+                <th class="post-edit-form__th">Country</th>
+                <th class="post-edit-form__th">City</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="post-edit-form__td">
+                    <input type="text" name="title" value="{{ post_form.title }}" required class="post-edit-form__input">
+                </td>
+                <td class="post-edit-form__td">
+                    <input type="text" name="body" value="{{ post_form.body }}" class="post-edit-form__input">
+                </td>
+                <td class="post-edit-form__td">
+                    <input type="text" name="category" value="{{ post_form.category }}" class="post-edit-form__input">
+                </td>
+                
+                {% for field in location_form %}
+                <td class="post-edit-form__td">{{ field }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <div class="post-edit-form__btn-group">
+        <button type="submit" class="post-edit-form__btn post-edit-form__btn-submit">Kirim</button>
+        <button type="button" class="post-edit-form__btn post-edit-form__btn-cancel">
+            <a href="{% url 'blog:index' %}">Cancel</a>
+        </button>
+    </div>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,125 @@
+[2026-02-16 01:26:31 +0700] [5341] [INFO] Starting gunicorn 25.1.0
+[2026-02-16 01:26:31 +0700] [5341] [INFO] Listening at: http://127.0.0.1:8000 (5341)
+[2026-02-16 01:26:31 +0700] [5341] [INFO] Using worker: sync
+[2026-02-16 01:26:31 +0700] [5341] [INFO] Control socket listening at /Users/mac/Documents/python/Django/Django-5.1.7/Django-5.1.7/gunicorn.ctl
+[2026-02-16 01:26:31 +0700] [5342] [INFO] Booting worker with pid: 5342
+[2026-02-16 01:26:31 +0700] [5343] [INFO] Booting worker with pid: 5343
+[2026-02-16 01:26:31 +0700] [5344] [INFO] Booting worker with pid: 5344
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+[2026-02-16 01:36:17 +0700] [5344] [INFO] Parent changed, shutting down: <Worker 5344>
+[2026-02-16 01:36:17 +0700] [5344] [INFO] Worker exiting (pid: 5344)
+ini create view
+ini list view
+Role= Admin
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+Ticket History for: 0216012659
+Ticket found: 0216012659
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+Role= Admin
+Next URL= /security/
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+Role= Admin
+Date end= None
+In Progress = 9
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+[2026-02-16 01:36:17 +0700] [5342] [INFO] Parent changed, shutting down: <Worker 5342>
+[2026-02-16 01:36:17 +0700] [5342] [INFO] Worker exiting (pid: 5342)
+ini create view
+ini list view
+request method: POST
+Next URL GET= None
+Next URL POST= None
+Received request to update ticket status
+Updating ticket 0216012659 to status 2
+request method: POST
+Next URL GET= None
+Next URL POST= None
+Received request to update ticket status
+Updating ticket 0216012659 to status 3
+Ticket History for: 0216012659
+Ticket found: 0216012659
+Ticket History: <QuerySet [<TicketHistory: TicketHistory object (414)>, <TicketHistory: TicketHistory object (413)>, <TicketHistory: TicketHistory object (412)>]>
+Role= Admin
+Date end= None
+In Progress = 9
+Role= Admin
+Role= Admin
+Linked exists: True for email: tara.alsyah@icode.co.id and provider: google
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+[2026-02-16 01:36:17 +0700] [5343] [INFO] Parent changed, shutting down: <Worker 5343>
+[2026-02-16 01:36:17 +0700] [5343] [INFO] Worker exiting (pid: 5343)
+ini create view
+ini list view
+Role= Admin
+Role= Admin
+DEBUG ticket: After Malam tgl 16
+DEBUG id_ticket: 0216012659
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+Role= Admin
+Role= Admin
+Date end= None
+In Progress = 9
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1
+Role= Admin
+cek user= False
+show ticket= <QuerySet [{'status': 3, 'count': 183}, {'status': 2, 'count': 9}, {'status': 1, 'count': 3}]>
+cek summary= {3: 94, 2: 5, 1: 2}
+summary ticket= {3: 94, 2: 5, 1: 2} {3: 183, 2: 9, 1: 3}
+maulido023
+Engineer1
+engineer <QuerySet [<CustomUser: maulido023>, <CustomUser: Engineer1>]>
+maulido023
+Engineer1

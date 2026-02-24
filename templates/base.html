@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+  <title>ProDeal Dashboard</title>
+  {% endblock title %}
+
+
+  {% block header %}
+  {% endblock header %}
+
+
+  {% block app_css %}
+  {% include "snippets/styles.html" %}
+  {% endblock app_css %}
+
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="app">
+   <!-- Sidebar -->
+   
+   {% block sidebar %}
+    {% include "snippets/sidebar.html" %}
+   {% endblock sidebar %}
+    
+  
+
+
+   <!-- Main Content -->
+   <div class="main-content">
+       {% block topbar %}
+     <!-- Top Bar -->
+      {% include "snippets/topbar.html" %}
+       {% endblock topbar %}
+
+
+
+     <!-- Content Area -->
+     <section class="page-content">
+       {% block content %}
+       {% block message %}
+
+       {% endblock message %}
+       <h2>Account Settings</h2>
+
+       <div class="tabs">
+         <button class="active">My Profile</button>
+         <button>Security</button>
+         <button>Teams</button>
+         <button>Team Member</button>
+         <button>Notifications</button>
+         <button>Billing</button>
+         <button>Data Export</button>
+         <button class="delete">Delete Account</button>
+       </div>
+
+       <div class="profile-section">
+         <div class="profile-card">
+           <div class="profile-info">
+             <img src="https://via.placeholder.com/80" alt="User Photo">
+             <div>
+               <h3>Rafiqur Rahman</h3>
+               <p>Team Manager</p>
+               <span>Leeds, United Kingdom</span>
+             </div>
+           </div>
+           <button class="edit-btn">Edit ✏️</button>
+         </div>
+
+         <div class="info-box">
+           <h4>Personal Information</h4>
+           <div class="info-grid">
+             <div>
+               <label>First Name</label>
+               <p>Rafiqur</p>
+             </div>
+             <div>
+               <label>Last Name</label>
+               <p>Rahman</p>
+             </div>
+             <div>
+               <label>Email address</label>
+               <p>rafiqurrahman51@gmail.com</p>
+             </div>
+             <div>
+               <label>Phone</label>
+               <p>+09 345 346 46</p>
+             </div>
+             <div>
+               <label>Bio</label>
+               <p>Team Manager</p>
+             </div>
+           </div>
+           <button class="edit-btn">Edit ✏️</button>
+         </div>
+       </div>
+
+        
+       {% endblock content %}
+     </section>
+   </div>
+ </div>
+
+<script src="{% static 'js/sidebar.js' %}"></script>
+{% block app_js %} {% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #e2e8f0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        form p {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1e293b;
+            font-weight: 400;
+        }
+
+        input[type="text"]:focus{
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            
+        }
+
+        .error {
+            color: #dc2626;
+            font-size: 14px;
+            background: #fef2f2;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            border-left: 3px solid #dc2626;
+        }
+
+        .links {
+            margin-top: 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .links a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s ease;
+            padding: 8px;
+        }
+
+        .links a:hover {
+            color: #2563eb;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .divider span {
+            padding: 0 12px;
+        }
+        .pass-field{
+            display: grid;
+            grid-template-columns: 90% 10%;
+            gap: 0;
+            width: 100%;
+            
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1e293b;
+            
+        }
+        
+        img {
+            width: 100%;          /* img ikut button */
+            height: 100%;
+            object-fit: contain;  /* biar gak gepeng */
+            display: block;
+            border: none;
+        }
+        .toggle-btn{
+            border: none;
+            background-color: white;
+        }
+        
+        input{
+            background-color: #ffffff !important;
+            
+        }
+        .password{
+            border: none !important;
+
+        }
+        .submit{
+            text-align: center;
+            height: 30px;
+        }
+        .submit button{
+            width: 30%;
+        }
+        .username,
+        .password{
+            font-style: sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <h2>Login</h2>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="error">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            <p>
+                <label>Username</label>
+                <input type="text" name="username" class="username" placeholder="Enter Username / Password" required>
+            </p>
+            <p>
+                <label>Password</label>
+                <div class="pass-field" type="text">
+                    <input  type="password" name="password" id="password" class="password" placeholder="Enter password" required>
+                    <button type="button" class="toggle-btn" id="toggleBtn">
+                        <img id="toggleIcon" src="/static/img/hide-pass.svg" alt="Profile" />
+                    </button>
+                </div>
+            </p>
+            <input type="hidden"  name="next" value="{{ redirect_field_value|default:'' }}">
+            <div class="submit">
+            <button class="submit" type="submit">
+                Login
+            </button>
+            </div>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <div class="links">
+            <a href="{% url 'register' %}">Don't have an account? Register</a>
+            <a href="{% provider_login_url 'google' %}">Login with Google</a>
+        </div>
+    </div>
+
+<script>
+  const passwordInput = document.getElementById("password");
+  const toggleBtn = document.getElementById("toggleBtn");
+  const toggleIcon = document.getElementById("toggleIcon");
+
+  toggleBtn.addEventListener("click", () => {
+    const isHidden = passwordInput.type === "password";
+
+    passwordInput.type = isHidden ? "text" : "password";
+
+    // ganti icon
+    toggleIcon.src = isHidden
+      ? "/static/img/show-pass.svg"
+      : "/static/img/hide-pass.svg";
+  });
+</script>
+
+</body>
+
+</html>
