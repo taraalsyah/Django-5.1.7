@@ -88,10 +88,6 @@ INSTALLED_APPS = [
     'mywebsite',
     
     'axes',
-    
-    'django_hosts',
-    'home',
-    
 ]
 
 SITE_ID = 4
