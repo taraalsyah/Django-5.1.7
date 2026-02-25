@@ -36,21 +36,21 @@ class LoginRequiredMiddleware:
 
     # path yang boleh diakses tanpa login
     EXEMPT_PATHS = [
-        "/",
-        "/login/",
-        "/logout/",
-        "/register/",
-        "/admin/login/",
-        "/verify/",
-        "/accounts/",
-        "/go-to-google-login/",
-        "/admin/",
-        "/login/google/",
-        "/accounts/google/login/",
-        "/accounts/google/login/callback/",
-        "/landing_page/",
-        "/check-ip/",
-        "/about/"
+        "",
+        "login",
+        "logout",
+        "register",
+        "admin",
+        "verify_success",
+		"verify_failed",
+		"verify_email",
+		"resend_verification",
+        "accounts",
+        "google_redirect",
+        "google_login_redirect",
+        "landing_page",
+        "check-ip",
+        "about"
     ]
 
     allowed_urls = [
