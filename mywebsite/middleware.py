@@ -71,6 +71,9 @@ class LoginRequiredMiddleware:
     '/check-ip/',
     '/about/'
     ]
+    EXEMPT_PREFIXES = [
+    "/about/",
+    ]
 
 
     def __init__(self, get_response):
@@ -91,10 +94,16 @@ class LoginRequiredMiddleware:
 
         # cek apakah user belum login
         if not request.user.is_authenticated:
+
+            # kalau termasuk prefix yang dibolehkan
+            if any(request.path.startswith(prefix) for prefix in self.EXEMPT_PREFIXES):
+                return self.get_response(request)
+
+            # kalau tidak termasuk whitelist path & name
             if (
                 request.path not in self.EXEMPT_PATHS
                 and url_name not in self.EXEMPT_NAMES
-            ):
+                ):
                 return redirect(settings.LOGIN_URL)
 
         return self.get_response(request)
