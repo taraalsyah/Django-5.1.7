@@ -30,7 +30,8 @@ class LoginRequiredMiddleware:
         "socialaccount_inactive",
         "admin",
         "landing_page",
-        "check-ip"
+        "check-ip",
+        "about"
     ]
 
     # path yang boleh diakses tanpa login
