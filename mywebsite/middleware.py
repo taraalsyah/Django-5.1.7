@@ -95,16 +95,21 @@ class LoginRequiredMiddleware:
         # cek apakah user belum login
         if not request.user.is_authenticated:
 
-            # kalau termasuk prefix yang dibolehkan
+            # 1️⃣ Prefix check dulu
             if any(request.path.startswith(prefix) for prefix in self.EXEMPT_PREFIXES):
                 return self.get_response(request)
 
-            # kalau tidak termasuk whitelist path & name
-            if (
-                request.path not in self.EXEMPT_PATHS
-                and url_name not in self.EXEMPT_NAMES
-                ):
-                return redirect(settings.LOGIN_URL)
+            # 2️⃣ Exact path
+            if request.path in self.EXEMPT_PATHS:
+                return self.get_response(request)
+
+            # 3️⃣ Name check
+            if url_name in self.EXEMPT_NAMES:
+                return self.get_response(request)
+
+            # 4️⃣ Kalau tidak termasuk semua → redirect
+            return redirect(settings.LOGIN_URL)
+
 
         return self.get_response(request)
 
