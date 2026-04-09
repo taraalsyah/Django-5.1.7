@@ -1,7 +1,7 @@
 >Server vps dan domain.
 >update OS.
 ----------------------------------------------------------------------
->install Python 3.11 dan Virtual env =
+>install Python 3.11 , create Virtual env , install depedencies=
 
 # Download Python 3.11
 cd /tmp
@@ -143,7 +143,7 @@ sudo grep 'temporary password' /var/log/mysqld.log
 #login ke mysql dengan password temporary lalu buat user dan password mysql baru=
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'PasswordBaru123!';
 
-
+#pastikan di setting.py sama dengan user dan password baru.
 ---------------------------------------------------------------------------
 
 >install gunicorn dalam env( cek ulang lagi buat pastiin, tapi seharusnya sudah ada karena sudah masuk ke list requirement)
@@ -157,15 +157,127 @@ pip install gunicorn
 
 # Cek versi
 gunicorn --version
--------------------------------------------------------------------------
 
+
+------------------------------------------------------------------------
+>create daemon gunicorn
+
+[admin@iZk1a176ya952ieub3bmrxZ ~]$ sudo cat /etc/systemd/system/gunicorn.service
+[Unit]
+Description=Gunicorn Django
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/admin/taraalsyah/django/Django-5.1.7
+ExecStart=/home/admin/taraalsyah/django/venv/bin/gunicorn --workers 3 --bind unix:/home/admin/taraalsyah/django/Django-5.1.7/gunicorn.sock mywebsite.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+[admin@iZk1a176ya952ieub3bmrxZ ~]$ 
+
+
+#reload daemon
+sudo systemctl daemon-reload
+
+#restart daemon
+sudo systemctl restart gunicorn
+
+
+-------------------------------------------------------------------------
 >install nginx diluar env, 
+
+# Deactivate venv dulu
+deactivate
+
+# Install EPEL repository (nginx ada di sini)
+sudo yum install -y epel-release
+
+# Install Nginx
+sudo yum install -y nginx
+
+# Start Nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+# Cek status
+sudo systemctl status nginx
+
+#Cek versi:
+nginx -v
+
+-------------------------------------------------------------------------
+#config nginx
+#kaalo pake https brarti tambah 443
+
+[admin@iZk1a176ya952ieub3bmrxZ ~]$ cat /etc/nginx/conf.d/django.conf
+server {
+    listen 80 default_server;
+    server_name 8.215.110.184;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static/ {
+        root /home/admin/taraalsyah/django/Django-5.1.7;
+    }
+
+    location /media/ {
+        root /home/admin/taraalsyah/django/Django-5.1.7;
+    }
+
+    location / {
+        proxy_pass http://unix:/home/admin/taraalsyah/django/Django-5.1.7/gunicorn.sock:;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+[admin@iZk1a176ya952ieub3bmrxZ ~]$ 
+
+#nambahin user nginx ke group admin
+sudo usermod -aG admin nginx
+
+#restart nginx
+sudo systemctl restart nginx
+
+
+------------------------------------------------------------------------
+#pastiin akses folder dan file berikut
+
+[admin@iZk1a176ya952ieub3bmrxZ home]$ ll
+total 4
+drwxr-xr-x 6 admin admin 4096 Apr  9 12:53 admin
+[admin@iZk1a176ya952ieub3bmrxZ home]$ cd admin/
+[admin@iZk1a176ya952ieub3bmrxZ ~]$ ll
+total 4
+drwxr-xr-x 3 admin admin 4096 Apr  9 11:01 taraalsyah
+[admin@iZk1a176ya952ieub3bmrxZ ~]$ cd taraalsyah/
+[admin@iZk1a176ya952ieub3bmrxZ taraalsyah]$ ll
+total 4
+drwxr-xr-x 4 admin admin 4096 Apr  9 14:31 django
+[admin@iZk1a176ya952ieub3bmrxZ taraalsyah]$ cd django/
+[admin@iZk1a176ya952ieub3bmrxZ django]$ ll
+total 8
+drwxr-xr-x 12 admin admin 4096 Apr  9 15:19 Django-5.1.7
+drwxrwxr-x  5 admin admin 4096 Apr  9 12:43 venv
+[admin@iZk1a176ya952ieub3bmrxZ django]$ cd Django-5.1.7/
+[admin@iZk1a176ya952ieub3bmrxZ Django-5.1.7]$ ll |grep gunicorn.*
+gunicorn.log:[2026-02-16 01:26:31 +0700] [5341] [INFO] Control socket listening at /Users/mac/Documents/python/Django/Django-5.1.7/Django-5.1.7/gunicorn.ctl
+grep: gunicorn.sock: No such device or address
+[admin@iZk1a176ya952ieub3bmrxZ Django-5.1.7]$ ll |grep 'gunicorn*'
+srw-------  1 root  root       0 Apr  9 15:19 gunicorn.ctl
+-rw-rw-r--  1 admin admin   4664 Apr  9 11:23 gunicorn.log
+srwxrwxrwx  1 root  root       0 Apr  9 15:19 gunicorn.sock
+[admin@iZk1a176ya952ieub3bmrxZ Django-5.1.7]$ 
+------------------------------------------------------------------------
+>intall mysqlclient (python driver) di env, tapi ini harusnya sudah masuk ke requirement.txt, 
+
+------------------------------------------------------------------------
+>pastikan dapat konek dari dalam env ke luar
 
 ------------------------------------------------------------------------
 
-
->intall mysqlclient (python driver) di env
->pastikan dapat konek dari dalam env ke luar
 >create database sama dengan yg di lokal.
 >pull file app dari github
 >di dalam env , instalasi depedency kebutuhan aplikasi (bisa pakai requirements.txt yg sudah di collect di lokal)
