@@ -278,10 +278,21 @@ srwxrwxrwx  1 root  root       0 Apr  9 15:19 gunicorn.sock
 
 ------------------------------------------------------------------------
 
->create database sama dengan yg di lokal.
->pull file app dari github
->di dalam env , instalasi depedency kebutuhan aplikasi (bisa pakai requirements.txt yg sudah di collect di lokal)
->migrate database, untuk pastikan struktur table sama.
+>create database sama dengan yg di lokal dan migrate database, untuk pastikan struktur table sama.
+
+#pastikan nama dan koneksi database sama dengan di config setting.py
+
+#jalankan migrasi=
+
+[admin@iZk1a176ya952ieub3bmrxZ django]$ source venv/bin/activate
+(venv) [admin@iZk1a176ya952ieub3bmrxZ django]$ 
+(venv) [admin@iZk1a176ya952ieub3bmrxZ django]$ cd Django-5.1.7/
+(venv) [admin@iZk1a176ya952ieub3bmrxZ Django-5.1.7]$ python manage.py migrate
+
+
+
+------------------------------------------------------------------------
+
 >collect static.
 >Reverse proxy pakai Nginx
 >buat daemon gunicorn
@@ -290,43 +301,3 @@ srwxrwxrwx  1 root  root       0 Apr  9 15:19 gunicorn.sock
 
 ------------------------------------------------------
 
->>>> persiapan instalasi.
-Kumpulkan keubtuhan instalasi di server lokal=
-
-aktifkan virtual env=
-source /path/to/env/bin/activate
-
-collect=
-pip freeze > requirements.txt
-
-
->>>> settings.py
-
-DEBUG = False (jika ada error pada aplikasi akan di tampilkan error umum)
-ALLOWED_HOSTS = ['domain.com', 'www.domain.com','ip_server/vps']
-
-
-
->>>> config gunicorn
-
-[root@srv1394391 nginx]# sudo systemctl cat gunicorn
-# /etc/systemd/system/gunicorn.service
-[Unit]
-Description=gunicorn daemon for django
-After=network.target
-
-[Service]
-User=root
-Group=nginx
-WorkingDirectory=/home/tara_alsyah/django/Django-5.1.7
-Environment="PATH=/home/tara_alsyah/django/env/bin"
-ExecStart=/home/tara_alsyah/django/env/bin/gunicorn mywebsite.wsgi:application --workers 3 --bind 127.0.0.1:8001 --forwarded-allow-ips="*" --access-logfile /var>
-
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-[root@srv1394391 nginx]# 
-
-
->>>>config Nginx
