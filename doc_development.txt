@@ -274,6 +274,35 @@ srwxrwxrwx  1 root  root       0 Apr  9 15:19 gunicorn.sock
 >intall mysqlclient (python driver) di env, tapi ini harusnya sudah masuk ke requirement.txt, 
 
 ------------------------------------------------------------------------
+#insert data role 
+
+1. Buat role (Group) kalau belum ada
+python manage.py shell
+
+from django.contrib.auth.models import Group
+
+Group.objects.get_or_create(name='Admin')
+Group.objects.get_or_create(name='Engineer')
+Group.objects.get_or_create(name='Operation')
+
+2. Lihat semua user
+from django.contrib.auth.models import User
+
+User.objects.all()
+
+3. Ambil User
+
+user = User.objects.get(username='tara')  # ganti sesuai user lo
+group = Group.objects.get(name='Engineer')
+user.groups.clear()   # hapus role lama (optional tapi disarankan)
+user.groups.add(group)
+
+4. Cek Role user
+user.groups.all()
+
+
+
+------------------------------------------------------------------------
 >pastikan dapat konek dari dalam env ke luar
 
 ------------------------------------------------------------------------
