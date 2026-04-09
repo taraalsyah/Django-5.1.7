@@ -53,5 +53,4 @@ urllib3                 2.5.0
 Werkzeug                3.1.3
 wikipedia               1.4.0
 yarl                    1.20.1
-(TaraEnv) mac@TaraMac Django % 
 
