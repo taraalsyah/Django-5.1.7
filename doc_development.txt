@@ -1,9 +1,169 @@
 >Server vps dan domain.
 >update OS.
->buat virtual env
->install gunicorn(dalam env) and nginx(luar env)
->install python,
+----------------------------------------------------------------------
+>install Python 3.11 dan Virtual env =
+
+# Download Python 3.11
+cd /tmp
+wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+
+# Extract
+tar xzf Python-3.11.9.tgz
+cd Python-3.11.9
+
+# Compile dan install
+./configure --enable-optimizations
+make altinstall
+
+# Cek versi
+python3.11 --version
+
+# Download OpenSSL 1.1.1
+cd /tmp
+wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+
+# Extract
+tar xzf openssl-1.1.1w.tar.gz
+cd openssl-1.1.1w
+
+# Compile dan install
+./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib
+make
+sudo make install
+
+#Setelah OpenSSL terinstall, kompile ulang Python 3.11:
+cd /tmp/Python-3.11.9
+
+# Clean hasil compile sebelumnya
+make clean
+
+# Configure ulang dengan OpenSSL baru
+./configure --enable-optimizations --with-openssl=/usr/local/openssl
+
+# Compile dan install
+make altinstall
+
+#Coba cek dulu OpenSSL-nya terinstall dengan benar:
+/usr/local/openssl/bin/openssl version
+
+#Lalu cek library-nya ada:
+ls /usr/local/openssl/lib/
+
+#Kalau ada, tambahkan ke library path lalu compile ulang:
+# Tambah library path
+export LD_LIBRARY_PATH=/usr/local/openssl/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=/usr/local/openssl/lib/pkgconfig
+
+# Clean dan compile ulang
+cd /tmp/Python-3.11.9
+make clean
+
+./configure --enable-optimizations --with-openssl=/usr/local/openssl --with-openssl-rpath=/usr/local/openssl/lib
+
+make altinstall
+
+# Tambahkan library OpenSSL ke sistem
+echo "/usr/local/openssl/lib" | sudo tee /etc/ld.so.conf.d/openssl.conf
+
+# Refresh library cache
+sudo ldconfig
+
+# Cek lagi
+/usr/local/openssl/bin/openssl version
+
+#Kalau berhasil, lanjut compile ulang Python:
+export LD_LIBRARY_PATH=/usr/local/openssl/lib:$LD_LIBRARY_PATH
+
+cd /tmp/Python-3.11.9
+make clean
+
+./configure --enable-optimizations --with-openssl=/usr/local/openssl --with-openssl-rpath=/usr/local/openssl/lib
+
+make altinstall
+
+# Cek SSL
+python3.11 -c "import ssl; print(ssl.OPENSSL_VERSION)"
+
+#compile ulang=
+cd /tmp/Python-3.11.9
+make clean
+
+./configure --with-openssl=/usr/local/openssl --with-openssl-rpath=/usr/local/openssl/lib 2>&1 | grep -i ssl
+
+# Cek library openssl ada
+ls /usr/local/openssl/lib/
+
+# Cek header openssl ada
+ls /usr/local/openssl/include/openssl/
+
+#Sekarang compile ulang:
+sudo make altinstall
+
+#Sekarang cek SSL dulu:
+python3.11 -c "import ssl; print(ssl.OPENSSL_VERSION)"
+
+#SSL sudah berhasil! 🎉
+#Sekarang lanjut buat venv dan install dependencies:
+
+# Masuk ke folder project
+cd /home/admin/taraalsyah/django/Django-5.1.7
+
+# Hapus venv lama
+rm -rf venv
+
+# Buat venv baru pakai Python 3.11
+python3.11 -m venv venv
+
+# Aktifkan
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+-----------------------------------------------------------------------------
 >install database server mysql/mariddb/docker/podman, d luar env
+#Install MySQL 8.0 di CentOS 7:
+
+# Download repo MySQL 8.0
+sudo rpm -Uvh https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
+
+# Install MySQL 8.0
+sudo yum install -y mysql-community-server mysql-community-devel
+
+# Start MySQL
+sudo systemctl start mysqld
+sudo systemctl enable mysqld
+
+# Cek status
+sudo systemctl status mysqld
+
+#Lalu ambil password sementara MySQL:
+sudo grep 'temporary password' /var/log/mysqld.log
+
+
+#login ke mysql dengan password temporary lalu buat user dan password mysql baru=
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'PasswordBaru123!';
+
+
+---------------------------------------------------------------------------
+
+>install gunicorn dalam env( cek ulang lagi buat pastiin, tapi seharusnya sudah ada karena sudah masuk ke list requirement)
+#manual=
+
+# Pastikan venv aktif (ada tulisan (venv) di terminal)
+source venv/bin/activate
+
+# Install gunicorn
+pip install gunicorn
+
+# Cek versi
+gunicorn --version
+-------------------------------------------------------------------------
+
+>install nginx diluar env, 
+
+------------------------------------------------------------------------
+
+
 >intall mysqlclient (python driver) di env
 >pastikan dapat konek dari dalam env ke luar
 >create database sama dengan yg di lokal.
