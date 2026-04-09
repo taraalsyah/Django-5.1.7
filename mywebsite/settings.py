@@ -38,23 +38,25 @@ SECRET_KEY = 'django-insecure-%8-jl3tb%8c4fjvp5g*)o@mj3ysm7!zh13p=14m3a-kl0fvrz&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".taraalsyah.online",]
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     "https://taraalsyah.online",
     "https://www.taraalsyah.online",
     "https://about.taraalsyah.online",
     "https://www.about.taraalsyah.online",
+    "http://8.215.110.184",
+    "http://www.8.215.110.184",
 ]
 
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = None
 USE_X_FORWARDED_HOST = True
 AXES_PROXY_ORDER = "left-most"
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SAMESITE = "None"
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
 
 # Application definition
 
@@ -171,9 +173,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djangoproject',
         'USER': 'root',
-        'PASSWORD' : 'Talsyah194598',
+        'PASSWORD' : 'PasswordBaru123!',
         'HOST' : 'localhost',
-        'PORT' : '3307',
+        'PORT' : '3306',
     }
 }
 
@@ -340,6 +342,7 @@ AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = timedelta(minutes=1)
 AXES_LOCKOUT_PARAMETERS = [["ip_address", "username"]]
 
+CSRF_COOKIE_HTTPONLY = False
 
 ROOT_HOSTCONF = "mywebsite.hosts"
 DEFAULT_HOST = "home"
