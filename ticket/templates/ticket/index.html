@@ -77,7 +77,7 @@
               <form action="{% url 'ticket:showHistory' ticket.id_ticket %}" method="POST" class="mytooltip">
                 {% csrf_token %}
                 <button type="submit" class="btn-delete">
-                  <img src="/static/ticket/img/detail.svg" alt="view" />
+                  <img src="{% static 'ticket/img/detail.svg' %}" alt="view" />
                 </button>
                 <span class="tooltip-text">History Ticket</span>
               </form>
