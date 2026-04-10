@@ -210,8 +210,13 @@ nginx -v
 -------------------------------------------------------------------------
 #config nginx
 #kaalo pake https brarti tambah 443
+#servername = itu domain, atau ip public server
+#location /static/ = harus ada dan di samakan dengan config STATIC_ROOT di setting.py / lokasi folder staticfiles
+#setelah setting location static, coba jalankan = python manage.py collectstatic
+#restart nginx
 
-[admin@iZk1a176ya952ieub3bmrxZ ~]$ cat /etc/nginx/conf.d/django.conf
+
+(venv) [admin@iZk1a176ya952ieub3bmrxZ Django-5.1.7]$ sudo cat /etc/nginx/conf.d/django.conf 
 server {
     listen 80 default_server;
     server_name 8.215.110.184;
@@ -219,7 +224,7 @@ server {
     location = /favicon.ico { access_log off; log_not_found off; }
 
     location /static/ {
-        root /home/admin/taraalsyah/django/Django-5.1.7;
+        alias /home/admin/taraalsyah/django/Django-5.1.7/staticfiles/;
     }
 
     location /media/ {
@@ -233,7 +238,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }
-[admin@iZk1a176ya952ieub3bmrxZ ~]$ 
+(venv) [admin@iZk1a176ya952ieub3bmrxZ Django-5.1.7]$
 
 #nambahin user nginx ke group admin
 sudo usermod -aG admin nginx
