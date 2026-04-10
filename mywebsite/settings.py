@@ -41,10 +41,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://taraalsyah.online",
-    "https://www.taraalsyah.online",
-    "https://about.taraalsyah.online",
-    "https://www.about.taraalsyah.online",
+    "http://taraalsyah.online",
+    "http://www.taraalsyah.online",
+    "http://about.taraalsyah.online",
+    "http://www.about.taraalsyah.online",
     "http://8.215.110.184",
     "http://www.8.215.110.184",
 ]
